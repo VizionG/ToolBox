@@ -70,7 +70,7 @@ function DownloadAndLoadScripts {
 $tempScriptPaths = DownloadAndLoadScripts
 
 # Check if Main.ps1 exists and load it
-if (Test-Path $mainScriptPath) {
+if ($mainScriptPath -and (Test-Path $mainScriptPath)) {
     Write-Host "Loading script from: $mainScriptPath"
     try {
         . $mainScriptPath  # Dot-sourcing Main.ps1
@@ -78,5 +78,5 @@ if (Test-Path $mainScriptPath) {
         Write-Error ("Error loading script: {0}" -f $_)
     }
 } else {
-    Write-Error "Script not found: $mainScriptPath"
+    Write-Error "Script not found or failed to download: $mainScriptPath"
 }
