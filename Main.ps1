@@ -1,7 +1,7 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
 # Set the path to the ToolBox directory in the TEMP folder
-$toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+$toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
 
 # Construct full file paths from the toolboxPath
 $softwareCategoriesPath = Join-Path -Path $toolboxPath -ChildPath "SoftwareCategories.ps1"
