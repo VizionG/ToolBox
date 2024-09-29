@@ -1,34 +1,34 @@
-# Correct raw URLs of the scripts hosted on GitHub
-$SoftwareCategories = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1"
-$Functions = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1"
-$Styles = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1"
-$Colors = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1"
-$UI = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1"
-$Settings = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
-
-# Function to load and run a script from a URL
 function Load-ScriptFromUrl {
     param (
         [string]$url
     )
     try {
-        # Fetch the script content
-        $scriptContent = Invoke-RestMethod -Uri $url -ErrorAction Stop
-        Write-Output "Loaded script content from $url:" # Log the URL being loaded
-        Write-Output $scriptContent # Output the script content
+        # Fetch the script content using Invoke-WebRequest
+        $response = Invoke-WebRequest -Uri $url -ErrorAction Stop
+        $scriptContent = $response.Content
+        Write-Output "Loaded script content from $url:" 
+        Write-Output $scriptContent 
         Invoke-Expression $scriptContent
     } catch {
         Write-Error "Failed to load script from $url. Error: $_"
     }
 }
 
-# Load each script explicitly
-Load-ScriptFromUrl $SoftwareCategories
-Load-ScriptFromUrl $Functions
-Load-ScriptFromUrl $Styles
-Load-ScriptFromUrl $Colors
-Load-ScriptFromUrl $UI
-Load-ScriptFromUrl $Settings
+# Define script URLs
+$SoftwareCategoriesUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1"
+$FunctionsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1"
+$StylesUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1"
+$ColorsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1"
+$UIUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1"
+$SettingsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
+
+# Load other scripts
+Load-ScriptFromUrl $SoftwareCategoriesUrl
+Load-ScriptFromUrl $FunctionsUrl
+Load-ScriptFromUrl $StylesUrl
+Load-ScriptFromUrl $ColorsUrl
+Load-ScriptFromUrl $UIUrl
+Load-ScriptFromUrl $SettingsUrl
 
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
@@ -39,7 +39,7 @@ $mainWindow.ResizeMode = 'CanResize'
 $mainWindow.WindowStartupLocation = 'CenterScreen'
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-# Assuming $dockPanel is defined in one of the scripts
+# Assign dockPanel as the window's content
 $mainWindow.Content = $dockPanel
 
 # Show the main window
