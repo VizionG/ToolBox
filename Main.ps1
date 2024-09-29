@@ -48,9 +48,6 @@ $mainWindow.Content = $dockPanel
 # Show the main window
 $mainWindow.ShowDialog()
 
-
-$toolboxmainPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
-
 # Cleanup: Remove the temporary directory after the window is closed
 Remove-Item -Path $toolboxmainPath -Recurse -Force -ErrorAction SilentlyContinue
 
