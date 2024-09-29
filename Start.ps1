@@ -1,3 +1,5 @@
+Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
+
 function Load-ScriptFromUrl {
     param (
         [string]$url

@@ -1,3 +1,5 @@
+Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
+
 $toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
 
 # Load required scripts
