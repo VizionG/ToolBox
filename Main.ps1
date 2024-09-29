@@ -6,7 +6,6 @@ function Load-ScriptFromUrl {
         # Fetch the script content using Invoke-WebRequest
         $response = Invoke-WebRequest -Uri $url -ErrorAction Stop
         $scriptContent = $response.Content
-        Write-Output "Loaded script content from $url:" 
         Write-Output $scriptContent 
         Invoke-Expression $scriptContent
     } catch {
