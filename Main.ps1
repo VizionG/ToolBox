@@ -1,14 +1,20 @@
+# Load necessary WPF assemblies
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
+# Set the path to the ToolBox directory in the TEMP folder
 $toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
 
-# Load other scripts
-. SoftwareCategories.ps1
-. Functions.ps1
-. Styles.ps1
-. Colors.ps1
-. UI.ps1
-. Settings.ps1
+# Load other scripts from the ToolBox directory
+$scriptFiles = @("SoftwareCategories.ps1", "Functions.ps1", "Styles.ps1", "Colors.ps1", "UI.ps1", "Settings.ps1")
+
+foreach ($script in $scriptFiles) {
+    $scriptPath = Join-Path -Path $toolboxPath -ChildPath $script
+    if (Test-Path $scriptPath) {
+        . $scriptPath  # Dot-sourcing the script
+    } else {
+        Write-Error "Script not found: $scriptPath"
+    }
+}
 
 # Create a DockPanel to use in the main window
 $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
@@ -29,4 +35,5 @@ $mainWindow.Content = $dockPanel
 $mainWindow.ShowDialog()
 
 # Cleanup: Remove the temporary directory after the window is closed
+$tempDir = $toolboxPath  # Assuming you want to remove the ToolBox directory
 Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
