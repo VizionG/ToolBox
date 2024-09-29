@@ -1,7 +1,5 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
-$toolbox = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
-
 # Set the path to the ToolBox directory in the TEMP folder
 $toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
 
@@ -47,14 +45,17 @@ $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBru
 # Assign dockPanel as the window's content
 $mainWindow.Content = $dockPanel
 
+# Show the main window
+$mainWindow.ShowDialog()
+
+
+$toolboxmainPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+
 # Cleanup: Remove the temporary directory after the window is closed
-Remove-Item -Path $toolbox -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path $toolboxmainPath -Recurse -Force -ErrorAction SilentlyContinue
 
 $mainWindow.Add_Closing({
     # Perform any necessary cleanup here
     Write-Host "Cleaning up before closing..."
     # Optionally, you can add any code to release resources or save settings
 })
-
-# Show the main window
-$mainWindow.ShowDialog()
