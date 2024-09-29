@@ -1,3 +1,5 @@
+Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
+
 # Define the path to the temporary script folder
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
 
