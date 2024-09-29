@@ -12,14 +12,15 @@ function Load-ScriptFromUrl {
         [string]$url
     )
     try {
-        # Fetch the script and execute it
-        Invoke-RestMethod -Uri $url | Invoke-Expression
+        # Fetch the script content
+        $scriptContent = Invoke-RestMethod -Uri $url -ErrorAction Stop
+        Invoke-Expression $scriptContent
     } catch {
         Write-Error "Failed to load script from $url. Error: $_"
     }
 }
 
-# Load each script explicitly (No recursion)
+# Load each script explicitly
 Load-ScriptFromUrl $SoftwareCategories
 Load-ScriptFromUrl $Functions
 Load-ScriptFromUrl $Styles
