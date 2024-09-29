@@ -14,6 +14,8 @@ function Load-ScriptFromUrl {
     try {
         # Fetch the script content
         $scriptContent = Invoke-RestMethod -Uri $url -ErrorAction Stop
+        Write-Output "Loaded script content from $url:" # Log the URL being loaded
+        Write-Output $scriptContent # Output the script content
         Invoke-Expression $scriptContent
     } catch {
         Write-Error "Failed to load script from $url. Error: $_"
