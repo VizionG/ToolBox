@@ -5,7 +5,7 @@ function Load-ScriptFromUrl {
     try {
         Write-Host "Attempting to download script from: $url"
         
-        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\"
         $null = New-Item -ItemType Directory -Path $tempDir -ErrorAction SilentlyContinue
         
         $scriptName = [System.IO.Path]::GetFileName($url)
@@ -45,8 +45,10 @@ function DownloadAndLoadScripts {
 # Run the DownloadAndLoadScripts function to download all scripts
 DownloadAndLoadScripts
 
-# After downloading, run the Main.ps1 script
-$mainScriptPath = Join-Path -Path $env:TEMP\ToolBox\ -ChildPath "Main.ps1"
+# Set the path to the ToolBox directory
+$toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox\"
+$mainScriptPath = Join-Path -Path $toolboxPath -ChildPath "Main.ps1"
+
 if (Test-Path $mainScriptPath) {
     Write-Host "Loading Main script from: $mainScriptPath"
     try {
