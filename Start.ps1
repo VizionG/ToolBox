@@ -5,7 +5,7 @@ function Load-ScriptFromUrl {
     try {
         Write-Host "Attempting to download script from: $url"
         
-        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
+        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
         $null = New-Item -ItemType Directory -Path $tempDir -ErrorAction SilentlyContinue
         
         $scriptName = [System.IO.Path]::GetFileName($url)
