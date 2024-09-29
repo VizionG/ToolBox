@@ -3,9 +3,8 @@ function Load-ScriptFromUrl {
         [string]$url
     )
     try {
-        # Fetch the script content using Invoke-WebRequest
-        $response = Invoke-WebRequest -Uri $url -ErrorAction Stop
-        $scriptContent = $response.Content
+        # Fetch the script content using Invoke-RestMethod
+        $scriptContent = Invoke-RestMethod -Uri $url -ErrorAction Stop
         Write-Output $scriptContent 
         Invoke-Expression $scriptContent
     } catch {
@@ -13,13 +12,15 @@ function Load-ScriptFromUrl {
     }
 }
 
+
+
 # Define script URLs
-$SoftwareCategoriesUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1"
-$FunctionsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1"
-$StylesUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1"
-$ColorsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1"
-$UIUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1"
-$SettingsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
+$SoftwareCategoriesUrl = "https://viziong.github.io/ToolBox/main/Scripts/SoftwareCategories.ps1"
+$FunctionsUrl = "https://viziong.github.io/ToolBox/main/Scripts/Functions.ps1"
+$StylesUrl = "https://viziong.github.io/ToolBox/main/Scripts/Styles.ps1"
+$ColorsUrl = "https://viziong.github.io/ToolBox/main/Scripts/Colors.ps1"
+$UIUrl = "https://viziong.github.io/ToolBox/main/Scripts/UI.ps1"
+$SettingsUrl = "https://viziong.github.io/ToolBox/main/Scripts/Settings.ps1"
 
 # Load other scripts
 Load-ScriptFromUrl $SoftwareCategoriesUrl
@@ -28,6 +29,9 @@ Load-ScriptFromUrl $StylesUrl
 Load-ScriptFromUrl $ColorsUrl
 Load-ScriptFromUrl $UIUrl
 Load-ScriptFromUrl $SettingsUrl
+
+# Create a DockPanel to use in the main window
+$dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
 
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
