@@ -1,4 +1,4 @@
-Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
+# Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
 . .\SoftwareCategories.ps1
 . .\Functions.ps1
