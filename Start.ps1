@@ -46,29 +46,39 @@ function DownloadAndLoadScripts {
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
     )
 
+    $tempScriptPaths = @()
     # Download all scripts into ToolBox\Scripts folder
     foreach ($url in $scriptUrls) {
-        Load-ScriptFromUrl -url $url -subDir "Scripts"
+        $tempScriptPath = Load-ScriptFromUrl -url $url -subDir "Scripts"
+        if ($tempScriptPath) {
+            $tempScriptPaths += $tempScriptPath
+        }
     }
 
     # Download Main.ps1 into the root ToolBox folder
     $mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
     $mainScriptPath = Load-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
 
-    return $mainScriptPath
+    if ($mainScriptPath) {
+        $tempScriptPaths += $mainScriptPath
+    }
+
+    return $tempScriptPaths
 }
 
 # Run the DownloadAndLoadScripts function to download all scripts
-$mainScriptPath = DownloadAndLoadScripts
+$tempScriptPaths = DownloadAndLoadScripts
 
-# Set the path to the Main.ps1 script in the root ToolBox folder
-if (Test-Path $mainScriptPath) {
-    Write-Host "Loading Main script from: $mainScriptPath"
-    try {
-        . $mainScriptPath  # Dot-sourcing Main.ps1
-    } catch {
-        Write-Error ("Error loading Main script: {0}" -f $_)
+# Load each script one by one
+foreach ($scriptPath in $tempScriptPaths) {
+    if (Test-Path $scriptPath) {
+        Write-Host "Loading script from: $scriptPath"
+        try {
+            . $scriptPath  # Dot-sourcing each script
+        } catch {
+            Write-Error ("Error loading script: {0}" -f $_)
+        }
+    } else {
+        Write-Error "Script not found: $scriptPath"
     }
-} else {
-    Write-Error "Main script not found: $mainScriptPath"
 }
