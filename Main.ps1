@@ -1,5 +1,3 @@
-# Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
-
 . .\SoftwareCategories.ps1
 . .\Functions.ps1
 . .\Styles.ps1
