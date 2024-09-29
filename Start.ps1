@@ -48,12 +48,12 @@ function Load-ScriptFromUrlMain {
 
 function DownloadAndLoadScripts {
     # Define script URLs
-    $mainurl = @(
+    $mainUrl = @(
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
         
     )
     $tempScriptPaths = @()
-    foreach ($url in $mainurl) {
+    foreach ($url in $mainUrl) {
         $tempScriptPath = Load-ScriptFromUrl $url
         if ($tempScriptPath) {
             $tempScriptPaths += $tempScriptPath
@@ -83,6 +83,7 @@ function DownloadAndLoadScripts {
 
 # Run the DownloadAndLoadScripts function to download all scripts
 DownloadAndLoadScripts
+Load-ScriptFromUrlMain
 
 # Set the path to the ToolBox directory
 $toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
