@@ -6,13 +6,26 @@ $Colors = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors
 $UI = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1"
 $Settings = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
 
-# Load scripts directly from GitHub using Invoke-RestMethod
-Invoke-RestMethod -Uri $SoftwareCategories | Invoke-Expression
-Invoke-RestMethod -Uri $Functions | Invoke-Expression
-Invoke-RestMethod -Uri $Styles | Invoke-Expression
-Invoke-RestMethod -Uri $Colors | Invoke-Expression
-Invoke-RestMethod -Uri $UI | Invoke-Expression
-Invoke-RestMethod -Uri $Settings | Invoke-Expression
+# Function to load and run a script from a URL
+function Load-ScriptFromUrl {
+    param (
+        [string]$url
+    )
+    try {
+        # Fetch the script and execute it
+        Invoke-RestMethod -Uri $url | Invoke-Expression
+    } catch {
+        Write-Error "Failed to load script from $url. Error: $_"
+    }
+}
+
+# Load each script explicitly (No recursion)
+Load-ScriptFromUrl $SoftwareCategories
+Load-ScriptFromUrl $Functions
+Load-ScriptFromUrl $Styles
+Load-ScriptFromUrl $Colors
+Load-ScriptFromUrl $UI
+Load-ScriptFromUrl $Settings
 
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
@@ -23,7 +36,7 @@ $mainWindow.ResizeMode = 'CanResize'
 $mainWindow.WindowStartupLocation = 'CenterScreen'
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-# Assign dockPanel as the window's content (Make sure $dockPanel is defined in the loaded scripts)
+# Assuming $dockPanel is defined in one of the scripts
 $mainWindow.Content = $dockPanel
 
 # Show the main window
