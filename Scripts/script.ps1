@@ -375,23 +375,3 @@ $software_categories = @{
         }
     }
 }
-
-# Define the path where you want to save the icons
-$icon_save_path = "C:\Users\tito_\Desktop\From VM\Dev"
-
-# Create the directory if it doesn't exist
-if (-not (Test-Path -Path $icon_save_path)) {
-    New-Item -ItemType Directory -Path $icon_save_path
-}
-
-
-# Loop through all software categories and their entries
-foreach ($category in $software_categories.Keys) {
-    foreach ($software in $software_categories[$category].Keys) {
-        $software_info = $software_categories[$category][$software]
-        $website_url = $software_info.info
-        
-        Write-Host "Processing: $website_url"
-        Download-Icon -url $website_url
-    }
-}
