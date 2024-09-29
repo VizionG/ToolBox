@@ -5,15 +5,12 @@ function Load-ScriptFromUrl {
     try {
         Write-Host "Attempting to download script from: $url"
         
-        # Create a temporary directory for the scripts
         $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
         $null = New-Item -ItemType Directory -Path $tempDir -ErrorAction SilentlyContinue
         
-        # Define the path for the downloaded script
         $scriptName = [System.IO.Path]::GetFileName($url)
         $tempScriptPath = Join-Path -Path $tempDir -ChildPath $scriptName
 
-        # Fetch the script content using Invoke-WebRequest and save it to a temp file
         Invoke-WebRequest -Uri $url -OutFile $tempScriptPath -ErrorAction Stop
         
         Write-Host "Successfully downloaded script to: $tempScriptPath"
@@ -34,7 +31,6 @@ $scriptUrls = @(
     "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
 )
 
-# Load each script and store their paths
 $tempScriptPaths = @()
 foreach ($url in $scriptUrls) {
     $tempScriptPath = Load-ScriptFromUrl $url
@@ -43,21 +39,39 @@ foreach ($url in $scriptUrls) {
     }
 }
 
-# List scripts in the temp directory
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
 Write-Host "Scripts in temp directory: "
 Get-ChildItem -Path $tempDir | ForEach-Object { Write-Host $_.Name }
 
-# Load scripts from the temp folder using dot-sourcing
-foreach ($scriptPath in $tempScriptPaths) {
-    Write-Host "Loading script from: $scriptPath"
-    . $scriptPath  # Dot-sourcing the script
+$scriptOrder = @(
+    "SoftwareCategories.ps1",
+    "Functions.ps1",
+    "Styles.ps1",
+    "Colors.ps1",
+    "UI.ps1",
+    "Settings.ps1"
+)
+
+foreach ($scriptName in $scriptOrder) {
+    $scriptPath = Join-Path -Path $env:TEMP\ToolBox\Scripts -ChildPath $scriptName
+    if (Test-Path $scriptPath) {
+        Write-Host "Loading script from: $scriptPath"
+        try {
+            . $scriptPath
+            
+            if ($scriptName -eq "UI.ps1" -and (Get-Command -Name "InitializeUI" -ErrorAction SilentlyContinue)) {
+                Write-Host "InitializeUI function found."
+            }
+        } catch {
+            Write-Error ("Error loading script from {0}: {1}" -f $scriptPath, $_)
+        }
+    } else {
+        Write-Error "Script not found: $scriptPath"
+    }
 }
 
-# Create a DockPanel to use in the main window
 $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
 
-# Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
 $mainWindow.Title = "Software Manager"
 $mainWindow.Width = 1100  
@@ -66,11 +80,6 @@ $mainWindow.ResizeMode = 'CanResize'
 $mainWindow.WindowStartupLocation = 'CenterScreen'
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-# Assign dockPanel as the window's content
 $mainWindow.Content = $dockPanel
 
-# Show the main window
 $mainWindow.ShowDialog()
-
-# Cleanup: Remove the temporary directory after the window is closed
-Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
