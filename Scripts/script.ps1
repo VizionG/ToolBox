@@ -384,34 +384,6 @@ if (-not (Test-Path -Path $icon_save_path)) {
     New-Item -ItemType Directory -Path $icon_save_path
 }
 
-# Function to download the first image found on the webpage
-function Download-Icon {
-    param (
-        [string]$url
-    )
-
-    try {
-        # Get the HTML content of the webpage
-        $response = Invoke-WebRequest -Uri $url -ErrorAction Stop
-        $html_content = $response.Content
-
-        # Use regex to find image URLs in the HTML content
-        $image_urls = [regex]::Matches($html_content, 'https?://[^"''\s]+\.(png|jpg|jpeg|ico)') | ForEach-Object { $_.Value }
-
-        if ($image_urls.Count -gt 0) {
-            # Download the first image found
-            $image_url = $image_urls[0]
-            $file_name = [System.IO.Path]::GetFileName($image_url)
-            $local_path = Join-Path -Path $icon_save_path -ChildPath $file_name
-
-            # Download the image
-            Invoke-WebRequest -Uri $image_url -OutFile $local_path
-            Write-Host "Downloaded: $file_name from $image_url"
-        } else {
-            Write-Host "No image found at $url"
-        }
-    }
-}
 
 # Loop through all software categories and their entries
 foreach ($category in $software_categories.Keys) {
