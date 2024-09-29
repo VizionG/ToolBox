@@ -7,6 +7,29 @@ function Load-ScriptFromUrl {
     try {
         Write-Host "Attempting to download script from: $url"
         
+        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
+        $null = New-Item -ItemType Directory -Path $tempDir -ErrorAction SilentlyContinue
+        
+        $scriptName = [System.IO.Path]::GetFileName($url)
+        $tempScriptPath = Join-Path -Path $tempDir -ChildPath $scriptName
+
+        Invoke-WebRequest -Uri $url -OutFile $tempScriptPath -ErrorAction Stop
+        
+        Write-Host "Successfully downloaded script to: $tempScriptPath"
+        return $tempScriptPath
+    } catch {
+        Write-Error "Failed to load script from $url. Error: $_"
+        return $null
+    }
+}
+
+function Load-ScriptFromUrlMain {
+    param (
+        [string]$url
+    )
+    try {
+        Write-Host "Attempting to download script from: $url"
+        
         $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
         $null = New-Item -ItemType Directory -Path $tempDir -ErrorAction SilentlyContinue
         
@@ -22,6 +45,12 @@ function Load-ScriptFromUrl {
         return $null
     }
 }
+
+function DownloadAndLoadScripts {
+    # Define script URLs
+    $mainurl = @(
+        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
+    )
 
 function DownloadAndLoadScripts {
     # Define script URLs

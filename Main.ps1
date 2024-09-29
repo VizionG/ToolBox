@@ -1,14 +1,40 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
+# Set the path to the ToolBox directory in the TEMP folder
 $toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
 
-# Load other scripts
-. .\SoftwareCategories.ps1
-. .\Functions.ps1
-. .\Styles.ps1
-. .\Colors.ps1
-. .\UI.ps1
-. .\Settings.ps1
+# Construct full file paths from the toolboxPath
+$softwareCategoriesPath = Join-Path -Path $toolboxPath -ChildPath "SoftwareCategories.ps1"
+$functionsPath = Join-Path -Path $toolboxPath -ChildPath "Functions.ps1"
+$stylesPath = Join-Path -Path $toolboxPath -ChildPath "Styles.ps1"
+$colorsPath = Join-Path -Path $toolboxPath -ChildPath "Colors.ps1"
+$uiPath = Join-Path -Path $toolboxPath -ChildPath "UI.ps1"
+$settingsPath = Join-Path -Path $toolboxPath -ChildPath "Settings.ps1"
+
+# Load the scripts with error handling
+$scriptFiles = @(
+    $softwareCategoriesPath,
+    $functionsPath,
+    $stylesPath,
+    $colorsPath,
+    $uiPath,
+    $settingsPath
+)
+
+foreach ($script in $scriptFiles) {
+    if (Test-Path $script) {
+        try {
+            . $script
+        } catch {
+            Write-Host "Error loading script_"
+        }
+    } else {
+        Write-Host "File not found: $script"
+    }
+}
+
+# Your UI code continues here
+
 
 # Create a DockPanel to use in the main window
 $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
