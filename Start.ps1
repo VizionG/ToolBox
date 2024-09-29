@@ -50,8 +50,16 @@ function DownloadAndLoadScripts {
     # Define script URLs
     $mainurl = @(
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
+        
     )
-
+    $tempScriptPaths = @()
+    foreach ($url in $mainurl) {
+        $tempScriptPath = Load-ScriptFromUrl $url
+        if ($tempScriptPath) {
+            $tempScriptPaths += $tempScriptPath
+        }
+    }
+}
 function DownloadAndLoadScripts {
     # Define script URLs
     $scriptUrls = @(
