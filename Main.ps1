@@ -5,12 +5,12 @@ $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
 
 # Define the order of the scripts to load
 $scriptOrder = @(
-    "SoftwareCategories.ps1",
-    "Functions.ps1",
-    "Styles.ps1",
-    "Colors.ps1",
-    "UI.ps1",
-    "Settings.ps1"
+    ".\SoftwareCategories.ps1",
+    ".\Functions.ps1",
+    ".\Styles.ps1",
+    ".\Colors.ps1",
+    ".\UI.ps1",
+    ".\Settings.ps1"
 )
 
 # Load each script in the defined order
@@ -45,3 +45,6 @@ $mainWindow.Content = $dockPanel
 
 # Show the main window
 $mainWindow.ShowDialog()
+
+# Cleanup: Remove the temporary directory after the window is closed
+Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
