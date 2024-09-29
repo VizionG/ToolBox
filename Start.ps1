@@ -46,7 +46,7 @@ function DownloadAndLoadScripts {
 DownloadAndLoadScripts
 
 # After downloading, run the Main.ps1 script
-$mainScriptPath = Join-Path -Path $env:TEMP\ToolBox\Scripts -ChildPath "Main.ps1"
+$mainScriptPath = Join-Path -Path $env:TEMP\ToolBox\ -ChildPath "Main.ps1"
 if (Test-Path $mainScriptPath) {
     Write-Host "Loading Main script from: $mainScriptPath"
     try {
