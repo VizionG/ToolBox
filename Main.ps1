@@ -1,9 +1,16 @@
-. .\SoftwareCategories.ps1
-. .\Functions.ps1
-. .\Styles.ps1
-. .\Colors.ps1
-. .\UI.ps1
-. .\Settings.ps1
+$toolboxPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+
+# Load required scripts
+$scriptFiles = @("SoftwareCategories.ps1", "Functions.ps1", "Styles.ps1", "Colors.ps1", "UI.ps1", "Settings.ps1")
+
+foreach ($script in $scriptFiles) {
+    $scriptPath = Join-Path -Path $toolboxPath -ChildPath $script
+    if (Test-Path $scriptPath) {
+        . $scriptPath  # Dot-sourcing the script
+    } else {
+        Write-Error "Script not found: $scriptPath"
+    }
+}
 
 # Create a DockPanel to use in the main window
 $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
