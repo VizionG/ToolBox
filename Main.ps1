@@ -15,12 +15,12 @@ function Load-ScriptFromUrl {
 
 
 # Define script URLs
-$SoftwareCategoriesUrl = "https://viziong.github.io/ToolBox/main/Scripts/SoftwareCategories.ps1"
-$FunctionsUrl = "https://viziong.github.io/ToolBox/main/Scripts/Functions.ps1"
-$StylesUrl = "https://viziong.github.io/ToolBox/main/Scripts/Styles.ps1"
-$ColorsUrl = "https://viziong.github.io/ToolBox/main/Scripts/Colors.ps1"
-$UIUrl = "https://viziong.github.io/ToolBox/main/Scripts/UI.ps1"
-$SettingsUrl = "https://viziong.github.io/ToolBox/main/Scripts/Settings.ps1"
+$SoftwareCategoriesUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Scripts/SoftwareCategories.ps1"
+$FunctionsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Scripts/Functions.ps1"
+$StylesUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Scripts/Styles.ps1"
+$ColorsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Scripts/Colors.ps1"
+$UIUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Scripts/UI.ps1"
+$SettingsUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Scripts/Settings.ps1"
 
 # Load other scripts
 Load-ScriptFromUrl $SoftwareCategoriesUrl
