@@ -1,15 +1,14 @@
-Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
-
+# Function to download script from URL
 # Function to download script from URL
 function Load-ScriptFromUrl {
     param (
         [string]$url,
-        [string]$subDir = "Scripts"  # Default subdirectory under ToolBox, unless specified
+        [string]$subDir = $null  # Root directory (ToolBox) for Main.ps1
     )
     try {
         Write-Host "Attempting to download script from: $url"
         
-        # Determine the directory based on whether a subdirectory is provided
+        # Determine the directory (root directory for Main.ps1)
         if ($subDir) {
             $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\$subDir"
         } else {
@@ -34,51 +33,20 @@ function Load-ScriptFromUrl {
     }
 }
 
-# Function to download and load all required scripts
-function DownloadAndLoadScripts {
-    # Define script URLs
-    $scriptUrls = @(
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
-    )
 
-    $tempScriptPaths = @()
-    # Download all scripts into ToolBox\Scripts folder
-    foreach ($url in $scriptUrls) {
-        $tempScriptPath = Load-ScriptFromUrl -url $url -subDir "Scripts"
-        if ($tempScriptPath) {
-            $tempScriptPaths += $tempScriptPath
-        }
+# Download Main.ps1 into the root ToolBox folder
+$mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
+$mainScriptPath = Load-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
+
+# Check if Main.ps1 exists and load it
+if ($null -ne $mainScriptPath -and (Test-Path $mainScriptPath)) {
+    Write-Host "Loading script from: $mainScriptPath"
+    try {
+        . $mainScriptPath  # Dot-sourcing Main.ps1
+    } catch {
+        Write-Error ("Error loading script: {0}" -f $_)
     }
-
-    # Download Main.ps1 into the root ToolBox folder
-    $mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
-    $mainScriptPath = Load-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
-
-    if ($mainScriptPath) {
-        $tempScriptPaths += $mainScriptPath
-    }
-
-    return $tempScriptPaths
+} else {
+    Write-Error "Script not found or failed to download: $mainScriptPath"
 }
 
-# Run the DownloadAndLoadScripts function to download all scripts
-$tempScriptPaths = DownloadAndLoadScripts
-
-# Load each script one by one
-foreach ($scriptPath in $tempScriptPaths) {
-    if (Test-Path $scriptPath) {
-        Write-Host "Loading script from: $scriptPath"
-        try {
-            . $scriptPath  # Dot-sourcing each script
-        } catch {
-            Write-Error ("Error loading script: {0}" -f $_)
-        }
-    } else {
-        Write-Error "Script not found: $scriptPath"
-    }
-}
