@@ -1,32 +1,11 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
-# Define the path to the temporary script folder
-$tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
-
-# Define the order of the scripts to load
-$scriptOrder = @(
-    ".\SoftwareCategories.ps1",
-    ".\Functions.ps1",
-    ".\Styles.ps1",
-    ".\Colors.ps1",
-    ".\UI.ps1",
-    ".\Settings.ps1"
-)
-
-# Load each script in the defined order
-foreach ($scriptName in $scriptOrder) {
-    $scriptPath = Join-Path -Path $tempDir -ChildPath $scriptName
-    if (Test-Path $scriptPath) {
-        Write-Host "Loading script from: $scriptPath"
-        try {
-            . $scriptPath  # Dot-sourcing the script
-        } catch {
-            Write-Error ("Error loading script from {0}: {1}" -f $scriptPath, $_)
-        }
-    } else {
-        Write-Error "Script not found: $scriptPath"
-    }
-}
+. .\SoftwareCategories.ps1
+. .\Functions.ps1
+. .\Styles.ps1
+. .\Colors.ps1
+. .\UI.ps1
+. .\Settings.ps1
 
 # Create a DockPanel to use in the main window
 $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
