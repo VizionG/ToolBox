@@ -7,9 +7,6 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 . .\Scripts\UI.ps1
 . .\Scripts\Settings.ps1
 
-# Create a DockPanel to use in the main window
-$dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
-
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
 $mainWindow.Title = "Software Manager"
