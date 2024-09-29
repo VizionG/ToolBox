@@ -1,11 +1,11 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
-. .\SoftwareCategories.ps1
-. .\Functions.ps1
-. .\Styles.ps1
-. .\Colors.ps1
-. .\UI.ps1
-. .\Settings.ps1
+. .\Scripts\SoftwareCategories.ps1
+. .\Scripts\Functions.ps1
+. .\Scripts\Styles.ps1
+. .\Scripts\Colors.ps1
+. .\Scripts\UI.ps1
+. .\Scripts\Settings.ps1
 
 # Create a DockPanel to use in the main window
 $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
