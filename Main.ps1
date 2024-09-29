@@ -3,6 +3,8 @@ function Load-ScriptFromUrl {
         [string]$url
     )
     try {
+        Write-Host "Attempting to download script from: $url"
+        
         # Create a temporary directory for the scripts
         $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
         $null = New-Item -ItemType Directory -Path $tempDir -ErrorAction SilentlyContinue
@@ -14,7 +16,7 @@ function Load-ScriptFromUrl {
         # Fetch the script content using Invoke-WebRequest and save it to a temp file
         Invoke-WebRequest -Uri $url -OutFile $tempScriptPath -ErrorAction Stop
         
-        # Return the path of the downloaded script
+        Write-Host "Successfully downloaded script to: $tempScriptPath"
         return $tempScriptPath
     } catch {
         Write-Error "Failed to load script from $url. Error: $_"
@@ -22,7 +24,7 @@ function Load-ScriptFromUrl {
     }
 }
 
-# Define script URLs (corrected)
+# Define script URLs
 $scriptUrls = @(
     "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1",
     "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1",
@@ -40,6 +42,11 @@ foreach ($url in $scriptUrls) {
         $tempScriptPaths += $tempScriptPath
     }
 }
+
+# List scripts in the temp directory
+$tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Scripts"
+Write-Host "Scripts in temp directory: "
+Get-ChildItem -Path $tempDir | ForEach-Object { Write-Host $_.Name }
 
 # Load scripts from the temp folder using dot-sourcing
 foreach ($scriptPath in $tempScriptPaths) {
@@ -66,4 +73,4 @@ $mainWindow.Content = $dockPanel
 $mainWindow.ShowDialog()
 
 # Cleanup: Remove the temporary directory after the window is closed
-Remove-Item -Path (Join-Path -Path $env:TEMP -ChildPath "ToolBox") -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
