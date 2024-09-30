@@ -76,6 +76,8 @@ Write-Host "Main.ps1 path: $mainScriptPath"
 
 # Check if Main.ps1 exists and load it
 if ($mainScriptPath -and (Test-Path $mainScriptPath)) {
+    Write-Host "Running Main.ps1"
+    Write-Host "Script location: $PSScriptRoot"
     Write-Host "Loading script from: $mainScriptPath"
     try {
         . $mainScriptPath  # Dot-sourcing Main.ps1
