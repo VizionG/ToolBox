@@ -69,6 +69,9 @@ function DownloadAndLoadScripts {
 # Run the DownloadAndLoadScripts function to download all scripts
 $tempScriptPaths = DownloadAndLoadScripts
 
+# Log the path of Main.ps1 before loading
+Write-Host "Main.ps1 path: $mainScriptPath"
+
 # Check if Main.ps1 exists and load it
 if ($mainScriptPath -and (Test-Path $mainScriptPath)) {
     Write-Host "Loading script from: $mainScriptPath"
