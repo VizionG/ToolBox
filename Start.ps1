@@ -77,7 +77,7 @@ if (Test-Path $mainScriptPath) {
     
     # Attempt to start Main.ps1 with elevated privileges
     try {
-        Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$mainScriptPath`"" -Verb RunAs
+        Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$mainScriptPath`"" -Verb RunAs -WindowStyle Hidden
     } catch {
         Write-Error "Failed to run Main.ps1. Error: $_"
     }
