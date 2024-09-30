@@ -66,10 +66,21 @@ $tempScriptPaths = DownloadScripts
 $mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
 $mainScriptPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Main.ps1"
 
+# Download Main.ps1 if not already downloaded
+if (-not (Test-Path $mainScriptPath)) {
+    $mainScriptPath = Download-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
+}
+
 # Check if Main.ps1 exists and run it with administrator rights
 if (Test-Path $mainScriptPath) {
     Write-Host "Running Main.ps1 with administrator rights"
-    Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$mainScriptPath`"" -Verb RunAs
+    
+    # Attempt to start Main.ps1 with elevated privileges
+    try {
+        Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$mainScriptPath`"" -Verb RunAs
+    } catch {
+        Write-Error "Failed to run Main.ps1. Error: $_"
+    }
 } else {
     Write-Error "Script not found or failed to download: $mainScriptPath"
 }
