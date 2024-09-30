@@ -1,4 +1,6 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # Function to download script from URL
 function Load-ScriptFromUrl {
