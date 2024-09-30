@@ -34,8 +34,8 @@ function Download-ScriptFromUrl {
     }
 }
 
-# Function to download and load all required scripts
-function DownloadAndLoadScripts {
+# Function to download all required scripts
+function DownloadScripts {
     # Define script URLs
     $scriptUrls = @(
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1",
@@ -55,32 +55,21 @@ function DownloadAndLoadScripts {
         }
     }
 
-    # Download Main.ps1 into the root ToolBox folder
-    $mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
-    $mainScriptPath = Download-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
-
-    if ($mainScriptPath) {
-        $tempScriptPaths += $mainScriptPath
-    }
-
+    # Return the paths of downloaded scripts
     return $tempScriptPaths
 }
 
-# Run the DownloadAndLoadScripts function to download all scripts
-$tempScriptPaths = DownloadAndLoadScripts
+# Download all scripts
+$tempScriptPaths = DownloadScripts
 
-# Log the path of Main.ps1 before loading
-Write-Host "Main.ps1 path: $mainScriptPath"
+# Log the path of Main.ps1
+$mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
+$mainScriptPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Main.ps1"
 
-# Check if Main.ps1 exists and load it
-if ($mainScriptPath -and (Test-Path $mainScriptPath)) {
-    Write-Host "Running Main.ps1"
-    Write-Host "Loading script from: $mainScriptPath"
-    try {
-        . $mainScriptPath  # Dot-sourcing Main.ps1
-    } catch {
-        Write-Error ("Error loading script: {0}" -f $_)
-    }
+# Check if Main.ps1 exists and run it with administrator rights
+if (Test-Path $mainScriptPath) {
+    Write-Host "Running Main.ps1 with administrator rights"
+    Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$mainScriptPath`"" -Verb RunAs
 } else {
     Write-Error "Script not found or failed to download: $mainScriptPath"
 }
