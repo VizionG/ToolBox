@@ -1,9 +1,7 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
-Get-ExecutionPolicy
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # Function to download script from URL
-function Load-ScriptFromUrl {
+function Download-ScriptFromUrl {
     param (
         [string]$url,
         [string]$subDir = "Scripts"  # Default subdirectory under ToolBox, unless specified
@@ -31,7 +29,7 @@ function Load-ScriptFromUrl {
         Write-Host "Successfully downloaded script to: $tempScriptPath"
         return $tempScriptPath
     } catch {
-        Write-Error "Failed to load script from $url. Error: $_"
+        Write-Error "Failed to download script from $url. Error: $_"
         return $null
     }
 }
@@ -51,7 +49,7 @@ function DownloadAndLoadScripts {
     $tempScriptPaths = @()
     # Download all scripts into ToolBox\Scripts folder
     foreach ($url in $scriptUrls) {
-        $tempScriptPath = Load-ScriptFromUrl -url $url -subDir "Scripts"
+        $tempScriptPath = Download-ScriptFromUrl -url $url -subDir "Scripts"
         if ($tempScriptPath) {
             $tempScriptPaths += $tempScriptPath
         }
@@ -59,7 +57,7 @@ function DownloadAndLoadScripts {
 
     # Download Main.ps1 into the root ToolBox folder
     $mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
-    $mainScriptPath = Load-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
+    $mainScriptPath = Download-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
 
     if ($mainScriptPath) {
         $tempScriptPaths += $mainScriptPath
@@ -77,7 +75,6 @@ Write-Host "Main.ps1 path: $mainScriptPath"
 # Check if Main.ps1 exists and load it
 if ($mainScriptPath -and (Test-Path $mainScriptPath)) {
     Write-Host "Running Main.ps1"
-    Write-Host "Script location: $PSScriptRoot"
     Write-Host "Loading script from: $mainScriptPath"
     try {
         . $mainScriptPath  # Dot-sourcing Main.ps1
