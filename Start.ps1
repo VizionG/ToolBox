@@ -75,11 +75,25 @@ if (-not (Test-Path $mainScriptPath)) {
 if (Test-Path $mainScriptPath) {
     Write-Host "Running Main.ps1 with administrator rights"
     
-    # Attempt to start Main.ps1 with elevated privileges
+    # Prepare to start Main.ps1 with elevated privileges without a console window
     try {
-        Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$mainScriptPath`"" -Verb RunAs -WindowStyle Hidden
+        $processInfo = New-Object System.Diagnostics.ProcessStartInfo
+        $processInfo.FileName = "powershell.exe"
+        $processInfo.Arguments = "-ExecutionPolicy Bypass -File `"$mainScriptPath`""
+        $processInfo.Verb = "RunAs"  # Run as administrator
+        $processInfo.UseShellExecute = $true
+        $processInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden  # Hide the window
+        
+        # Start the process and wait for it to exit
+        $process = [System.Diagnostics.Process]::Start($processInfo)
+        $process.WaitForExit()  # Wait for the process to exit
     } catch {
         Write-Error "Failed to run Main.ps1. Error: $_"
+    } finally {
+        # Cleanup: Remove the temporary directory after the window is closed
+        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+        Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Host "Cleaned up temporary directory: $tempDir"
     }
 } else {
     Write-Error "Script not found or failed to download: $mainScriptPath"
