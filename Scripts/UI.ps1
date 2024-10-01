@@ -111,6 +111,19 @@ foreach ($category in $sorted_software_categories) {
     $categoryPanel.Children.Add($header)
     [System.Windows.Controls.Grid]::SetRow($header, 0)  # Set to first row
 
+    # Add a horizontal line under the title
+    $separatorLine = New-Object -TypeName System.Windows.Shapes.Line
+    $separatorLine.X1 = 0
+    $separatorLine.X2 = 1  # Line stretches horizontally
+    $separatorLine.Stretch = 'Fill'
+    $separatorLine.Stroke = $whitebrush  # Set the stroke color
+    $separatorLine.StrokeThickness = 1  # Set the thickness of the line
+    $separatorLine.HorizontalAlignment = 'Stretch'  # Stretch line across the grid
+    
+    # Add the line to the category panel (below the header)
+    $categoryPanel.Children.Add($separatorLine)
+    [System.Windows.Controls.Grid]::SetRow($separatorLi
+
     # Create a StackPanel for the checkboxes in the second row
     $checkboxStackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
     $checkboxStackPanel.Orientation = 'Vertical'  # Stack checkboxes vertically
