@@ -119,10 +119,10 @@ foreach ($category in $sorted_software_categories) {
     $separatorLine.Stroke = $whitebrush  # Set the stroke color
     $separatorLine.StrokeThickness = 1  # Set the thickness of the line
     $separatorLine.HorizontalAlignment = 'Stretch'  # Stretch line across the grid
-    
+
     # Add the line to the category panel (below the header)
     $categoryPanel.Children.Add($separatorLine)
-    [System.Windows.Controls.Grid]::SetRow($separatorLi
+    [System.Windows.Controls.Grid]::SetRow($separatorLine, 1)
 
     # Create a StackPanel for the checkboxes in the second row
     $checkboxStackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
