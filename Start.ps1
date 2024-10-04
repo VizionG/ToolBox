@@ -12,7 +12,8 @@ function Download-ScriptFromUrl {
         # Determine the directory based on whether a subdirectory is provided
         if ($subDir) {
             $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox\$subDir"
-        } else {
+        }
+        else {
             $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
         }
 
@@ -26,9 +27,16 @@ function Download-ScriptFromUrl {
         # Download the script from the URL
         Invoke-WebRequest -Uri $url -OutFile $tempScriptPath -ErrorAction Stop
         
-        Write-Host "Successfully downloaded script to: $tempScriptPath"
-        return $tempScriptPath
-    } catch {
+        # Check if the file is downloaded and has content
+        if ((Test-Path $tempScriptPath) -and ((Get-Item $tempScriptPath).Length -gt 0)) {
+            Write-Host "Successfully downloaded script to: $tempScriptPath"
+            return $tempScriptPath
+        }
+        else {
+            throw "Downloaded script is empty or not found at: $tempScriptPath"
+        }
+    }
+    catch {
         Write-Error "Failed to download script from $url. Error: $_"
         return $null
     }
@@ -51,7 +59,11 @@ function DownloadScripts {
     foreach ($url in $scriptUrls) {
         $tempScriptPath = Download-ScriptFromUrl -url $url -subDir "Scripts"
         if ($tempScriptPath) {
+            Write-Host "Downloaded script: $tempScriptPath"
             $tempScriptPaths += $tempScriptPath
+        }
+        else {
+            Write-Error "Failed to download script from: $url"
         }
     }
 
@@ -62,39 +74,30 @@ function DownloadScripts {
 # Download all scripts
 $tempScriptPaths = DownloadScripts
 
-# Log the path of Main.ps1
-$mainUrl = "https://raw.githubusercontent.com/VizionG/ToolBox/main/Main.ps1"
-$mainScriptPath = Join-Path -Path $env:TEMP -ChildPath "ToolBox\Main.ps1"
-
-# Download Main.ps1 if not already downloaded
-if (-not (Test-Path $mainScriptPath)) {
-    $mainScriptPath = Download-ScriptFromUrl -url $mainUrl -subDir $null  # No subdirectory for Main.ps1
-}
-
-# Check if Main.ps1 exists and run it with administrator rights
-if (Test-Path $mainScriptPath) {
-    Write-Host "Running Main.ps1 with administrator rights"
-    
-    # Prepare to start Main.ps1 with elevated privileges without a console window
+# Load the downloaded scripts into the current session
+foreach ($scriptPath in $tempScriptPaths) {
     try {
-        $processInfo = New-Object System.Diagnostics.ProcessStartInfo
-        $processInfo.FileName = "powershell.exe"
-        $processInfo.Arguments = "-ExecutionPolicy Bypass -File `"$mainScriptPath`""
-        $processInfo.Verb = "RunAs"  # Run as administrator
-        $processInfo.UseShellExecute = $true
-        $processInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden  # Hide the window
-        
-        # Start the process and wait for it to exit
-        $process = [System.Diagnostics.Process]::Start($processInfo)
-        $process.WaitForExit()  # Wait for the process to exit
-    } catch {
-        Write-Error "Failed to run Main.ps1. Error: $_"
-    } finally {
-        # Cleanup: Remove the temporary directory after the window is closed
-        $tempDir = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
-        Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
-        Write-Host "Cleaned up temporary directory: $tempDir"
+        Write-Host "Loading script: $scriptPath"
+        . $scriptPath
     }
-} else {
-    Write-Error "Script not found or failed to download: $mainScriptPath"
+    catch {
+        Write-Error ("Failed to load script " + $scriptPath + ": " + $_)
+    }
 }
+
+# Create the main window
+$mainWindow = New-Object -TypeName System.Windows.Window
+$mainWindow.Title = "Software Manager"
+$mainWindow.Width = 1100  
+$mainWindow.Height = 625  
+$mainWindow.ResizeMode = 'CanResize'
+$mainWindow.WindowStartupLocation = 'CenterScreen'
+
+# Set the background color of the window
+$mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
+
+# Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
+$mainWindow.Content = $dockPanel
+
+# Show the main window
+$mainWindow.ShowDialog()
