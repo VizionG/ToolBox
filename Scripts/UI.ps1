@@ -63,12 +63,15 @@ $categoriesGrid.HorizontalAlignment = 'Stretch'
 $categoriesGrid.VerticalAlignment = 'Stretch'# Create a ScrollViewer to make categories scrollable
 $scrollViewer = New-Object -TypeName System.Windows.Controls.ScrollViewer
 $scrollViewer.VerticalScrollBarVisibility = 'Auto'  # Show scrollbar when needed
+$scrollViewer.Style = $scrollStyle
+
 
 # Create a UniformGrid to arrange categories side by sidex
 $uniformGrid = New-Object -TypeName System.Windows.Controls.Primitives.UniformGrid
 $uniformGrid.Columns = 3  # Adjust this to control the number of categories in each row
 $uniformGrid.HorizontalAlignment = 'Stretch'
 $uniformGrid.VerticalAlignment = 'Stretch'
+
 
 # Define your sorted categories as before
 $sorted_software_categories = $software_categories.GetEnumerator() | 
@@ -103,7 +106,7 @@ foreach ($category in $sorted_software_categories) {
     $header = New-Object -TypeName System.Windows.Controls.TextBlock
     $header.Text = $category.Category
     $header.FontWeight = 'Bold'
-    $header.FontSize = '20'
+    $header.FontSize = '26'
     $header.Foreground = $titleBrush
     $header.TextAlignment = 'Center'
 
@@ -116,6 +119,29 @@ foreach ($category in $sorted_software_categories) {
     $checkboxStackPanel.Orientation = 'Vertical'  # Stack checkboxes vertically
     $checkboxStackPanel.Margin = '5 , 10, 5, 5'
 
+    # Define a highlight color for checked state
+    $highlightBrush = $titleBrush
+
+    # Create a style for CheckBox
+    $checkBoxStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.CheckBox])
+
+    # Create a setter for the default background
+    $defaultSetter = New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.CheckBox]::BackgroundProperty, [System.Windows.Media.Brushes]::Transparent)
+    $checkBoxStyle.Setters.Add($defaultSetter)
+
+    # Create a trigger for checked state
+    $checkBoxTrigger = New-Object System.Windows.Trigger
+    $checkBoxTrigger.Property = [System.Windows.Controls.CheckBox]::IsCheckedProperty
+    $checkBoxTrigger.Value = $true
+
+    # Create a setter for the background when checked
+    $checkedSetter = New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.CheckBox]::BackgroundProperty, $highlightBrush)
+    $checkBoxTrigger.Setters.Add($checkedSetter)
+
+    # Add the trigger to the style
+    $checkBoxStyle.Triggers.Add($checkBoxTrigger)
+    $checkBoxStyle.Triggers.Add($checkBoxTrigger)
+
     # Add checkboxes for each software in the category
     foreach ($item in $category.Items) {
         $app_name = $item.Name
@@ -126,9 +152,10 @@ foreach ($category in $sorted_software_categories) {
         $checkbox.Content = $app_name
         $checkbox.IsChecked = $false
         $checkbox.FontSize = '14'
-        $checkbox.FontWeight = '350'
+        $checkbox.FontWeight = '380'
         $checkbox.Foreground = $whitebrush
         $checkbox.Margin = 4
+        $checkbox.Style = $checkBoxStyle 
 
         # Add tooltip to checkbox
         $toolTip = New-Object -TypeName System.Windows.Controls.ToolTip
@@ -169,6 +196,7 @@ $checkAllBox.Margin = '22'
 $checkAllBox.FontSize = 12
 $checkAllBox.FontWeight = 'Bold'
 $checkAllBox.Style = $checkBoxStyle
+$checkAllBox.Foreground = 'Red'
 $checkAllBox.Add_Checked({
     foreach ($checkbox in $checkboxControls.Values) {
         $checkbox.IsChecked = $true
@@ -197,11 +225,42 @@ $sidebarGrid.VerticalAlignment = 'Stretch'
 $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Status row
 $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Buttons row
 
+$vizionLogo = New-Object -TypeName System.Windows.Controls.Image
+$vizionLogo.HorizontalAlignment = 'Center'
+$vizionLogo.VerticalAlignment = 'Top'
+$vizionLogo.Margin = '5, 5, 5, 5'
+# Set the source for the logo image
+$imageSource = "https://viziong.github.io/ToolBox/Resources/images/v_logo.png"  # Replace with the actual path to your image
+$vizionLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($imageSource))
+
+$sidebarGrid.Children.Insert(0, $vizionLogo)
+
+# Create an Image control
+$windowsLogo = New-Object -TypeName System.Windows.Controls.Image
+$windowsLogo.HorizontalAlignment = 'Center'  # Center the image
+$windowsLogo.VerticalAlignment = 'Top'  # Align to the top
+$windowsLogo.Margin = '5, 150, 5, 5'  # Margin for some spacing
+
+# Set the image source based on Windows version
+$windowsVersion = Get-WindowsVersion
+
+# Set image source based on Windows version
+if ($windowsVersion -like "*11*") {
+    $imageSource = "https://viziong.github.io/ToolBox/Resources/images/Windows_11_logo.png"  # Replace with the actual path to your Windows 11 image
+    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($imageSource))
+} elseif ($windowsVersion -like "*10*") {
+    $imageSource = "https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"  # Replace with the actual path to your Windows 10 image
+    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($imageSource))
+}
+
+# Add the Image control to the sidebar grid above the status box
+$sidebarGrid.Children.Insert(0, $windowsLogo)  # Insert at index 0 to place it at the top
+
 # Create and configure the status TextBox (for the sidebar)
 $statusBox = New-Object -TypeName System.Windows.Controls.TextBox
 $statusBox.Height = 60
 $statusBox.Width = 170
-$statusBox.Margin = '5, 5, 5, 130'
+$statusBox.Margin = '5, 190, 5, 5'
 $statusBox.IsReadOnly = $true
 $statusBox.Text = "Waiting for actions..."
 $statusBox.FontWeight = '600'
@@ -224,7 +283,7 @@ $buttonPanel = New-Object -TypeName System.Windows.Controls.StackPanel
 $buttonPanel.Orientation = 'Vertical'
 $buttonPanel.HorizontalAlignment = 'Right'
 $buttonPanel.VerticalAlignment = 'Center'
-$buttonPanel.Margin = '5, 130, 26, 5'
+$buttonPanel.Margin = '5, 60, 26, 5'
 
 # Create and configure Check Installed Apps button
 $checkAppsButton = New-Object -TypeName System.Windows.Controls.Button
@@ -291,6 +350,33 @@ $installButton.Add_Click({
     }
 })
 
+# Create and configure Recommended button
+$recommendedButton = New-Object -TypeName System.Windows.Controls.Button
+$recommendedButton.Content = "Recommended"
+$recommendedButton.Margin = '5'
+$recommendedButton.Height = 30  # Set button height
+$recommendedButton.Style = $buttonStyle
+
+# Add click event for the Recommended button (You can define the action inside the script)
+$recommendedButton.Add_Click({
+    # Uncheck all checkboxes first (optional, if you want to clear previous selections)
+    foreach ($checkbox in $checkboxControls.Values) {
+        $checkbox.IsChecked = $false
+    }
+    
+    # Check the specific recommended checkboxes
+    foreach ($app in $recommendedSoftware) {
+        if ($checkboxControls.ContainsKey($app)) {
+            $checkboxControls[$app].IsChecked = $true
+        }
+    }
+
+    # Update status (optional)
+    $statusBox.Text = "Selected Recommended Apps" + ($specificRecommendedApps -join ', ')
+})
+
+# Add the Recommended button to the button panel (above Check Installed)
+$buttonPanel.Children.Insert(0, $recommendedButton)  # Insert at index 0 to place it at the top
 
 # Add buttons to button panel
 $buttonPanel.Children.Add($checkAppsButton)
