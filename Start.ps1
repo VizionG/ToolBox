@@ -80,6 +80,8 @@ if (Test-Path $mainScriptPath) {
         $processInfo = New-Object System.Diagnostics.ProcessStartInfo
         $processInfo.FileName = "powershell.exe"
         $processInfo.Arguments = "-ExecutionPolicy Bypass -File `"$mainScriptPath`""
+        $processInfo.Verb = "RunAs"  # Run as administrator
+        $processInfo.UseShellExecute = $true
         $processInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden  # Hide the window
         
         # Start the process and wait for it to exit
