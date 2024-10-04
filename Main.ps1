@@ -1,11 +1,11 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
-. Scripts\SoftwareCategories.ps1
-. Scripts\Functions.ps1
-. Scripts\Styles.ps1
-. Scripts\Colors.ps1
-. Scripts\UI.ps1
-. Scripts\Settings.ps1
+. .\Scripts\SoftwareCategories.ps1
+. .\Scripts\Functions.ps1
+. .\Scripts\Styles.ps1
+. .\Scripts\Colors.ps1
+. .\Scripts\UI.ps1
+. .\Scripts\Settings.ps1
 
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
