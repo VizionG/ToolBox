@@ -27,7 +27,7 @@ function Uninstall-Software {
     try {
         $statusBox.Text = "Uninstalling: $app_name"
         Update-UI
-        $command = "winget uninstall --id ${app_id} --silent"
+        $command = "winget uninstall --id ${app_id} --disable-interactivity --silent --accept-source-agreements --accept-package-agreements"
         Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c $command" -Wait
         $statusBox.Text = "Successfully uninstalled: $app_name"
         Update-UI
