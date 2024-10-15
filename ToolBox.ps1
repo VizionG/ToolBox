@@ -21,8 +21,43 @@ function Ensure-ExecutionPolicy {
     }
 }
 
+# Function to check if winget is installed
+function Ensure-Winget {
+    try {
+        $wingetVersion = winget --version
+        if ($wingetVersion) {
+            Write-Host "winget is already installed. Version: $wingetVersion"
+        }
+    }
+    catch {
+        Write-Host "winget is not installed. Installing winget..."
+        
+        try {
+            # Download the winget installer from GitHub
+            $wingetInstallerUrl = "https://aka.ms/getwinget"
+            $wingetInstallerPath = Join-Path -Path $env:TEMP -ChildPath "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+
+            Write-Host "Downloading winget installer..."
+            Invoke-WebRequest -Uri $wingetInstallerUrl -OutFile $wingetInstallerPath -ErrorAction Stop
+
+            # Install winget using Add-AppxPackage
+            Write-Host "Installing winget..."
+            Add-AppxPackage -Path $wingetInstallerPath
+
+            Write-Host "winget installation complete."
+        }
+        catch {
+            Write-Error "Failed to install winget. Error: $_"
+            throw "Installation failed. Please try manually."
+        }
+    }
+}
+
 # Ensure script execution policy is set correctly
 Ensure-ExecutionPolicy
+
+# Ensure winget is installed
+Ensure-Winget
 
 # Function to download script from URL
 function Download-ScriptFromUrl {

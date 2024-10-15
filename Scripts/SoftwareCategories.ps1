@@ -67,11 +67,6 @@ $software_categories = @{
             "info" = "https://www.whatsapp.com/"
             "winget_id" = "9NKSQGP7F2NH"
         }
-        "TeamViewer" = @{
-            "names" = @("TeamViewer")
-            "info" = "https://www.teamviewer.com/"
-            "winget_id" = "TeamViewer.TeamViewer"
-        }
         "Slack" = @{
             "names" = @("Slack")
             "info" = "https://slack.com/"
@@ -115,11 +110,6 @@ $software_categories = @{
             "names" = @("Prism Launcher")
             "info" = "https://prismlauncher.org/"
             "winget_id" = "PrismLauncher.PrismLauncher"
-        }
-        "Hs Deck Tracker" = @{
-            "names" = @("Hearthstone DT")
-            "info" = "https://hsreplay.net/"
-            "winget_id" = "HearthSim.HearthstoneDeckTracker"
         }
         "Heroic Games" = @{
             "names" = @("Heroic Games")
