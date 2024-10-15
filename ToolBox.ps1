@@ -1,5 +1,29 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
+# Function to check and set execution policy
+function Ensure-ExecutionPolicy {
+    $currentPolicy = Get-ExecutionPolicy -Scope CurrentUser
+
+    if ($currentPolicy -ne 'RemoteSigned') {
+        Write-Host "Current execution policy is '$currentPolicy'. Changing it to 'RemoteSigned' to allow script execution."
+        
+        try {
+            Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+            Write-Host "Execution policy successfully changed to 'RemoteSigned'."
+        }
+        catch {
+            Write-Error "Failed to change execution policy. Error: $_"
+            throw "Script execution cannot proceed without appropriate policy settings."
+        }
+    }
+    else {
+        Write-Host "Execution policy is already set to 'RemoteSigned'. No changes needed."
+    }
+}
+
+# Ensure script execution policy is set correctly
+Ensure-ExecutionPolicy
+
 # Function to download script from URL
 function Download-ScriptFromUrl {
     param (
@@ -85,6 +109,7 @@ foreach ($scriptPath in $tempScriptPaths) {
         Write-Error ("Failed to load script " + $scriptPath + ": " + $_)
     }
 }
+
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
 $mainWindow.Title = "ToolBox"
@@ -94,7 +119,6 @@ $mainWindow.ResizeMode = 'CanResize'
 $mainWindow.WindowStartupLocation = 'CenterScreen'
 $iconPath = "https://viziong.github.io/ToolBox/Resources/images/v_logo.ico"  # Replace with the actual path to your icon file
 $mainWindow.Icon = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($iconPath))
-
 
 # Set the background color of the window
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
