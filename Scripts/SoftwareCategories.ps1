@@ -100,8 +100,8 @@ $software_categories = @{
             "winget_id" = "Blizzard.BattleNet"
             "InstallerUrl" = "https://downloader.battle.net//download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
             "InstallerFileName" = "battlenet_installer_latest.exe"
-            "installerLocation" = "$env:TEMP\$InstallerFileName"
-            "installCommand" = "Battle.net-Setup.exe --lang=enUS --installpath='C:\Program Files (x86)\Battle.net'"
+            "installerLocation" = "$env:TEMP\battlenet_installer_latest.exe"
+            "installCommand" = "--lang=enUS --installpath='C:\Program Files (x86)\Battle.net'"
         }
         "Epic Games" = @{
             "names" = @("Epic Games Launcher")
