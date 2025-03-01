@@ -43,7 +43,8 @@ function Install-Software {
         [string]$app_name,
         [string]$installer = "winget", # Default installer is winget
         [string]$installerFileName = $null,
-        [string]$installerLocation = $null
+        [string]$installerLocation = $null,
+        [string]$installCommand = $null
     )
     try {
         $statusBox.Text = "Installing: $app_name"
