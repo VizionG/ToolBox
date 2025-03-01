@@ -44,8 +44,7 @@ function Install-Software {
         [string]$installer = "custom", # Default installer is custom for direct download
         [string]$installerUrl = $null,
         [string]$installerFileName = $null,
-        [string]$installerLocation = $null,
-        [string]$installArguments = $null
+        [string]$installerLocation = $null
     )
     try {
         $statusBox.Text = "Installing: $app_name"
@@ -53,7 +52,7 @@ function Install-Software {
 
         if ($installerUrl -ne $null -and $installerFileName -ne $null -and $installerLocation -ne $null) {
             Invoke-WebRequest -Uri $installerUrl -OutFile $installerLocation
-            $command = "& '$installerLocation' $installArguments"
+            $command = "& '$installerLocation'"
         } elseif ($installer -eq "choco") {
             $command = "choco install ${app_id} -y --no-progress --accept-license"
         } else {
