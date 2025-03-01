@@ -43,7 +43,7 @@ $software_categories = @{
         "OperaGX" = @{
             "names" = @("Opera GX")
             "info" = "https://www.opera.com/gx"
-            "winget_id" = "OperaGX.OperaGX"
+            "winget_id" = "Opera.OperaGX"
         }
     }
     "Communications" = @{
@@ -51,6 +51,11 @@ $software_categories = @{
             "names" = @("Discord")
             "info" = "https://discord.com/"
             "winget_id" = "Discord.Discord"
+        }
+        "Messenger" = @{
+            "names" = @("Facebook Messenger")
+            "info" = "https://www.messenger.com/"
+            "winget_id" = "9WZDNCRF0083"
         }
         "Signal" = @{
             "names" = @("OpenWhisperSystems Signal")
@@ -72,15 +77,15 @@ $software_categories = @{
             "info" = "https://slack.com/"
             "winget_id" = "SlackTechnologies.Slack"
         }
-        "Skype" = @{
-            "names" = @("Skype")
-            "info" = "https://www.skype.com/"
-            "winget_id" = "Microsoft.Skype"
-        }
         "Zoom" = @{
             "names" = @("Zoom")
             "info" = "https://zoom.us/"
             "winget_id" = "Zoom.Zoom"
+        }
+        "Wire" = @{
+            "names" = @("Wire")
+            "info" = "https://wire.com/en/"
+            "winget_id" = "wire.wire"
         }
     }
     "Gaming" = @{

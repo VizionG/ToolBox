@@ -1,7 +1,7 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
 # Function to download script from URL
-function Download-ScriptFromUrl {
+function Get-ScriptFromUrl {
     param (
         [string]$url,
         [string]$subDir = "Scripts"  # Default subdirectory under ToolBox, unless specified
