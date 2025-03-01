@@ -42,6 +42,7 @@ function Install-Software {
         [string]$app_id,
         [string]$app_name,
         [string]$installer = "winget", # Default installer is winget
+        [string]$installerUrl = $null,
         [string]$installerFileName = $null,
         [string]$installerLocation = $null,
         [string]$installCommand = $null
@@ -50,14 +51,15 @@ function Install-Software {
         $statusBox.Text = "Installing: $app_name"
         Update-UI
 
-        if ($null -ne $installerUrl -and $null -ne $installerFileName -and $null -ne $installerLocation) {
+        if ($installerUrl -ne $null -and $installerFileName -ne $null -and $installerLocation -ne $null) {
             Invoke-WebRequest -Uri $installerUrl -OutFile $installerLocation
             $command = "$installerLocation $installCommand"
         } elseif ($installer -eq "choco") {
             $command = "choco install ${app_id} -y --no-progress --accept-license"
         } else {
-            $command = "winget install --id ${app_id} --silent --disable-interactivity --accept-source-agreements --accept-package-agreements"
+            $command = "winget install --id ${app_id} --silent --disable-interactivity --accept-source-agreements --accept-package-agreements --location 'C:\Program Files (x86)\Battle.net'"
         }
+
         Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c $command" -Wait
         $statusBox.Text = "Successfully installed: $app_name"
         Update-UI
