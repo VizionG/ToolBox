@@ -49,10 +49,14 @@ function Install-Software {
     try {
         $statusBox.Text = "Installing: $app_name"
         Update-UI
-        if ($installer -eq "choco") {
+
+        if ($null -ne $installerUrl -and $null -ne $installerFileName -and $null -ne $installerLocation) {
+            Invoke-WebRequest -Uri $installerUrl -OutFile $installerLocation
+            $command = "$installerLocation $installCommand"
+        } elseif ($installer -eq "choco") {
             $command = "choco install ${app_id} -y --no-progress --accept-license"
         } else {
-            $command = "winget install --id ${app_id} --silent --disable-interactivity --accept-source-agreements --accept-package-agreements"
+            $command = "winget install --id ${app_id} --silent --accept-source-agreements --accept-package-agreements"
         }
         Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c $command" -Wait
         $statusBox.Text = "Successfully installed: $app_name"
