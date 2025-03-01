@@ -40,12 +40,19 @@ function Uninstall-Software {
 function Install-Software {
     param (
         [string]$app_id,
-        [string]$app_name
+        [string]$app_name,
+        [string]$installer = "winget", # Default installer is winget
+        [string]$installerFileName = $null,
+        [string]$installerLocation = $null
     )
     try {
         $statusBox.Text = "Installing: $app_name"
         Update-UI
-        $command = "winget install --id ${app_id} --silent"
+        if ($installer -eq "choco") {
+            $command = "choco install ${app_id} -y --no-progress --accept-license"
+        } else {
+            $command = "winget install --id ${app_id} --silent --disable-interactivity --accept-source-agreements --accept-package-agreements"
+        }
         Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c $command" -Wait
         $statusBox.Text = "Successfully installed: $app_name"
         Update-UI

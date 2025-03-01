@@ -100,6 +100,7 @@ $software_categories = @{
             "winget_id" = "Blizzard.BattleNet"
             "InstallerUrl" = "https://downloader.battle.net//download/getInstallerForGame?os=win&gameProgram=BATTLENET_APP&version=Live"
             "InstallerFileName" = "battlenet_installer_latest.exe"
+            "installerLocation" = "$env:TEMP\$InstallerFileName"
         }
         "Epic Games" = @{
             "names" = @("Epic Games Launcher")
@@ -274,11 +275,6 @@ $software_categories = @{
             "info" = "https://www.python.org/"
             "winget_id" = "Python.Python.3.7"
         }
-        "AdoptOpenJDK 14" = @{
-            "names" = @("AdoptOpenJDk")
-            "info" = "https://adoptium.net/"
-            "winget_id" = "AdoptOpenJDK."
-        }
         "AdoptOpenJDK 15" = @{
             "names" = @("AdoptOpenJDk")
             "info" = "https://adoptium.net/"
@@ -289,25 +285,21 @@ $software_categories = @{
             "info" = "https://adoptium.net/"
             "winget_id" = "AdoptOpenJDK."
         }
-        "Eclipse Temurin JDK with Hotspot 22" = @{
-            "names" = @("EclipseJDK22")
-            "info" = "https://adoptium.net/"
-            "winget_id" = "EclipseAdoptium.temerium.22"
+        "Blender" = @{
+            "names" = @("Blender")
+            "info" = "https://www.blender.org/"
+            "winget_id" = "BlenderFoundation.Blender"
         }
-        "AmazonCorreto 19" = @{
-            "names" = @("AmazonCorretto")
-            "info" = "https://aws.amazon.com/corretto/"
-            "winget_id" = "Amazon.Corretto.19.JDK"
+        "Eclipse" = @{
+            "names" = @("Eclipse")
+            "info" = "https://eclipseide.org/"
+            "winget_id" = "eclipse"
+            "installer" = "choco"
         }
         "AmazonCorreto 8" = @{
             "names" = @("AmazonCorretto")
             "info" = "https://aws.amazon.com/corretto/"
             "winget_id" = "Amazon.Corretto.8.JDK"
-        }
-        "AmazonCorreto 15" = @{
-            "names" = @("AmazonCorretto")
-            "info" = "https://aws.amazon.com/corretto/"
-            "winget_id" = "Amazon.Corretto.15.JDK"
         }
         "AmazonCorreto 22" = @{
             "names" = @("AmazonCorretto")
@@ -325,11 +317,6 @@ $software_categories = @{
             "names" = @("kdenlive")
             "info" = "https://kdenlive.org/en/"
             "winget_id" = "KDE.Kdenlive"
-        }
-        "Blender" = @{
-            "names" = @("Blender")
-            "info" = "https://www.blender.org/"
-            "winget_id" = "BlenderFoundation.Blender"
         }
         "GIMP" = @{
             "names" = @("GIMP")
