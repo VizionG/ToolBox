@@ -1,5 +1,5 @@
 # Parse the Style from XAML
-$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
+# Removed unused variable assignment for $checkBoxStyle
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
@@ -73,7 +73,7 @@ $vcredisButton.Width = 200             # Set a fixed width for the button
 $vcredisButton.HorizontalAlignment ='Left'
 $vcredisButton.VerticalAlignment ='center'
 
-if ($vcredisButton -ne $null) {
+if ($null -ne $vcredisButton) {
     $vcredisButton.Add_Click({
         DownloadAndRunVCRedist
     })

@@ -123,22 +123,12 @@ function Initialize-DockPanel {
     return $dockPanel
 }
 
-function Initialize-DockPanel {
+# Mostra a interface gráfica principal
+function Show-ToolBoxUI {
     $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
     $dockPanel.HorizontalAlignment = 'Stretch'
     $dockPanel.VerticalAlignment = 'Stretch'
     return $dockPanel
-}
-
-
-# Mostra a interface gráfica principal
-function Show-ToolBoxUI {
-    # Inicializa o dockPanel antes de usá-lo
-    $dockPanel = Initialize-DockPanel
-    if (-not $dockPanel) {
-        Write-Error "UI não foi carregada corretamente. dockPanel não está definido."
-        return
-    }
 
     $mainWindow = New-Object -TypeName System.Windows.Window
     $mainWindow.Title = "ToolBox"
