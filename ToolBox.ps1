@@ -62,10 +62,26 @@ try {
         return $tempScriptPaths
     }
 
-    # Function to create a DockPanel (Placeholder)
+    # Function to create a DockPanel with actual controls
     function Get-MainDockPanel {
         $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
-        # You can add more controls or layout settings to $dockPanel here if needed.
+
+        # Create some controls to add to the DockPanel
+        $button = New-Object -TypeName System.Windows.Controls.Button
+        $button.Content = "Click Me"
+        $button.Width = 200
+        $button.Height = 50
+        $button.SetValue([System.Windows.Controls.DockPanel]::DockProperty, [System.Windows.Controls.Dock]::Top)
+
+        $textBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+        $textBlock.Text = "Hello, this is your application!"
+        $textBlock.Foreground = [System.Windows.Media.Brushes]::White
+        $textBlock.SetValue([System.Windows.Controls.DockPanel]::DockProperty, [System.Windows.Controls.Dock]::Top)
+
+        # Add controls to the dock panel
+        $dockPanel.Children.Add($button)
+        $dockPanel.Children.Add($textBlock)
+
         return $dockPanel
     }
 
@@ -94,40 +110,24 @@ try {
 
     # Create the main window
     $mainWindow = New-Object -TypeName System.Windows.Window
-    $mainWindow.Title = "Software Manager"
-    $mainWindow.Width = 1100
-    $mainWindow.Height = 625
+    $mainWindow.Title = "ToolBox"
+    $mainWindow.Width = 1100  
+    $mainWindow.Height = 625  
     $mainWindow.ResizeMode = 'CanResize'
     $mainWindow.WindowStartupLocation = 'CenterScreen'
+
+    # Set the icon for the window
+    $iconPath = "https://viziong.github.io/ToolBox/Resources/images/v_logo.ico"  # Replace with the actual path to your icon file
+    $mainWindow.Icon = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($iconPath))
 
     # Set the background color of the window
     $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-    # Set content from loaded script (UI.ps1 should define $dockPanel)
-    if (-not $dockPanel) {
-        Write-Host "dockPanel is null or not defined!"
-    } else {
-        $mainWindow.Content = $dockPanel
-    }
+    # Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
+    $mainWindow.Content = $dockPanel
 
-    $mainWindow.Add_Closed({
-        if (Test-Path $baseFolder) {
-            try {
-                Remove-Item -Path $baseFolder -Recurse -Force
-                Write-Host "Deleted temporary folder: $baseFolder"
-            }
-            catch {
-                Write-Warning "Could not delete the temporary folder: $_"
-            }
-        }
-    })
-
-    try {
-        $mainWindow.ShowDialog()
-    } catch {
-        Write-Error "Failed to show main window: $_"
-    }
-
+    # Show the main window
+    $mainWindow.ShowDialog()
 }
 catch {
     Write-Error "An unexpected error occurred: $_"
