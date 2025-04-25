@@ -1,5 +1,7 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
+$baseFolder = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+
 # Function to download script from URL
 function Download-ScriptFromUrl {
     param (
@@ -10,7 +12,9 @@ function Download-ScriptFromUrl {
     )
 
     $scriptName = [System.IO.Path]::GetFileName($url)
-    $scriptFolder = Join-Path -Path $PSScriptRoot -ChildPath $subDir
+    $baseFolder = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+    $scriptFolder = Join-Path -Path $baseFolder -ChildPath $subDir
+
 
     if (-not (Test-Path $scriptFolder)) {
         New-Item -ItemType Directory -Path $scriptFolder -Force | Out-Null
@@ -72,6 +76,13 @@ foreach ($scriptPath in $tempScriptPaths) {
     }
 }
 
+# Relaunch as administrator if not already elevated
+If (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    exit
+}
+
+
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
 $mainWindow.Title = "Software Manager"
@@ -85,6 +96,19 @@ $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBru
 
 # Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
 $mainWindow.Content = $dockPanel
+
+$mainWindow.Add_Closed({
+    if (Test-Path $baseFolder) {
+        try {
+            Remove-Item -Path $baseFolder -Recurse -Force
+            Write-Host "Deleted temporary folder: $baseFolder"
+        }
+        catch {
+            Write-Warning "Could not delete the temporary folder: $_"
+        }
+    }
+})
+
 
 # Show the main window
 $mainWindow.ShowDialog()
