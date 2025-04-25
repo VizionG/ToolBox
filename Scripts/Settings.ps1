@@ -84,7 +84,6 @@ if ($vcredisButton -ne $null) {
 # Add the button to the settings panel
 $settingsPanel.Children.Add($vcredisButton)
 
-
 # Add a button for installing DirectX
 $installDirectXButton = New-Object -TypeName System.Windows.Controls.Button
 $installDirectXButton.Content = "Install DirectX"
@@ -111,10 +110,16 @@ $installDirectXButton.Add_Click({
 # Add the install DirectX button to the settings panel
 $settingsPanel.Children.Add($installDirectXButton)
 
-#Add Alpha Debloat
-$settingsPanel.Children.Add($alphaDebloatButton)
+# Add Alpha Debloat
+$alphaDebloatButton = New-Object -TypeName System.Windows.Controls.Button
+$alphaDebloatButton.Content = "Alpha Debloat"
+$alphaDebloatButton.Style = $buttonStyle  # Apply the button style if needed
+$alphaDebloatButton.Margin = '5'           # Add margin for spacing
+$alphaDebloatButton.Width = 200             # Set a fixed width for the button
+$alphaDebloatButton.HorizontalAlignment = 'Left'  # Center horizontally
+$alphaDebloatButton.VerticalAlignment = 'Center'        # Align to the top vertically
 
-#Set the click event for the Alpha Debloat button
+# Set the click event for the Alpha Debloat button
 $alphaDebloatButton.Add_Click({
     try {
         $url = "https://viziong.github.io/ToolBox/Scripts/AlphaDebloat.ps1"
@@ -125,6 +130,10 @@ $alphaDebloatButton.Add_Click({
         Write-Error "Failed to run Alpha Debloat script from GitHub. Error: $_"
     }
 })
+
+# Add the Alpha Debloat button to the settings panel
+$settingsPanel.Children.Add($alphaDebloatButton)
+
 # Add a button for installing .NET Framework
 $installDotNetButton = New-Object -TypeName System.Windows.Controls.Button
 $installDotNetButton.Content = ".NET Framework"
@@ -133,6 +142,7 @@ $installDotNetButton.Margin = '5'           # Add margin for spacing
 $installDotNetButton.Width = 200             # Set a fixed width for the button
 $installDotNetButton.HorizontalAlignment = 'Left'  # Center horizontally
 $installDotNetButton.VerticalAlignment = 'Center'        # Align to the top vertically
+
 # Set the button click event
 $installDotNetButton.Add_Click({
     try {
@@ -146,8 +156,10 @@ $installDotNetButton.Add_Click({
         Write-Error "Failed to install .NET Framework. Error: $_"
     }
 })
+
 # Add the install .NET Framework button to the settings panel
 $settingsPanel.Children.Add($installDotNetButton)
+
 # Add a button for installing .NET 6
 $installDotNet6Button = New-Object -TypeName System.Windows.Controls.Button
 $installDotNet6Button.Content = ".NET 6"
@@ -156,6 +168,7 @@ $installDotNet6Button.Margin = '5'           # Add margin for spacing
 $installDotNet6Button.Width = 200             # Set a fixed width for the button
 $installDotNet6Button.HorizontalAlignment = 'Left'  # Center horizontally
 $installDotNet6Button.VerticalAlignment = 'Center'        # Align to the top vertically
+
 # Set the button click event
 $installDotNet6Button.Add_Click({
     try {
@@ -169,8 +182,10 @@ $installDotNet6Button.Add_Click({
         Write-Error "Failed to install .NET 6. Error: $_"
     }
 })
+
 # Add the install .NET 6 button to the settings panel
 $settingsPanel.Children.Add($installDotNet6Button)
+
 # Add a button for installing .NET 7
 $installDotNet7Button = New-Object -TypeName System.Windows.Controls.Button
 $installDotNet7Button.Content = ".NET 7"
@@ -179,6 +194,7 @@ $installDotNet7Button.Margin = '5'           # Add margin for spacing
 $installDotNet7Button.Width = 200             # Set a fixed width for the button
 $installDotNet7Button.HorizontalAlignment = 'Left'  # Center horizontally
 $installDotNet7Button.VerticalAlignment = 'Center'        # Align to the top vertically
+
 # Set the button click event
 $installDotNet7Button.Add_Click({
     try {
@@ -192,6 +208,7 @@ $installDotNet7Button.Add_Click({
         Write-Error "Failed to install .NET 7. Error: $_"
     }
 })
+
 # Add the install .NET 7 button to the settings panel
 $settingsPanel.Children.Add($installDotNet7Button)
 
