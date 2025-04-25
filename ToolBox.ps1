@@ -26,7 +26,7 @@ function Test-Winget {
     ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     throw "This script must be run as Administrator."
     }
-}
+
 
     try {
         $wingetVersion = winget --version
