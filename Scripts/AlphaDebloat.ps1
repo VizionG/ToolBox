@@ -84,7 +84,7 @@ function Remove-Bloatware {
     foreach ($app in $bloatwareApps) {
         try {
             # Uninstall the app
-            Get-AppxPackage -Name $app | Remove-AppxPackage -Force
+            Get-AppxPackage -AllUsers $app | Remove-AppxPackage -Force
             Write-Host "$app has been removed."
         }
         catch {
@@ -97,7 +97,7 @@ function Remove-Bloatware {
 
 function Remove-MailAndTaskView {
     # Unpin Mail app from Start Menu (if pinned)
-    $MailApp = Get-AppxPackage -Name "microsoft.windowscommunicationsapps" 
+    $MailApp = Get-AppxPackage -Name "microsoft.Outlook" 
     if ($MailApp) {
         $MailApp | Remove-AppxPackage
         Write-Host "Mail app unpinned from Start Menu."
@@ -123,10 +123,17 @@ function Unpin-AllStartMenuItems {
     $shell = New-Object -ComObject Shell.Application
 
     # Get the Start Menu folder
-    $startMenu = $shell.Namespace('shell:::{9BFB25B6-D3F9-4E8F-B9A5-7D94B7D2A6E1}')
+    $startMenu = $shell.Namespace('shell:::{5D6E6A7A-6B07-4C87-A0BF-B6B657C6E0D0}')
+
+    # Check if the Start Menu folder was retrieved successfully
+    if ($startMenu -eq $null) {
+        Write-Error "Failed to access Start Menu folder."
+        return
+    }
 
     # Loop through all items in the Start Menu
     foreach ($item in $startMenu.Items()) {
+        Write-Host "Item found: $($item.Name)"
         try {
             # Unpin each item
             $item.InvokeVerb('unpin from start')
