@@ -1,117 +1,120 @@
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
-$baseFolder = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
+# Define log file path
+$logFile = "$env:TEMP\ToolBox.log"
 
-# Function to download script from URL
-function Download-ScriptFromUrl {
-    param (
-        [Parameter(Mandatory)]
-        [string]$url,
-        [Parameter(Mandatory)]
-        [string]$subDir
-    )
+# Start logging everything
+Start-Transcript -Path $logFile -Append -Force
 
-    $scriptName = [System.IO.Path]::GetFileName($url)
+try {
     $baseFolder = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
-    $scriptFolder = Join-Path -Path $baseFolder -ChildPath $subDir
 
+    # Function to download script from URL
+    function Download-ScriptFromUrl {
+        param (
+            [Parameter(Mandatory)]
+            [string]$url,
+            [Parameter(Mandatory)]
+            [string]$subDir
+        )
 
-    if (-not (Test-Path $scriptFolder)) {
-        New-Item -ItemType Directory -Path $scriptFolder -Force | Out-Null
-    }
+        $scriptName = [System.IO.Path]::GetFileName($url)
+        $scriptFolder = Join-Path -Path $baseFolder -ChildPath $subDir
 
-    $destinationPath = Join-Path -Path $scriptFolder -ChildPath $scriptName
-
-    try {
-        Invoke-WebRequest -Uri $url -OutFile $destinationPath -ErrorAction Stop
-        Write-Host "Downloaded: $scriptName"
-        return $destinationPath
-    } catch {
-        Write-Error "Failed to download script from:`n$url"
-        return $null
-    }
-}
-
-
-# Function to download all required scripts
-function DownloadScripts {
-    # Define script URLs
-    $scriptUrls = @(
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
-    )
-
-    $tempScriptPaths = @()
-    # Download all scripts into ToolBox\Scripts folder
-    foreach ($url in $scriptUrls) {
-        $tempScriptPath = Download-ScriptFromUrl -url $url -subDir "Scripts"
-        if ($tempScriptPath) {
-            Write-Host "Downloaded script: $tempScriptPath"
-            $tempScriptPaths += $tempScriptPath
+        if (-not (Test-Path $scriptFolder)) {
+            New-Item -ItemType Directory -Path $scriptFolder -Force | Out-Null
         }
-        else {
-            Write-Error "Failed to download script from: $url"
-        }
-    }
 
-    # Return the paths of downloaded scripts
-    return $tempScriptPaths
-}
+        $destinationPath = Join-Path -Path $scriptFolder -ChildPath $scriptName
 
-# Download all scripts
-$tempScriptPaths = DownloadScripts
-
-# Load the downloaded scripts into the current session
-foreach ($scriptPath in $tempScriptPaths) {
-    try {
-        Write-Host "Loading script: $scriptPath"
-        . $scriptPath
-    }
-    catch {
-        Write-Error ("Failed to load script " + $scriptPath + ": " + $_)
-    }
-}
-
-# Relaunch as administrator if not already elevated
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
-    exit
-}
-
-
-# Create the main window
-$mainWindow = New-Object -TypeName System.Windows.Window
-$mainWindow.Title = "Software Manager"
-$mainWindow.Width = 1100  
-$mainWindow.Height = 625  
-$mainWindow.ResizeMode = 'CanResize'
-$mainWindow.WindowStartupLocation = 'CenterScreen'
-
-# Set the background color of the window
-$mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
-
-# Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
-$mainWindow.Content = $dockPanel
-
-$mainWindow.Add_Closed({
-    if (Test-Path $baseFolder) {
         try {
-            Remove-Item -Path $baseFolder -Recurse -Force
-            Write-Host "Deleted temporary folder: $baseFolder"
+            Invoke-WebRequest -Uri $url -OutFile $destinationPath -ErrorAction Stop
+            Write-Host "Downloaded: $scriptName"
+            return $destinationPath
+        } catch {
+            Write-Error "Failed to download script from:`n$url"
+            return $null
+        }
+    }
+
+    # Function to download all required scripts
+    function DownloadScripts {
+        $scriptUrls = @(
+            "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1",
+            "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1",
+            "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1",
+            "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1",
+            "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1",
+            "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
+        )
+
+        $tempScriptPaths = @()
+        foreach ($url in $scriptUrls) {
+            $tempScriptPath = Download-ScriptFromUrl -url $url -subDir "Scripts"
+            if ($tempScriptPath) {
+                Write-Host "Downloaded script: $tempScriptPath"
+                $tempScriptPaths += $tempScriptPath
+            } else {
+                Write-Error "Failed to download script from: $url"
+            }
+        }
+
+        return $tempScriptPaths
+    }
+
+    # Download all scripts
+    $tempScriptPaths = DownloadScripts
+
+    # Load the downloaded scripts into the current session
+    foreach ($scriptPath in $tempScriptPaths) {
+        try {
+            Write-Host "Loading script: $scriptPath"
+            . $scriptPath
         }
         catch {
-            Write-Warning "Could not delete the temporary folder: $_"
+            Write-Error ("Failed to load script ${scriptPath}: $_")
         }
     }
-})
 
+    # Relaunch as administrator if not already elevated
+    if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+        exit
+    }
 
-# Show the main window
-$mainWindow.ShowDialog()
+    # Create the main window
+    $mainWindow = New-Object -TypeName System.Windows.Window
+    $mainWindow.Title = "Software Manager"
+    $mainWindow.Width = 1100
+    $mainWindow.Height = 625
+    $mainWindow.ResizeMode = 'CanResize'
+    $mainWindow.WindowStartupLocation = 'CenterScreen'
 
-Read-Host "Press Enter to close the window"
+    # Set the background color of the window
+    $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
+    # Set content from loaded script (UI.ps1 should define $dockPanel)
+    $mainWindow.Content = $dockPanel
+
+    $mainWindow.Add_Closed({
+        if (Test-Path $baseFolder) {
+            try {
+                Remove-Item -Path $baseFolder -Recurse -Force
+                Write-Host "Deleted temporary folder: $baseFolder"
+            }
+            catch {
+                Write-Warning "Could not delete the temporary folder: $_"
+            }
+        }
+    })
+
+    # Show the main window
+    $mainWindow.ShowDialog()
+}
+catch {
+    Write-Error "An unexpected error occurred: $_"
+}
+finally {
+    Stop-Transcript
+    Read-Host "Press Enter to close the window"
+}
