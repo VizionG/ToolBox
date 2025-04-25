@@ -111,6 +111,23 @@ $installDirectXButton.Add_Click({
 # Add the install DirectX button to the settings panel
 $settingsPanel.Children.Add($installDirectXButton)
 
+#Add Alpha Debloat
+$settingsPanel.Children.Add($alphaDebloatButton)
+
+#Set the click event for the Alpha Debloat button
+$alphaDebloatButton.Add_Click({
+    try {
+        # Command to run the Alpha Debloat script
+        $command = 'powershell.exe -ExecutionPolicy Bypass -File "C:\Users\Admin\AppData\Local\Temp\ToolBox\Scrips\AlphaDebloat.ps1"'
+        # Start the process to execute the command
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
+        Write-Host "Alpha Debloat script executed."
+    }
+    catch {
+        Write-Error "Failed to run Alpha Debloat script. Error: $_"
+    }
+})
+
 # Set the content of the Settings tab
 $settingsTab.Content = $settingsPanel
 
