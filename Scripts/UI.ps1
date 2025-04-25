@@ -7,7 +7,7 @@ $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
 # Create a DockPanel as the main layout container
-$Global:dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
+$dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
 $dockPanel.HorizontalAlignment = 'Stretch'
 $dockPanel.VerticalAlignment = 'Stretch'
 $dockPanel.LastChildFill = $true  # Ensure the last child fills the remaining space
