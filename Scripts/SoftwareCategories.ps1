@@ -50,6 +50,11 @@ $software_categories = @{
             "info" = "https://github.com/ungoogled-software/ungoogled-chromium-windows"
             "winget_id" = "eloston.ungoogled-chromium"
         }
+        "Zen Browser" = @{
+            "names" = @("Zen Browser")
+            "info" = "https://zen-browser.app/"
+            "winget_id" = "Zen-Team.Zen-Browser"
+        }
     }
     "Communications" = @{
         "Discord" = @{
@@ -121,6 +126,11 @@ $software_categories = @{
             "info" = "https://prismlauncher.org/"
             "winget_id" = "PrismLauncher.PrismLauncher"
         }
+        "GDLauncher" = @{
+            "names" = @("GDLauncher")
+            "info" = "https://gdevs.io/"
+            "winget_id" = "GorillaDevs.GDLauncher"
+        }
         "Heroic Games" = @{
             "names" = @("Heroic Games")
             "info" = "https://heroicgameslauncher.com/"
@@ -137,6 +147,11 @@ $software_categories = @{
             "names" = @("Advanced Renamer")
             "info" = "https://www.advancedrenamer.com/"
             "winget_id" = "HulubuluSoftware.AdvancedRenamer"
+        }
+        "BCUninstaller" = @{
+            "names" = @("BCUninstaller")
+            "info" = "https://www.bcuninstaller.com/"
+            "winget_id" = "Klocman.BulkCrapUninstaller"
         }
         "7-Zip" = @{
             "names" = @("7-Zip")
@@ -198,6 +213,11 @@ $software_categories = @{
             "info" = "https://www.iobit.com/"
             "winget_id" = "IObit.DriverBooster"
         }
+        "LocalSend" = @{
+            "names" = @("LocalSend")
+            "info" = "https://localsend.org/"
+            "winget_id" = "LocalSend.LocalSend"
+        }
     }
     "Media Tools" = @{
         "Media Player Classic" = @{
@@ -229,6 +249,11 @@ $software_categories = @{
             "names" = @("OBS Studio")
             "info" = "https://obsproject.com/"
             "winget_id" = "OBSProject.OBSStudio"
+        }
+        "Camo Studio" = @{
+            "names" = @("Camo Studio")
+            "info" = "https://reincubate.com/pt/camo/"
+            "winget_id" = "ReincubateLtd.CamoStudio"
         }
         "VLC" = @{
             "names" = @("VLC")
