@@ -23,7 +23,7 @@ function DownloadAndRunVCRedist {
         Write-Host "Available assets:"
         $releaseData.assets | ForEach-Object { Write-Host $_.name }
 
-        $installerAsset = $releaseData.assets | Where-Object { $_.name -like "*VisualCppRedist_AIO*.exe" } | Select-Object -First 1
+        $installerAsset = $releaseData.assets | Where-Object { $_.name -like "*VisualCppRedist_AIO_x86_x64*.exe" } | Select-Object -First 1
 
         if (-not $installerAsset) {
             Write-Error "Installer not found."
