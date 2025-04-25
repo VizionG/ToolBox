@@ -24,9 +24,8 @@ function Set-ExecutionPolicyCustom {
 function Test-Winget {
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
     ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    throw "This script must be run as Administrator."
+        throw "This script must be run as Administrator."
     }
-
 
     try {
         $wingetVersion = winget --version
@@ -117,8 +116,17 @@ function Import-Scripts {
 }
 
 
+# Inicializa o DockPanel para a interface gráfica
+function Initialize-DockPanel {
+    $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
+    # Aqui você pode adicionar mais elementos ao $dockPanel, se necessário
+    return $dockPanel
+}
+
 # Mostra a interface gráfica principal
 function Show-ToolBoxUI {
+    # Inicializa o dockPanel antes de usá-lo
+    $dockPanel = Initialize-DockPanel
     if (-not $dockPanel) {
         Write-Error "UI não foi carregada corretamente. dockPanel não está definido."
         return
