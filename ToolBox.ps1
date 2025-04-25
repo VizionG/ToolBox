@@ -144,19 +144,10 @@ function Show-ToolBoxUI {
     $mainWindow.Background = New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
     $mainWindow.Content = $dockPanel
 
-    # Add simple content (TextBlock) to test layout
-    $textBlock = New-Object -TypeName System.Windows.Controls.TextBlock
-    $textBlock.Text = "Teste de Conteúdo"
-    $textBlock.HorizontalAlignment = 'Center'
-    $textBlock.VerticalAlignment = 'Center'
-    $dockPanel.Children.Add($textBlock)
-
     # Force layout update
     $mainWindow.Dispatcher.InvokeAsync({
         $mainWindow.UpdateLayout()
     })
-
-    $mainWindow.ShowDialog()
 }
 
 
@@ -168,3 +159,5 @@ Test-Winget
 $tempScriptPaths = DownloadScripts
 Import-Scripts -paths $tempScriptPaths
 Show-ToolBoxUI
+
+$mainWindow.ShowDialog()
