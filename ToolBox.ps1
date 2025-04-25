@@ -22,9 +22,11 @@ function Set-ExecutionPolicyCustom {
 
 # Garante que o winget está instalado
 function Test-Winget {
-    if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrator")) {
-        throw "Este script deve ser executado com privilégios de administrador."
+    if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
+    ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    throw "This script must be run as Administrator."
     }
+}
 
     try {
         $wingetVersion = winget --version
