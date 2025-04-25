@@ -161,5 +161,20 @@ $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBru
 # Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
 $mainWindow.Content = $dockPanel
 
+# Register the event handler for the Closing event
+$mainWindow.Add_Closing({
+    try {
+        $toolBoxFolder = "C:\Users\Admin\AppData\Local\Temp\ToolBox"
+        if (Test-Path $toolBoxFolder) {
+            Write-Host "Deleting temporary ToolBox folder: $toolBoxFolder"
+            Remove-Item -Path $toolBoxFolder -Recurse -Force
+            Write-Host "Temporary ToolBox folder deleted."
+        }
+    }
+    catch {
+        Write-Error "Failed to delete ToolBox folder. Error: $_"
+    }
+})
+
 # Show the main window
 $mainWindow.ShowDialog()
