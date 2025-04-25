@@ -72,13 +72,6 @@ foreach ($scriptPath in $tempScriptPaths) {
     }
 }
 
-# Relaunch as administrator if not already elevated
-If (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
-    exit
-}
-
-
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
 $mainWindow.Title = "Software Manager"
