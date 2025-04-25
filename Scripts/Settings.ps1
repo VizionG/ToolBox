@@ -210,4 +210,7 @@ $settingsPanel.Children.Add($installDotNet7Button)
 # Assign settings panel to the settings tab content
 $settingsTab.Content = $settingsPanel
 
+# Add the Settings tab to the TabControl
+$tabControl.Items.Add($settingsTab)
+
 
