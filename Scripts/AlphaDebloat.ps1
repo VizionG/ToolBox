@@ -84,7 +84,7 @@ function Remove-Bloatware {
     foreach ($app in $bloatwareApps) {
         try {
             # Uninstall the app
-            Get-AppxPackage -AllUsers $app | Remove-AppxPackage -AllUsers
+            Get-AppxPackage -AllUsers $app | Remove-AppxPackage
             Write-Host "$app has been removed."
         }
         catch {
