@@ -118,9 +118,8 @@ $settingsPanel.Children.Add($alphaDebloatButton)
 $alphaDebloatButton.Add_Click({
     try {
         # Command to run the Alpha Debloat script
-        $command = 'powershell.exe -ExecutionPolicy Bypass -File "C:\Users\Admin\AppData\Local\Temp\ToolBox\Scrips\AlphaDebloat.ps1"'
-        # Start the process to execute the command
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
+        $scriptPath = 'C:\Users\Admin\AppData\Local\Temp\ToolBox\Scripts\AlphaDebloat.ps1'
+        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" -Wait -NoNewWindow
         Write-Host "Alpha Debloat script executed."
     }
     catch {
