@@ -125,13 +125,14 @@ function Initialize-DockPanel {
 
 # Mostra a interface gráfica principal
 function Show-ToolBoxUI {
-    # Inicializa o dockPanel antes de usá-lo
+    # Initialize DockPanel
     $dockPanel = Initialize-DockPanel
     if (-not $dockPanel) {
         Write-Error "UI não foi carregada corretamente. dockPanel não está definido."
         return
     }
 
+    # Create a new window and set up the content
     $mainWindow = New-Object -TypeName System.Windows.Window
     $mainWindow.Title = "ToolBox"
     $mainWindow.Width = 1200
@@ -142,21 +143,21 @@ function Show-ToolBoxUI {
     $mainWindow.Background = New-Object System.Windows.Media.SolidColorBrush ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
     $mainWindow.Content = $dockPanel
 
-    $mainWindow.Add_Closing({
-        try {
-            $toolBoxFolder = Join-Path $env:TEMP "ToolBox"
-            if (Test-Path $toolBoxFolder) {
-                Write-Host "A apagar pasta temporária: $toolBoxFolder"
-                Remove-Item -Path $toolBoxFolder -Recurse -Force
-                Write-Host "Pasta temporária apagada."
-            }
-        } catch {
-            Write-Error "Erro ao apagar pasta ToolBox: $_"
-        }
+    # Add simple content (TextBlock) to test layout
+    $textBlock = New-Object -TypeName System.Windows.Controls.TextBlock
+    $textBlock.Text = "Teste de Conteúdo"
+    $textBlock.HorizontalAlignment = 'Center'
+    $textBlock.VerticalAlignment = 'Center'
+    $dockPanel.Children.Add($textBlock)
+
+    # Force layout update
+    $mainWindow.Dispatcher.InvokeAsync({
+        $mainWindow.UpdateLayout()
     })
 
     $mainWindow.ShowDialog()
 }
+
 
 
 # ==== EXECUÇÃO ====
