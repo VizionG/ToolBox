@@ -1,12 +1,13 @@
 # Parse the Style from XAML
-$tabControl = New-Object -TypeName System.Windows.Controls.TabControl
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-# Create a new TabItem for the Settings tab
-$settingsTab = New-Object -TypeName System.Windows.Controls.TabItem
-$settingsTab.Header = "Update"
-$settingsTab.Style = $tabStyle
+
+# Create the Main Tab
+$mainTab = New-Object -TypeName System.Windows.Controls.TabItem
+$mainTab.Header = "Update"
+$mainTab.Style = $tabItemStyle  # Apply the style
+$mainTab.Style = $tabStyle
 
 # Create a StackPanel for the Settings tab content
 $settingsPanel = New-Object -TypeName System.Windows.Controls.StackPanel
@@ -54,7 +55,6 @@ function DownloadAndRunVCRedist {
     }
 }
 
-
 # Add a simple text label to the Settings page
 $updateText = New-Object -TypeName System.Windows.Controls.TextBlock
 $updateText.Text = "Update:"
@@ -76,7 +76,6 @@ $vcredisButton.VerticalAlignment ='center'
 $vcredisButton.Add_Click({
     DownloadAndRunVCRedist
 })
-
 
 # Add the button to the settings panel
 $settingsPanel.Children.Add($vcredisButton)
@@ -209,8 +208,7 @@ $installDotNet7Button.Add_Click({
 # Add the install .NET 7 button to the settings panel
 $settingsPanel.Children.Add($installDotNet7Button)
 
-# Set the content of the Settings tab
+# Assign settings panel to the settings tab content
 $settingsTab.Content = $settingsPanel
 
-# Add the Settings tab to the TabControl
-$tabControl.Items.Add($settingsTab)
+

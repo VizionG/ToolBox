@@ -45,6 +45,18 @@ $mainTab.Header = "Software"
 $mainTab.Style = $tabItemStyle  # Apply the style
 $mainTab.Style = $tabStyle
 
+# Create the Settings Tab and its content
+$settingsTab = New-Object -TypeName System.Windows.Controls.TabItem
+$settingsTab.Header = "Settings"
+$settingsTab.Style = $tabStyle
+$settingsTab.Content = $settingsPanel  # Set content (your settingsPanel)
+
+# Add the Settings Tab to the TabControl
+$tabControl.Items.Add($settingsTab)
+
+# Set the TabControl as the window's content
+$window.Content = $tabControl
+
 # Create a Grid for the main layout
 $mainGrid = New-Object -TypeName System.Windows.Controls.Grid
 $mainGrid.HorizontalAlignment = 'Stretch'
