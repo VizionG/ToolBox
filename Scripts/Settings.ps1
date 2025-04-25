@@ -17,45 +17,43 @@ $settingsPanel.Background = New-Object -TypeName System.Windows.Media.SolidColor
 # Function to download and run the latest Visual C++ Redistributable installer
 function DownloadAndRunVCRedist {
     try {
-        # GitHub API URL to get the latest release information
         $apiUrl = "https://api.github.com/repos/abbodi1406/vcredist/releases/latest"
-
-        # Get the latest release data
         $releaseData = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{ "User-Agent" = "PowerShell" }
 
-        # Log the asset names for troubleshooting
         Write-Host "Available assets:"
         $releaseData.assets | ForEach-Object { Write-Host $_.name }
 
-        # Extract the download URL for the installer (e.g., vcredist_x64.exe)
-        $downloadUrl = $releaseData.assets | Where-Object { $_.name -like "*VisualCppRedist_AIO_x86_x64.exe"} | Select-Object -ExpandProperty browser_download_url
+        $installerAsset = $releaseData.assets | Where-Object { $_.name -like "*VisualCppRedist_AIO*.exe" } | Select-Object -First 1
 
-        if (-not $downloadUrl) {
-            Write-Error "Download URL not found for the latest release."
+        if (-not $installerAsset) {
+            Write-Error "Installer not found."
             return
         }
 
-        # Set the path for the downloaded file
-        $downloadPath = Join-Path -Path $env:TEMP -ChildPath "vcredist_x64.exe"
+        $downloadUrl = $installerAsset.browser_download_url
+        $downloadPath = Join-Path -Path $env:TEMP -ChildPath $installerAsset.name
 
-        # Download the installer
-        Write-Host "Downloading Visual C++ Redistributable from: $downloadUrl"
+        Write-Host "Downloading from: $downloadUrl"
         Invoke-WebRequest -Uri $downloadUrl -OutFile $downloadPath -ErrorAction Stop
 
-        Write-Host "Download completed. Running installer..."
-        
-        # Execute the installer
+        if (Test-Path $downloadPath) {
+            Write-Host "Installer downloaded to: $downloadPath"
+        } else {
+            Write-Error "Download failed."
+            return
+        }
+
+        Write-Host "Running installer..."
         Start-Process -FilePath $downloadPath -ArgumentList "/install /quiet /norestart" -Wait -NoNewWindow
 
-        Write-Host "Visual C++ Redistributable installed successfully."
-        
-        # Optionally, remove the installer after running
+        Write-Host "Installation complete."
         Remove-Item -Path $downloadPath -Force
     }
     catch {
-        Write-Error "Failed to download or install Visual C++ Redistributable. Error: $_"
+        Write-Error "Error: $_"
     }
 }
+
 
 # Add a simple text label to the Settings page
 $updateText = New-Object -TypeName System.Windows.Controls.TextBlock
