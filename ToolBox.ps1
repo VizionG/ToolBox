@@ -152,9 +152,6 @@ function Show-ToolBoxUI {
 }
 
 
-
-# ==== EXECUÇÃO ====
-
 Set-ExecutionPolicyCustom
 Test-Winget
 $paths = DownloadScripts
