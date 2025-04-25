@@ -40,36 +40,17 @@ function Uninstall-Software {
 function Install-Software {
     param (
         [string]$app_id,
-        [string]$app_name,
-        [string]$installer = "custom", # Default installer is custom for direct download
-        [string]$installerUrl = $null,
-        [string]$installerFileName = $null,
-        [string]$installerLocation = $null
+        [string]$app_name
     )
-    
     try {
         $statusBox.Text = "Installing: $app_name"
         Update-UI
-
-        if ($installerUrl -ne $null -and $installerFileName -ne $null -and $installerLocation -ne $null) {
-            Write-Output "Downloading $app_name from $installerUrl..."
-            Invoke-WebRequest -Uri $installerUrl -OutFile $installerLocation
-        }
-
-        if ($installerLocation -match "\.exe$") {
-            Write-Output "Installing $app_name silently..."
-            Start-Process -FilePath $installerLocation -ArgumentList "/S" -NoNewWindow -Wait
-        } elseif ($installer -eq "choco") {
-            Start-Process -NoNewWindow -FilePath "choco" -ArgumentList "install $app_id -y --no-progress --accept-license" -Wait
-        } else {
-            Start-Process -NoNewWindow -FilePath "winget" -ArgumentList "install --id $app_id --silent --accept-source-agreements --accept-package-agreements" -Wait
-        }
-
+        $command = "winget install --id ${app_id} --silent"
+        Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c $command" -Wait
         $statusBox.Text = "Successfully installed: $app_name"
         Update-UI
     } catch {
         $statusBox.Text = "Failed to install: $app_name"
-        Write-Output "Error: $_"
         Update-UI
     }
 }
