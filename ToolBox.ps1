@@ -148,6 +148,7 @@ function Show-ToolBoxUI {
     $mainWindow.Dispatcher.InvokeAsync({
         $mainWindow.UpdateLayout()
     })
+    $mainWindow.ShowDialog() | Out-Null
 }
 
 
@@ -156,8 +157,6 @@ function Show-ToolBoxUI {
 
 Set-ExecutionPolicyCustom
 Test-Winget
-$tempScriptPaths = DownloadScripts
-Import-Scripts -paths $tempScriptPaths
+$paths = DownloadScripts
+Import-Scripts -paths $paths
 Show-ToolBoxUI
-
-$mainWindow.ShowDialog()
