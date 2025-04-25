@@ -57,7 +57,7 @@ function Remove-Bloatware {
     "Microsoft.MicrosoftOfficeHub",
     "Microsoft.MicrosoftSolitaireCollection",
     "Microsoft.MixedReality.Portal",
-    "Microsoft.MSPaint", # if you don't use Paint
+    "Microsoft.MSPaint",
     "Microsoft.Office.OneNote",
     "Microsoft.OneConnect",
     "Microsoft.People",
@@ -81,16 +81,27 @@ function Remove-Bloatware {
 )
 
 
-    foreach ($app in $bloatwareApps) {
-        try {
-            # Uninstall the app
-            Get-AppxPackage -AllUsers $app | Remove-AppxPackage
-            Write-Host "$app has been removed."
+foreach ($app in $bloatwareApps) {
+    try {
+        # Remove for all current users
+        $packages = Get-AppxPackage -AllUsers | Where-Object { $_.Name -like "*$app*" }
+        foreach ($pkg in $packages) {
+            Remove-AppxPackage -Package $pkg.PackageFullName -ErrorAction SilentlyContinue
+            Write-Host "$($pkg.Name) removed for user: $($pkg.PackageUserInformation.UserSecurityId)"
         }
-        catch {
-            Write-Host "Failed to remove $app. Error: $_"
+
+        # Remove the provisioned version so it doesn’t reinstall for new users
+        $provisioned = Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like "*$app*" }
+        foreach ($prov in $provisioned) {
+            Remove-AppxProvisionedPackage -Online -PackageName $prov.PackageName -ErrorAction SilentlyContinue
+            Write-Host "$($prov.DisplayName) removed from provisioned packages."
         }
     }
+    catch {
+        Write-Warning "Failed to remove $app. Error: $_"
+    }
+}
+
 
     Write-Host "Bloatware removal complete."
 }
