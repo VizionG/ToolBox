@@ -112,3 +112,5 @@ $mainWindow.Add_Closed({
 
 # Show the main window
 $mainWindow.ShowDialog()
+
+Read-Host "Press Enter to close the window"
