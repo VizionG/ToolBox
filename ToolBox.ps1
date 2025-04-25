@@ -125,15 +125,17 @@ function Initialize-DockPanel {
 
 # Mostra a interface gráfica principal
 function Show-ToolBoxUI {
-    $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
-    $dockPanel.HorizontalAlignment = 'Stretch'
-    $dockPanel.VerticalAlignment = 'Stretch'
-    return $dockPanel
+    # Inicializa o dockPanel antes de usá-lo
+    $dockPanel = Initialize-DockPanel
+    if (-not $dockPanel) {
+        Write-Error "UI não foi carregada corretamente. dockPanel não está definido."
+        return
+    }
 
     $mainWindow = New-Object -TypeName System.Windows.Window
     $mainWindow.Title = "ToolBox"
-    $mainWindow.Width = 1100
-    $mainWindow.Height = 625
+    $mainWindow.Width = 1200
+    $mainWindow.Height = 800
     $mainWindow.ResizeMode = 'CanResize'
     $mainWindow.WindowStartupLocation = 'CenterScreen'
     $mainWindow.Icon = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.ico"))
@@ -155,6 +157,7 @@ function Show-ToolBoxUI {
 
     $mainWindow.ShowDialog()
 }
+
 
 # ==== EXECUÇÃO ====
 
