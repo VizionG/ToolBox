@@ -43,7 +43,7 @@ function Remove-Bloatware {
 
     # List of common bloatware apps to uninstall (add more apps to the list as needed)
     $BloatwareApps = @(
-    "Microsoft.Microsoft3DViewer",
+    "Microsoft.3DViewer",
     "Microsoft.BingNews",
     "Microsoft.BingWeather",
     "Microsoft.Microsoft3DViewer",
@@ -77,7 +77,8 @@ function Remove-Bloatware {
     "Microsoft.XboxSpeechToTextOverlay",
     "Microsoft.YourPhone",
     "Microsoft.ZuneMusic",
-    "Microsoft.ZuneVideo"
+    "Microsoft.ZuneVideo",
+    "Microsoft.Copilot"
 )
 
 
@@ -105,6 +106,32 @@ foreach ($app in $bloatwareApps) {
 
     Write-Host "Bloatware removal complete."
 }
+
+function Remove-Cortana {
+    Write-Host "Attempting to remove Cortana..." -ForegroundColor Yellow
+
+    try {
+        # Remove Cortana for all users
+        $cortanaPackages = Get-AppxPackage -AllUsers | Where-Object { $_.Name -like "*Cortana*" }
+        foreach ($pkg in $cortanaPackages) {
+            Write-Host "Removing Cortana for user: $($pkg.PackageUserInformation.UserSecurityId)"
+            Remove-AppxPackage -Package $pkg.PackageFullName -ErrorAction SilentlyContinue
+        }
+
+        # Remove Cortana from provisioned packages (so it doesn't reinstall)
+        $provisioned = Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like "*Cortana*" }
+        foreach ($prov in $provisioned) {
+            Write-Host "Removing provisioned Cortana package: $($prov.DisplayName)"
+            Remove-AppxProvisionedPackage -Online -PackageName $prov.PackageName -ErrorAction SilentlyContinue
+        }
+
+        Write-Host "Cortana removal attempt completed." -ForegroundColor Green
+    }
+    catch {
+        Write-Warning "Failed to remove Cortana. Error: $_"
+    }
+}
+
 
 function Remove-MailAndTaskView {
     # Unpin Mail app from Start Menu (if pinned)
@@ -165,6 +192,7 @@ Remove-3DFolder
 Set-DarkTheme
 Apply-UltimatePerformance
 Remove-Bloatware
+Remove-Cortana
 Remove-MailAndTaskView
 Unpin-AllStartMenuItems
 
