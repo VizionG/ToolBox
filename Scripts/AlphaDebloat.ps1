@@ -19,24 +19,6 @@ function Set-DarkTheme {
     Write-Host "Dark theme applied."
 }
 
-# Function to apply Ultimate Performance power plan
-function Apply-UltimatePerformance {
-    Write-Host "Applying Ultimate Performance power plan..."
-    # Check if Ultimate Performance is available
-    $powerPlan = "Ultimate Performance"
-    $powerPlans = powercfg /L
-
-    if ($powerPlans -contains $powerPlan) {
-        powercfg /S $powerPlan
-        Write-Host "Ultimate Performance power plan applied."
-    } else {
-        Write-Host "Ultimate Performance power plan is not available. Enabling it..."
-        powercfg /duplicatescheme a1841308-3541-4fab-bc81-7e2b4c6fbbf4
-        powercfg /S a1841308-3541-4fab-bc81-7e2b4c6fbbf4
-        Write-Host "Ultimate Performance power plan applied."
-    }
-}
-
 # Function to remove bloatware
 function Remove-Bloatware {
     Write-Host "Removing bloatware..."
@@ -156,44 +138,55 @@ function Remove-MailAndTaskView {
     Write-Host "Task View removed from Taskbar."
 }
 
-function Unpin-AllStartMenuItems {
-    # Load the Shell.Application COM object
-    $shell = New-Object -ComObject Shell.Application
+function Clear-StartMenuPins {
+    param (
+        [string]$LayoutPath = "$env:TEMP\BlankStartLayout.xml"
+    )
 
-    # Get the Start Menu folder
-    $startMenu = $shell.Namespace('shell:::{5D6E6A7A-6B07-4C87-A0BF-B6B657C6E0D0}')
+    Write-Host "Creating blank Start Menu layout XML..."
+    @"
+<LayoutModificationTemplate xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification" Version="1">
+  <LayoutOptions StartTileGroupCellWidth="6" />
+  <DefaultLayoutOverride>
+    <StartLayoutCollection>
+      <defaultlayout:StartLayout GroupCellWidth="6" xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" />
+    </StartLayoutCollection>
+  </DefaultLayoutOverride>
+</LayoutModificationTemplate>
+"@ | Set-Content -Path $LayoutPath -Encoding UTF8
 
-    # Check if the Start Menu folder was retrieved successfully
-    if ($startMenu -eq $null) {
-        Write-Error "Failed to access Start Menu folder."
-        return
+    Write-Host "Importing layout for new users..."
+    try {
+        Import-StartLayout -LayoutPath $LayoutPath -MountPath $env:SystemDrive\
+        Write-Host "Blank layout applied for new users."
+    }
+    catch {
+        Write-Warning "Failed to import layout for new users: $_"
     }
 
-    # Loop through all items in the Start Menu
-    foreach ($item in $startMenu.Items()) {
-        Write-Host "Item found: $($item.Name)"
-        try {
-            # Unpin each item
-            $item.InvokeVerb('unpin from start')
-            Write-Host "Unpinned: $($item.Name)"
-        }
-        catch {
-            Write-Warning "Failed to unpin $($item.Name): $_"
-        }
-    }
+    Write-Host "Resetting Start Menu for current user..."
+    try {
+        Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
 
-    # Clean up the COM object
-    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($shell) | Out-Null
+        Remove-Item "$env:LocalAppData\Microsoft\Windows\Shell\LayoutModification.xml" -ErrorAction SilentlyContinue
+        Remove-Item "$env:LocalAppData\Microsoft\Windows\Shell\DefaultLayouts.xml" -ErrorAction SilentlyContinue
+        Remove-Item "$env:LocalAppData\Microsoft\Windows\Shell\CloudStore" -Recurse -Force -ErrorAction SilentlyContinue
+
+        Write-Host "Start Menu layout reset. Please sign out and sign back in to apply changes."
+    }
+    catch {
+        Write-Warning "Error resetting Start Menu: $_"
+    }
 }
+
 
 
 # Execute all functions
 Remove-3DFolder
 Set-DarkTheme
-Apply-UltimatePerformance
 Remove-Bloatware
 Remove-Cortana
 Remove-MailAndTaskView
-Unpin-AllStartMenuItems
+Clear-StartMenuPins
 
 Write-Host "Script execution completed successfully."
