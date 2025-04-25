@@ -1,4 +1,5 @@
-# Adiciona tipos WPF apenas se ainda não estiverem carregados
+Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
+
 if (-not ("System.Windows.Window" -as [type])) {
     Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 }
