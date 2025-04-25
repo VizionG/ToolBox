@@ -62,6 +62,13 @@ try {
         return $tempScriptPaths
     }
 
+    # Function to create a DockPanel (Placeholder)
+    function Get-MainDockPanel {
+        $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
+        # You can add more controls or layout settings to $dockPanel here if needed.
+        return $dockPanel
+    }
+
     # Download all scripts
     $tempScriptPaths = DownloadScripts
 

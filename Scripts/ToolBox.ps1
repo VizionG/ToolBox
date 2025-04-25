@@ -62,6 +62,13 @@ try {
         return $tempScriptPaths
     }
 
+    # Function to create a DockPanel (Placeholder)
+    function Get-MainDockPanel {
+        $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
+        # You can add more controls or layout settings to $dockPanel here if needed.
+        return $dockPanel
+    }
+
     # Download all scripts
     $tempScriptPaths = DownloadScripts
 
@@ -82,6 +89,9 @@ try {
         exit
     }
 
+    # Ensure dockPanel is defined before using it
+    $dockPanel = Get-MainDockPanel
+
     # Create the main window
     $mainWindow = New-Object -TypeName System.Windows.Window
     $mainWindow.Title = "Software Manager"
@@ -94,7 +104,11 @@ try {
     $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
     # Set content from loaded script (UI.ps1 should define $dockPanel)
-    $mainWindow.Content = $dockPanel
+    if (-not $dockPanel) {
+        Write-Host "dockPanel is null or not defined!"
+    } else {
+        $mainWindow.Content = $dockPanel
+    }
 
     $mainWindow.Add_Closed({
         if (Test-Path $baseFolder) {
@@ -108,8 +122,12 @@ try {
         }
     })
 
-    # Show the main window
-    $mainWindow.ShowDialog()
+    try {
+        $mainWindow.ShowDialog()
+    } catch {
+        Write-Error "Failed to show main window: $_"
+    }
+
 }
 catch {
     Write-Error "An unexpected error occurred: $_"
