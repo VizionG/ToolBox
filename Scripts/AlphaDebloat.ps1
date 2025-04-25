@@ -43,7 +43,7 @@ function Remove-Bloatware {
 
     # List of common bloatware apps to uninstall (add more apps to the list as needed)
     $BloatwareApps = @(
-    "Microsoft.3DBuilder",
+    "Microsoft.Microsoft3DViewer",
     "Microsoft.BingNews",
     "Microsoft.BingWeather",
     "Microsoft.Microsoft3DViewer",
@@ -84,7 +84,7 @@ function Remove-Bloatware {
     foreach ($app in $bloatwareApps) {
         try {
             # Uninstall the app
-            Get-AppxPackage -AllUsers $app | Remove-AppxPackage -Force
+            Get-AppxPackage -AllUsers $app | Remove-AppxPackage -AllUsers
             Write-Host "$app has been removed."
         }
         catch {
@@ -97,7 +97,7 @@ function Remove-Bloatware {
 
 function Remove-MailAndTaskView {
     # Unpin Mail app from Start Menu (if pinned)
-    $MailApp = Get-AppxPackage -Name "microsoft.Outlook" 
+    $MailApp = Get-AppxPackage -Name "Microsoft.OutlookForWindows" 
     if ($MailApp) {
         $MailApp | Remove-AppxPackage
         Write-Host "Mail app unpinned from Start Menu."
