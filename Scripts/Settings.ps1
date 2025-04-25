@@ -1,5 +1,5 @@
 # Parse the Style from XAML
-# Removed unused variable assignment for $checkBoxStyle
+$tabControl = New-Object -TypeName System.Windows.Controls.TabControl
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
@@ -73,13 +73,10 @@ $vcredisButton.Width = 200             # Set a fixed width for the button
 $vcredisButton.HorizontalAlignment ='Left'
 $vcredisButton.VerticalAlignment ='center'
 
-if ($null -ne $vcredisButton) {
-    $vcredisButton.Add_Click({
-        DownloadAndRunVCRedist
-    })
-} else {
-    Write-Error "Button not initialized."
-}
+$vcredisButton.Add_Click({
+    DownloadAndRunVCRedist
+})
+
 
 # Add the button to the settings panel
 $settingsPanel.Children.Add($vcredisButton)
