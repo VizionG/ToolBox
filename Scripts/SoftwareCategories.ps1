@@ -45,6 +45,11 @@ $software_categories = @{
             "info" = "https://www.opera.com/gx"
             "winget_id" = "Opera.OperaGX"
         }
+        "Ungoogled Chromium" = @{
+            "names" = @("Un-Chromium")
+            "info" = "https://github.com/ungoogled-software/ungoogled-chromium-windows"
+            "winget_id" = "eloston.ungoogled-chromium"
+        }
     }
     "Communications" = @{
         "Discord" = @{
@@ -244,6 +249,11 @@ $software_categories = @{
             "names" = @("AIMP")
             "info" = "https://www.aimp.ru/"
             "winget_id" = "AIMP.AIMP"
+        }
+        "Youtube Music Desktop" = @{
+            "names" = @("Youtube Music Desktop")
+            "info" = "https://ytmdesktop.app/"
+            "winget_id" = "Ytmdesktop.Ytmdesktop"
         }
     }
     "Documents" = @{
