@@ -78,10 +78,9 @@ If (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit
 }
 
-
 # Create the main window
 $mainWindow = New-Object -TypeName System.Windows.Window
-$mainWindow.Title = "Software Manager"
+$mainWindow.Title = "ToolBox"
 $mainWindow.Width = 1100  
 $mainWindow.Height = 625  
 $mainWindow.ResizeMode = 'CanResize'
@@ -90,8 +89,33 @@ $mainWindow.WindowStartupLocation = 'CenterScreen'
 # Set the background color of the window
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
+# Fallback if $dockPanel is not defined
+if (-not $dockPanel) {
+    Write-Warning "`$dockPanel is null. Creating a default DockPanel."
+    $dockPanel = New-Object System.Windows.Controls.DockPanel
+    $textBlock = New-Object System.Windows.Controls.TextBlock
+    $textBlock.Text = "Failed to load UI components."
+    $textBlock.Foreground = [System.Windows.Media.Brushes]::White
+    $textBlock.Margin = '20'
+    $dockPanel.Children.Add($textBlock)
+}
+
 # Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
 $mainWindow.Content = $dockPanel
+
+# Add Closed event to delete the Scripts folder
+$mainWindow.Add_Closed({
+    $scriptsFolder = Join-Path -Path $PSScriptRoot -ChildPath "Scripts"
+    if (Test-Path $scriptsFolder) {
+        try {
+            Remove-Item -Path $scriptsFolder -Recurse -Force
+            Write-Host "Temporary scripts folder deleted: $scriptsFolder"
+        }
+        catch {
+            Write-Warning "Failed to delete temporary scripts folder: $_"
+        }
+    }
+})
 
 # Show the main window
 $mainWindow.ShowDialog()
