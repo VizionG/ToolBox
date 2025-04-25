@@ -1,13 +1,12 @@
 # Parse the Style from XAML
+$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-
-# Create the Main Tab
-$mainTab = New-Object -TypeName System.Windows.Controls.TabItem
-$mainTab.Header = "Update"
-$mainTab.Style = $tabItemStyle  # Apply the style
-$mainTab.Style = $tabStyle
+# Create a new TabItem for the Settings tab
+$settingsTab = New-Object -TypeName System.Windows.Controls.TabItem
+$settingsTab.Header = "Update"
+$settingsTab.Style = $tabStyle
 
 # Create a StackPanel for the Settings tab content
 $settingsPanel = New-Object -TypeName System.Windows.Controls.StackPanel

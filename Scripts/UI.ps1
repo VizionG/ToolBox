@@ -7,7 +7,7 @@ $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
 # Create a DockPanel as the main layout container
-$dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
+$Global:dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
 $dockPanel.HorizontalAlignment = 'Stretch'
 $dockPanel.VerticalAlignment = 'Stretch'
 $dockPanel.LastChildFill = $true  # Ensure the last child fills the remaining space
@@ -44,18 +44,6 @@ $mainTab = New-Object -TypeName System.Windows.Controls.TabItem
 $mainTab.Header = "Software"
 $mainTab.Style = $tabItemStyle  # Apply the style
 $mainTab.Style = $tabStyle
-
-# Create the Settings Tab and its content
-$settingsTab = New-Object -TypeName System.Windows.Controls.TabItem
-$settingsTab.Header = "Settings"
-$settingsTab.Style = $tabStyle
-$settingsTab.Content = $settingsPanel  # Set content (your settingsPanel)
-
-# Add the Settings Tab to the TabControl
-$tabControl.Items.Add($settingsTab)
-
-# Set the TabControl as the window's content
-$window.Content = $tabControl
 
 # Create a Grid for the main layout
 $mainGrid = New-Object -TypeName System.Windows.Controls.Grid
