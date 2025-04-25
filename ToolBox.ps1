@@ -123,6 +123,14 @@ function Initialize-DockPanel {
     return $dockPanel
 }
 
+function Initialize-DockPanel {
+    $dockPanel = New-Object -TypeName System.Windows.Controls.DockPanel
+    $dockPanel.HorizontalAlignment = 'Stretch'
+    $dockPanel.VerticalAlignment = 'Stretch'
+    return $dockPanel
+}
+
+
 # Mostra a interface gráfica principal
 function Show-ToolBoxUI {
     # Inicializa o dockPanel antes de usá-lo
