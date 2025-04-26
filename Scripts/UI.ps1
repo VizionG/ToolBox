@@ -176,11 +176,6 @@ $categoriesGrid.Children.Add($checkAllPanel)
 # Add categoriesGrid to the mainGrid (left side)
 $mainGrid.Children.Add($categoriesGrid)
 [System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
-
-# Create Sidebar (can be done using your existing function)
-$newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
-
-# Add sidebar to the main grid (right side)
 $mainGrid.Children.Add($newSidebar)
 [System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
 

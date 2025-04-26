@@ -161,8 +161,8 @@ $mainWindow.Icon = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]:
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
 $dockPanel = New-Object System.Windows.Controls.DockPanel
-
-# Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
+$tabControl = New-Object System.Windows.Controls.TabControl
+$dockPanel.Children.Add($tabControl)
 $mainWindow.Content = $dockPanel
 
 # Register the event handler for the Closing event
