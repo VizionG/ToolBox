@@ -103,34 +103,6 @@ $buttonPanel.HorizontalAlignment = 'Right'
 $buttonPanel.VerticalAlignment = 'Center'
 $buttonPanel.Margin = '5, 60, 26, 5'
 
-$checkAppsButton = New-Object -TypeName System.Windows.Controls.Button
-$checkAppsButton.Content = "Check Installed"
-$checkAppsButton.Margin = '5'
-$checkAppsButton.Height = 30
-$checkAppsButton.Style = $buttonStyle
-
-$uninstallButton = New-Object -TypeName System.Windows.Controls.Button
-$uninstallButton.Content = "Uninstall"
-$uninstallButton.Margin = '5'
-$uninstallButton.Height = 30
-$uninstallButton.Style = $buttonStyle
-
-$installButton = New-Object -TypeName System.Windows.Controls.Button
-$installButton.Content = "Install"
-$installButton.Margin = '5'
-$installButton.Height = 30
-$installButton.Style = $buttonStyle
-
-$recommendedButton = New-Object -TypeName System.Windows.Controls.Button
-$recommendedButton.Content = "Recommended"
-$recommendedButton.Margin = '5'
-$recommendedButton.Height = 30
-$recommendedButton.Style = $buttonStyle
-
-$buttonPanel.Children.Add($recommendedButton)
-$buttonPanel.Children.Add($checkAppsButton)
-$buttonPanel.Children.Add($uninstallButton)
-$buttonPanel.Children.Add($installButton)
 
 [System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
 $sidebarGrid.Children.Add($buttonPanel)
