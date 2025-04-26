@@ -15,6 +15,27 @@ function Remove-3DFolder {
     }
 }
 
+function Set-FileExplorerToThisPC {
+    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $registryValueName = "LaunchFolderValue"
+    
+    # Set the value to '1' for opening in 'This PC'
+    Set-ItemProperty -Path $registryPath -Name $registryValueName -Value 1
+    
+    Write-Host "File Explorer will now open in 'This PC' by default."
+}
+
+function Disable-QuickAccess {
+    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+
+    # Disable Recently Used Files in Quick Access
+    Set-ItemProperty -Path $registryPath -Name "ShowRecent" -Value 0
+    Write-Host "Recently used files will not be shown in Quick Access."
+
+    # Disable Frequently Used Folders in Quick Access
+    Set-ItemProperty -Path $registryPath -Name "ShowFrequent" -Value 0
+    Write-Host "Frequently used folders will not be shown in Quick Access."
+}
 
 # Function to set Dark theme
 function Set-DarkTheme {
@@ -152,6 +173,8 @@ function Remove-MailAndTaskView {
 
 # Execute all functions
 Remove-3DFolder
+Set-FileExplorerToThisPC
+Disable-QuickAccess
 Set-DarkTheme
 Remove-Bloatware
 Remove-Cortana
