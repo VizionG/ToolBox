@@ -21,13 +21,13 @@ function Install-SpotX {
 
 
 # Add a simple text label to the Settings page
-$updateText = New-Object -TypeName System.Windows.Controls.TextBlock
-$updateText.Text = "Update:"
-$updateText.FontSize = 16
-$updateText.Margin = '5'
-$updateText.Foreground = [System.Windows.Media.Brushes]::White
+$inputText = New-Object -TypeName System.Windows.Controls.TextBlock
+$inputText.Text = "Input:"
+$inputText.FontSize = 16
+$inputText.Margin = '5'
+$inputText.Foreground = [System.Windows.Media.Brushes]::White
 
-$inputPanel.Children.Add($updateText)
+$inputPanel.Children.Add($inputText)
 
 # Ensure this block is before the Add_Click method
 $spotxButton = New-Object -TypeName System.Windows.Controls.Button
