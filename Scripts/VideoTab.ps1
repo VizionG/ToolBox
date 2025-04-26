@@ -1,49 +1,93 @@
 # Create a new TabItem for the video
 $videoTab = New-Object System.Windows.Controls.TabItem
-$videoTab.Header = "Video"
+$videoTab.Header = "Live TV"
 $videoTab.Style = $tabItemStyle
 
-# Create a grid for layout (optional)
+# Create a grid with two columns: left for player, right for channel list
 $videoGrid = New-Object System.Windows.Controls.Grid
 $videoGrid.HorizontalAlignment = 'Stretch'
 $videoGrid.VerticalAlignment = 'Stretch'
+$videoGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='*'}))    # Player column
+$videoGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='220'}))  # Sidebar column
 
-# Create the MediaElement
+# --- Left: Video Player ---
 $mediaElement = New-Object System.Windows.Controls.MediaElement
-$mediaElement.Width = 800
-$mediaElement.Height = 450
+$mediaElement.Width = 640
+$mediaElement.Height = 360
 $mediaElement.LoadedBehavior = 'Manual'
 $mediaElement.UnloadedBehavior = 'Stop'
-$mediaElement.Source = [Uri]::new("https://www.w3schools.com/html/mov_bbb.mp4") # Replace with your video URL or local path
+$mediaElement.Margin = 10
+# Default to first channel (will be set below)
 
-# Optionally, add Play button
+# --- Right: Channel Sidebar ---
+$sidebarPanel = New-Object System.Windows.Controls.StackPanel
+$sidebarPanel.Margin = 10
+$sidebarPanel.Background = [System.Windows.Media.Brushes]::LightGray
+
+$sidebarLabel = New-Object System.Windows.Controls.TextBlock
+$sidebarLabel.Text = "Live Channels"
+$sidebarLabel.FontWeight = 'Bold'
+$sidebarLabel.FontSize = 16
+$sidebarLabel.Margin = '0,0,0,10'
+$sidebarPanel.Children.Add($sidebarLabel)
+
+# Define your channels (Name and Stream URL)
+$channels = @(
+    @{ Name = "Big Buck Bunny"; Url = "https://www.w3schools.com/html/mov_bbb.mp4" }
+    @{ Name = "NASA TV"; Url = "https://www.nasa.gov/multimedia/nasatv/NTV-Public-IPS.m3u8" }
+    @{ Name = "Sample Channel"; Url = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" }
+)
+
+# Add a button for each channel
+foreach ($channel in $channels) {
+    $btn = New-Object System.Windows.Controls.Button
+    $btn.Content = $channel.Name
+    $btn.Margin = '0,0,0,5'
+    $btn.Width = 180
+    $btn.Style = $buttonStyle
+    $btn.Add_Click({
+        $mediaElement.Source = [Uri]::new($channel.Url)
+        $mediaElement.Stop()
+        $mediaElement.Play()
+    })
+    $sidebarPanel.Children.Add($btn)
+}
+
+# Set the default channel
+$mediaElement.Source = [Uri]::new($channels[0].Url)
+
+# Add Play/Pause controls under the player
+$controlsPanel = New-Object System.Windows.Controls.StackPanel
+$controlsPanel.Orientation = 'Horizontal'
+$controlsPanel.HorizontalAlignment = 'Left'
+$controlsPanel.Margin = '10,0,0,0'
+
 $playButton = New-Object System.Windows.Controls.Button
 $playButton.Content = "Play"
-$playButton.Margin = 10
+$playButton.Margin = 5
 $playButton.Width = 80
 $playButton.Add_Click({ $mediaElement.Play() })
 
-# Optionally, add Pause button
 $pauseButton = New-Object System.Windows.Controls.Button
 $pauseButton.Content = "Pause"
-$pauseButton.Margin = 10
+$pauseButton.Margin = 5
 $pauseButton.Width = 80
 $pauseButton.Add_Click({ $mediaElement.Pause() })
 
-# Layout: StackPanel for controls
-$controlsPanel = New-Object System.Windows.Controls.StackPanel
-$controlsPanel.Orientation = 'Horizontal'
-$controlsPanel.HorizontalAlignment = 'Center'
 $controlsPanel.Children.Add($playButton)
 $controlsPanel.Children.Add($pauseButton)
 
-# Add MediaElement and controls to grid
-$videoGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition -Property @{Height="*"}))
-$videoGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition -Property @{Height="Auto"}))
-$videoGrid.Children.Add($mediaElement)
-[System.Windows.Controls.Grid]::SetRow($mediaElement, 0)
-$videoGrid.Children.Add($controlsPanel)
-[System.Windows.Controls.Grid]::SetRow($controlsPanel, 1)
+# Layout: Player and controls in a vertical stack
+$playerPanel = New-Object System.Windows.Controls.StackPanel
+$playerPanel.Orientation = 'Vertical'
+$playerPanel.Children.Add($mediaElement)
+$playerPanel.Children.Add($controlsPanel)
+
+$videoGrid.Children.Add($playerPanel)
+[System.Windows.Controls.Grid]::SetColumn($playerPanel, 0)
+
+$videoGrid.Children.Add($sidebarPanel)
+[System.Windows.Controls.Grid]::SetColumn($sidebarPanel, 1)
 
 # Set grid as tab content
 $videoTab.Content = $videoGrid
