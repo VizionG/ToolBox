@@ -1,30 +1,147 @@
 # Parse the Style from XAML
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
-$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
+
+# Create a new TabItem for the Settings tab
+$inputTab = New-Object -TypeName System.Windows.Controls.TabItem
+$inputTab.Header = "Utilities"
+$inputTab.Style = $tabStyle
+
+# Create a StackPanel for the Settings tab content
+$inputPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+$inputPanel.Orientation = 'Vertical'
+$inputPanel.Margin = '5'
+$inputPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
+
+# Add a simple text label to the Settings page
+$updateText = New-Object -TypeName System.Windows.Controls.TextBlock
+$updateText.Text = "Update:"
+$updateText.FontSize = 16
+$updateText.Margin = '5'
+$updateText.Foreground = [System.Windows.Media.Brushes]::White
 
 # Create a Grid to organize the InputPanel and SidebarGrid
 $utilitiesGrid = New-Object -TypeName System.Windows.Controls.Grid
 $utilitiesGrid.HorizontalAlignment = 'Stretch'
 $utilitiesGrid.VerticalAlignment = 'Stretch'
 
-# ... build your UI and add children to $utilitiesGrid ...
+# Define two columns
+$col1 = New-Object System.Windows.Controls.ColumnDefinition
+$col1.Width = '1*'   # Left side (for input/buttons)
+$col2 = New-Object System.Windows.Controls.ColumnDefinition
+$col2.Width = 'Auto' # Right side (for sidebar)
+$utilitiesGrid.ColumnDefinitions.Add($col1)
+$utilitiesGrid.ColumnDefinitions.Add($col2)
 
-# Now create the TabItem and assign the grid as content
-$inputTab = New-Object System.Windows.Controls.TabItem
-$inputTab.Header = "Utilities"
-$inputTab.Style = $tabStyle
+# Create and configure the sidebar section (on the right)
+$sidebarGrid = New-Object -TypeName System.Windows.Controls.Grid
+$sidebarGrid.HorizontalAlignment = 'Stretch'
+$sidebarGrid.VerticalAlignment = 'Stretch'
+
+# Define rows for the sidebar (status and buttons)
+$sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Status row
+$sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Buttons row
+
+# Create a small StackPanel for the logos
+$logoPanel = New-Object System.Windows.Controls.StackPanel
+$logoPanel.Orientation = 'Vertical'
+$logoPanel.HorizontalAlignment = 'Center'
+$logoPanel.VerticalAlignment = 'Top'
+$logoPanel.Margin = '5'
+
+# Create a new vizionLogo Image
+$vizionLogo1 = New-Object -TypeName System.Windows.Controls.Image
+$vizionLogo1.HorizontalAlignment = 'Center'
+$vizionLogo1.VerticalAlignment = 'Top'
+$vizionLogo1.Margin = '5'
+$vizionLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.png"))
+
+# Create Windows logo
+$windowsLogo1 = New-Object System.Windows.Controls.Image
+$windowsLogo1.HorizontalAlignment = 'Center'
+$windowsLogo1.VerticalAlignment = 'Top'
+$windowsLogo1.Margin = '5, 10, 5, 5'
+
+# Add logos into the panel
+$logoPanel.Children.Add($vizionLogo1)
+$logoPanel.Children.Add($windowsLogo1)
+
+# Finally add the logo panel into the sidebar grid
+$sidebarGrid.Children.Insert(0, $logoPanel)
+
+# Now set Windows logo based on version
+$windowsVersion = Get-WindowsVersion
+
+if ($windowsVersion -like "*11*") {
+    $windowsLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_11_logo.png"))
+} elseif ($windowsVersion -like "*10*") {
+    $windowsLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"))
+}
+
+# Create and configure the status TextBox (for the sidebar)
+$statusBox = New-Object -TypeName System.Windows.Controls.TextBox
+$statusBox.Height = 60
+$statusBox.Width = 170
+$statusBox.Margin = '5, 190, 5, 5'
+$statusBox.IsReadOnly = $true
+$statusBox.Text = "Waiting for actions..."
+$statusBox.FontWeight = '600'
+$statusBox.TextAlignment = 'Center'
+$statusBox.Foreground = [System.Windows.Media.Brushes]::White
+$statusBox.Background = [System.Windows.Media.Brushes]::Black
+$statusBox.Padding = '10,10,10,10'
+$statusBox.BorderThickness = '2'
+$statusBox.TextWrapping = 'Wrap'  # Allow text to wrap when it hits the border
+$statusBox.AcceptsReturn = $true  # Enable multiline text input/display
+[System.Windows.Controls.Grid]::SetRow($statusBox, 0)  # Place in the first row
+$sidebarGrid.Children.Add($statusBox)
+
+# Set the status text based on Windows version
+$statusBox.Text = "Detect: $windowsVersion"
+
+# Create a StackPanel for buttons (second row)
+$buttonPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+$buttonPanel.Orientation = 'Vertical'
+$buttonPanel.HorizontalAlignment = 'Right'
+$buttonPanel.VerticalAlignment = 'Center'
+$buttonPanel.Margin = '5, 60, 26, 5'
+
+# Add button panel to sidebar grid (second row)
+[System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
+$sidebarGrid.Children.Add($buttonPanel)
+
+# Add sidebar to utilities grid (column 1)
+$utilitiesGrid.Children.Add($sidebarGrid)
+[System.Windows.Controls.Grid]::SetColumn($sidebarGrid, 1)
+
+# Create and configure the SpotX Button
+$spotxButton = New-Object -TypeName System.Windows.Controls.Button
+$spotxButton.Content = "SpotX"
+$spotxButton.Style = $buttonStyle
+$spotxButton.Margin = '5'
+$spotxButton.Width = 200
+$spotxButton.HorizontalAlignment = 'Left'
+$spotxButton.VerticalAlignment = 'Center'
+
+# Add Click event for SpotX button
+$spotxButton.Add_Click({
+    Install-SpotX
+})
+
+# Add SpotX button to the input panel (left side)
+$inputPanel.Children.Add($spotxButton)
+
+# Add the input panel to the utilities grid (column 0)
+$utilitiesGrid.Children.Add($inputPanel)
+[System.Windows.Controls.Grid]::SetColumn($inputPanel, 0)
+
+# Assign the utilities grid as the content of the input tab
 $inputTab.Content = $utilitiesGrid
 
+# Add the Settings tab to the TabControl
 $tabControl.Items.Add($inputTab)
 
 # Install-SpotX function
 function Install-SpotX {
     Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
-}
-
-# InstallApp function (just a placeholder)
-function InstallApp {
-    Write-Host "App installation started..."
-    # Add your installation logic here
 }
