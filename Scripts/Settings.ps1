@@ -170,6 +170,8 @@ $settingsGrid.Children.Add($settingsPanel)
 $sidebarGrid = New-Object -TypeName System.Windows.Controls.Grid
 $sidebarGrid.HorizontalAlignment = 'Stretch'
 $sidebarGrid.VerticalAlignment = 'Stretch'
+$sidebarGrid.MinWidth = 220
+$sidebarGrid.MaxWidth = 400
 $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))
 $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))
 
