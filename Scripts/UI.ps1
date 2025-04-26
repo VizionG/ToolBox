@@ -140,7 +140,6 @@ foreach ($category in $sorted_software_categories) {
 
     # Add the trigger to the style
     $checkBoxStyle.Triggers.Add($checkBoxTrigger)
-    $checkBoxStyle.Triggers.Add($checkBoxTrigger)
 
     # Add checkboxes for each software in the category
     foreach ($item in $category.Items) {
