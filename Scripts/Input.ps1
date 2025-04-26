@@ -1,6 +1,7 @@
 # Parse the Style from XAML
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
+$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 
 # Create a Grid to organize the InputPanel and SidebarGrid
 $utilitiesGrid = New-Object -TypeName System.Windows.Controls.Grid

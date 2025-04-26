@@ -1,4 +1,12 @@
-. "$PSScriptRoot\Functions.ps1"
+$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
+# Style for CheckBox with triggers
+$checkBoxStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.CheckBox])
+$checkBoxStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.CheckBox]::BackgroundProperty, [System.Windows.Media.Brushes]::Transparent)))
+$checkBoxTrigger = New-Object System.Windows.Trigger
+$checkBoxTrigger.Property = [System.Windows.Controls.CheckBox]::IsCheckedProperty
+$checkBoxTrigger.Value = $true
+$checkBoxTrigger.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.CheckBox]::BackgroundProperty, $highlightBrush)))
+$checkBoxStyle.Triggers.Add($checkBoxTrigger)
 
 # Create Grid for the main layout (Categories on the left, Sidebar on the right)
 $mainGrid = New-Object System.Windows.Controls.Grid
@@ -65,15 +73,6 @@ foreach ($category in $sorted_software_categories) {
     $checkboxStackPanel = New-Object System.Windows.Controls.StackPanel
     $checkboxStackPanel.Orientation = 'Vertical'
     $checkboxStackPanel.Margin = '5 , 10, 5, 5'
-
-    # Style for CheckBox with triggers
-    $checkBoxStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.CheckBox])
-    $checkBoxStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.CheckBox]::BackgroundProperty, [System.Windows.Media.Brushes]::Transparent)))
-    $checkBoxTrigger = New-Object System.Windows.Trigger
-    $checkBoxTrigger.Property = [System.Windows.Controls.CheckBox]::IsCheckedProperty
-    $checkBoxTrigger.Value = $true
-    $checkBoxTrigger.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.CheckBox]::BackgroundProperty, $highlightBrush)))
-    $checkBoxStyle.Triggers.Add($checkBoxTrigger)
 
     # Add checkboxes for each item in the category
     foreach ($item in $category.Items) {
