@@ -18,7 +18,7 @@ $spotxButton = New-Object -TypeName System.Windows.Controls.Button
 $spotxButton.Content = "SpotX"
 $spotxButton.Style = $buttonStyle
 $spotxButton.Margin = '5'
-$potxButton.Width = 200
+$spotxButton.Width = 200  # Corrected typo
 $spotxButton.HorizontalAlignment = 'Left'
 $spotxButton.VerticalAlignment = 'Center'
 
