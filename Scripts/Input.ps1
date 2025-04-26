@@ -1,11 +1,10 @@
 # Parse the Style from XAML
-$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
 # Create a new TabItem for the Settings tab
 $inputTab = New-Object -TypeName System.Windows.Controls.TabItem
-$inputTab.Header = "Update"
+$inputTab.Header = "Utilities"
 $inputTab.Style = $tabStyle
 
 # Create a StackPanel for the Settings tab content
@@ -39,9 +38,7 @@ $spotxButton.Add_Click({
     Install-SpotX
 })
 
-$utilitiesPanel.Children.Add($spotxButton)
-
-$inputPanel.Children.Add($updateText)
+$inputPanel.Children.Add($spotxButton)
 
 # Assign settings panel to the settings tab content
 $inputTab.Content = $inputPanel
