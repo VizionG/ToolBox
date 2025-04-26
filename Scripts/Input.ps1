@@ -22,8 +22,9 @@ $updateText.Foreground = [System.Windows.Media.Brushes]::White
 
 # Install-SpotX function
 function Install-SpotX {
-    Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing -UseB 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
+    Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
 }
+
 
 # SpotX Button
 $spotxButton = New-Object -TypeName System.Windows.Controls.Button
