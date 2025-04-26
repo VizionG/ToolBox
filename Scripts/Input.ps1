@@ -2,10 +2,12 @@
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-# Create a new TabItem for the Utilities tab
-$inputTab = New-Object -TypeName System.Windows.Controls.TabItem
+$inputTab = New-Object System.Windows.Controls.TabItem
 $inputTab.Header = "Utilities"
 $inputTab.Style = $tabStyle
+$inputTab.Content = $utilitiesGrid
+
+$tabControl.Items.Add($inputTab)
 
 # Create a StackPanel for the Utilities tab content
 $inputPanel = New-Object -TypeName System.Windows.Controls.StackPanel

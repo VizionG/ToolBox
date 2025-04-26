@@ -5,6 +5,9 @@
 $mainTab = New-Object System.Windows.Controls.TabItem
 $mainTab.Header = "Software"
 $mainTab.Style = $tabItemStyle
+$mainTab.Content = $mainGrid
+
+$tabControl.Items.Add($mainTab)
 
 # Create Grid for the main layout (Categories on the left, Sidebar on the right)
 $mainGrid = New-Object System.Windows.Controls.Grid
