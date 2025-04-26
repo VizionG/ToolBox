@@ -233,6 +233,11 @@ $software_categories = @{
             "info" = "https://windhawk.net/"
             "winget_id" = "RamenSoftware.Windhawk"
         }
+        "MSEdgeRedirect" = @{
+            "names" = @("MSEdgeRedirect")
+            "info" = "https://github.com/rcmaehl/MSEdgeRedirect"
+            "winget_id" = "rcmaehl.MSEdgeRedirect"
+        }
     }
     "Media Tools" = @{
         "Media Player Classic" = @{

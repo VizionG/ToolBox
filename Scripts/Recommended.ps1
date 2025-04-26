@@ -13,6 +13,7 @@ $recommendedSoftware = @(
     "AdoptOpenJDK 8",
     "FxSound",
     "Twinkletray",
-    "Windhawk"
+    "Windhawk",
+    "MSEdgeRedirect"
 )
 
