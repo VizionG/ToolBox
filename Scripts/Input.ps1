@@ -6,10 +6,11 @@ $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 # Create the TabControl
 $tabControl = New-Object System.Windows.Controls.TabControl
 
-# Create Utilities Tab
-$utilitiesTab = New-Object -TypeName System.Windows.Controls.TabItem
+# Create Utilities tab
+$utilitiesTab = New-Object System.Windows.Controls.TabItem
 $utilitiesTab.Header = "Utilities"
 $utilitiesTab.Style = $tabStyle
+$utilitiesTab.Content = $utilitiesPanel  # You need to create $utilitiesPanel first
 
 # Create Utilities Panel
 $utilitiesPanel = New-Object -TypeName System.Windows.Controls.StackPanel
@@ -50,3 +51,4 @@ $utilitiesTab.Content = $utilitiesPanel
 
 # Add Tab to TabControl
 $tabControl.Items.Add($utilitiesTab)
+
