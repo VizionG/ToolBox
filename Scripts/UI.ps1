@@ -225,4 +225,7 @@ $newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $wh
 $mainGrid.Children.Add($newSidebar)
 [System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
 
+$dockPanel = New-Object System.Windows.Controls.DockPanel
+$mainGrid = New-Object System.Windows.Controls.Grid
 $dockPanel.Children.Add($mainGrid)
+

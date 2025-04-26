@@ -160,6 +160,8 @@ $mainWindow.Icon = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]:
 # Set the background color of the window
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
+$dockPanel = New-Object System.Windows.Controls.DockPanel
+
 # Define the DockPanel (assuming the dockPanel comes from one of the loaded scripts)
 $mainWindow.Content = $dockPanel
 
