@@ -142,7 +142,7 @@ $installDotNetButton.VerticalAlignment = 'Center'        # Align to the top vert
 $installDotNetButton.Add_Click({
     try {
         # Command to install .NET Framework
-        $command = 'winget install -e --id Microsoft.DotNet.Framework'
+        $command = 'winget install -e --id Microsoft.DotNet.Framework.DeveloperPack_4'
         # Start the process to execute the command
         Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
         Write-Host ".NET Framework installation initiated."
@@ -155,57 +155,6 @@ $installDotNetButton.Add_Click({
 # Add the install .NET Framework button to the settings panel
 $settingsPanel.Children.Add($installDotNetButton)
 
-# Add a button for installing .NET 6
-$installDotNet6Button = New-Object -TypeName System.Windows.Controls.Button
-$installDotNet6Button.Content = ".NET 6"
-$installDotNet6Button.Style = $buttonStyle  # Apply the button style if needed
-$installDotNet6Button.Margin = '5'           # Add margin for spacing
-$installDotNet6Button.Width = 200             # Set a fixed width for the button
-$installDotNet6Button.HorizontalAlignment = 'Left'  # Center horizontally
-$installDotNet6Button.VerticalAlignment = 'Center'        # Align to the top vertically
-
-# Set the button click event
-$installDotNet6Button.Add_Click({
-    try {
-        # Command to install .NET 6
-        $command = 'winget install -e --id Microsoft.DotNet.6'
-        # Start the process to execute the command
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
-        Write-Host ".NET 6 installation initiated."
-    }
-    catch {
-        Write-Error "Failed to install .NET 6. Error: $_"
-    }
-})
-
-# Add the install .NET 6 button to the settings panel
-$settingsPanel.Children.Add($installDotNet6Button)
-
-# Add a button for installing .NET 7
-$installDotNet7Button = New-Object -TypeName System.Windows.Controls.Button
-$installDotNet7Button.Content = ".NET 7"
-$installDotNet7Button.Style = $buttonStyle  # Apply the button style if needed
-$installDotNet7Button.Margin = '5'           # Add margin for spacing
-$installDotNet7Button.Width = 200             # Set a fixed width for the button
-$installDotNet7Button.HorizontalAlignment = 'Left'  # Center horizontally
-$installDotNet7Button.VerticalAlignment = 'Center'        # Align to the top vertically
-
-# Set the button click event
-$installDotNet7Button.Add_Click({
-    try {
-        # Command to install .NET 7
-        $command = 'winget install -e --id Microsoft.DotNet.7'
-        # Start the process to execute the command
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
-        Write-Host ".NET 7 installation initiated."
-    }
-    catch {
-        Write-Error "Failed to install .NET 7. Error: $_"
-    }
-})
-
-# Add the install .NET 7 button to the settings panel
-$settingsPanel.Children.Add($installDotNet7Button)
 
 # Assign settings panel to the settings tab content
 $settingsTab.Content = $settingsPanel

@@ -140,20 +140,6 @@ function Remove-MailAndTaskView {
     Write-Host "Task View removed from Taskbar."
 }
 
-function Remove-AllApps {
-    $apps = (New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items()
-    
-    if($apps){
-        foreach ($app in $apps){
-            $appaction = $app.Verbs() | ?{$_.Name.replace('&','') -match 'Unpin from Start'}
-            if ($appaction){
-                $appaction | %{$_.DoIt(); write-host "App '$($app.Name)' unpinned from Start"}
-            }
-        }
-    }else{
-        write-error "No apps found to unpin."
-    }
-}
 
 
 
@@ -164,6 +150,5 @@ Set-DarkTheme
 Remove-Bloatware
 Remove-Cortana
 Remove-MailAndTaskView
-Remove-AllApps
 
 Write-Host "Script execution completed successfully."
