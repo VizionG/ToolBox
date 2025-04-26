@@ -21,7 +21,7 @@ $inputPanel.Margin = '5'
 $inputPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
 $updateText = New-Object -TypeName System.Windows.Controls.TextBlock
-$updateText.Text = ""
+$updateText.Text = "Guest Tools"
 $updateText.FontSize = 16
 $updateText.Margin = '5'
 $updateText.Foreground = [System.Windows.Media.Brushes]::White
