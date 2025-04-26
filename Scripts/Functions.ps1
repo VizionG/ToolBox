@@ -72,7 +72,7 @@ function Get-WindowsVersion {
     }
 }
 
-function Create-Sidebar {
+function New-Sidebar {
     param (
         [System.Collections.Hashtable]$checkboxControls,
         [System.Windows.Media.Brush]$whitebrush,
@@ -154,3 +154,6 @@ function Create-Sidebar {
 
     return $sidebarGrid
 }
+
+# Alias for backward compatibility
+Set-Alias -Name Create-Sidebar -Value New-Sidebar
