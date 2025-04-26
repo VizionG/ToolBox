@@ -6,12 +6,6 @@ $checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-# Create and configure DockPanel as the main layout container
-$dockPanel = New-Object System.Windows.Controls.DockPanel
-$dockPanel.HorizontalAlignment = 'Stretch'
-$dockPanel.VerticalAlignment = 'Stretch'
-$dockPanel.LastChildFill = $true  # Ensure the last child fills the remaining space
-
 # Create TabControl Style
 $tabControlStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.TabControl])
 $tabControlStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabControl]::BorderThicknessProperty, [System.Windows.Thickness]::new(0))))
@@ -179,5 +173,5 @@ $mainGrid.Children.Add($categoriesGrid)
 $mainGrid.Children.Add($newSidebar)
 [System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
 
-# Finally, add mainGrid to DockPanel
+# At the end, add mainGrid to the existing dockPanel
 $dockPanel.Children.Add($mainGrid)
