@@ -52,6 +52,7 @@ function DownloadScripts {
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1",
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1",
         "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1"
+        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Input.ps1"
     )
 
     $tempScriptPaths = @()

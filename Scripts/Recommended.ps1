@@ -5,11 +5,14 @@ $recommendedSoftware = @(
     "7-Zip",
     "Notepad++",
     "ShareX",
-    "Snappy Driver Origin",
+    "Snappy Driver Installer",
     "Media Player Classic",
     "EarTrumpet",
     "LibreOffice",
     "Python3",
-    "AdoptOpenJDK 8"
+    "AdoptOpenJDK 8",
+    "FxSound",
+    "Twinkletray",
+    "Windhawk"
 )
 

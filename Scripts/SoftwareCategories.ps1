@@ -203,10 +203,10 @@ $software_categories = @{
             "info" = "https://www.glarysoft.com/"
             "winget_id" = "Glarysoft.GlaryUtilities"
         }
-        "Snappy Driver Origin" = @{
-            "names" = @("Snappy Driver Origin")
-            "info" = "https://www.snappy-driver-installer.org/"
-            "winget_id" = "GlennDelahoy.SnappyDriverInstallerOrigin"
+        "Snappy Driver Installer" = @{
+            "names" = @("Snappy Driver Installer")
+            "info" = "https://sdi-tool.org/"
+            "winget_id" = "samlab-ws.SnappyDriverInstaller"
         }
         "Iobit Driver Booster" = @{
             "names" = @("Driver Booster")
@@ -217,6 +217,21 @@ $software_categories = @{
             "names" = @("LocalSend")
             "info" = "https://localsend.org/"
             "winget_id" = "LocalSend.LocalSend"
+        }
+        "Cloudflare Warp" = @{
+            "names" = @("Cloudflare Warp")
+            "info" = "https://one.one.one.one/?ref=winstall"
+            "winget_id" = "Cloudflare.Warp"
+        }
+        "Twinkletray" = @{
+            "names" = @("Twinkletray")
+            "info" = "https://twinkletray.com/?ref=winstall"
+            "winget_id" = "xanderfrangos.twinkletray"
+        }
+        "Windhawk" = @{
+            "names" = @("Windhawk")
+            "info" = "https://windhawk.net/"
+            "winget_id" = "RamenSoftware.Windhawk"
         }
     }
     "Media Tools" = @{
@@ -279,6 +294,11 @@ $software_categories = @{
             "names" = @("Youtube Music Desktop")
             "info" = "https://ytmdesktop.app/"
             "winget_id" = "Ytmdesktop.Ytmdesktop"
+        }
+        "FxSound" = @{
+            "names" = @("FxSound")
+            "info" = "https://www.fxsound.com/"
+            "winget_id" = "FxSound.FxSound  -e"
         }
     }
     "Documents" = @{
