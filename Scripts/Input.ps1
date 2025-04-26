@@ -28,21 +28,21 @@ function Install-SpotX {
     Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing -UseB 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
 }
 
-# Ensure this block is before the Add_Click method
+# Create the SpotX button
 $spotxButton = New-Object -TypeName System.Windows.Controls.Button
 $spotxButton.Content = "SpotX"
 $spotxButton.Style = $buttonStyle  # Apply the button style if needed
-$spotxButton.Margin = '5'           # Add margin for spacing
-$spotxButton.Width = 200             # Set a fixed width for the button
+$spotxButton.Margin = '5'
+$spotxButton.Width = 200
 $spotxButton.HorizontalAlignment ='Left'
-$spotxButton.VerticalAlignment ='center'
+$spotxButton.VerticalAlignment ='Center'
 
 $spotxButton.Add_Click({
     Install-SpotX
 })
 
-# Add the button to the settings panel
-$inputPanel.Children.Add($spotxButton)
+# Now safely add the button
+$utilitiesPanel.Children.Add($spotxButton)
 
 # Assign the panel to the tab
 $utilitiesTab.Content = $utilitiesPanel
