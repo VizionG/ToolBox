@@ -139,20 +139,12 @@ $checkAllPanel.Children.Add($checkAllBox)
 $categoriesGrid.Children.Add($checkAllPanel)
 [System.Windows.Controls.Grid]::SetRow($checkAllPanel, 1)
 
-# Add categoriesGrid to the mainGrid (left side)
-$mainGrid.Children.Add($categoriesGrid)
-[System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
+if ($mainGrid -and $categoriesGrid) {
+    $mainGrid.Children.Add($categoriesGrid)
+    [System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
 
-# Sidebar setup
-$newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
-$mainGrid.Children.Add($newSidebar)
-[System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
-
-# Now create the TabItem and assign the grid as content
-$mainTab = New-Object System.Windows.Controls.TabItem
-$mainTab.Header = "Software"
-$mainTab.Style = $tabItemStyle
-$mainTab.Content = $mainGrid
-
-$tabControl.Items.Add($mainTab)
+    $newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
+    $mainGrid.Children.Add($newSidebar)
+    [System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
+}
 
