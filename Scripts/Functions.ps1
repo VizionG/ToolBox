@@ -1,18 +1,23 @@
+# Global variable for status box
+$statusBox = $null
+
 function Get-InstalledApps {
-    $statusBox.Text = "Checking. . ."
+    $statusBox.Text = "Checking..."
     Update-UI
     $installedApps = winget list
+    $appsList = @()
     $installedApps | Select-Object -Skip 1 | ForEach-Object {
         $fields = $_.Trim() -split '\s{2,}' # Split by multiple spaces
         if ($fields.Length -ge 2) {
-            [PSCustomObject]@{
-                Name = $fields[0] # Assuming Name is in the first column
-                ID = $fields[1]   # Assuming ID is in the second column
+            $appsList += [PSCustomObject]@{
+                Name = $fields[0]
+                ID   = $fields[1]
             }
         }
     }
-    Update-UI
     $statusBox.Text = "Checking Complete"
+    Update-UI
+    return $appsList
 }
 
 function Update-UI {
@@ -57,8 +62,6 @@ function Install-Software {
 
 function Get-WindowsVersion {
     $osInfo = Get-CimInstance Win32_OperatingSystem
-
-    # Retrieve the major and minor version numbers
     $version = [System.Version]$osInfo.Version
 
     if ($version.Major -eq 10 -and $version.Build -ge 22000) {
@@ -78,7 +81,8 @@ function newSidebar {
         [System.Windows.Media.Brush]$whitebrush,
         [System.Windows.Media.Brush]$brushbackground,
         [System.Windows.Style]$buttonStyle,
-        [System.Collections.Hashtable]$software_categories
+        [System.Collections.Hashtable]$software_categories,
+        [ref]$statusBoxRef
     )
 
     # Create a Grid for the sidebar section
@@ -86,9 +90,9 @@ function newSidebar {
     $sidebarGrid.HorizontalAlignment = 'Stretch'
     $sidebarGrid.VerticalAlignment = 'Stretch'
 
-    # Define rows for the sidebar (status and buttons)
-    $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Status row
-    $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Buttons row
+    # Define rows for the sidebar
+    $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Status
+    $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Buttons
 
     # Create and configure the status TextBox
     $statusBox = New-Object -TypeName System.Windows.Controls.TextBox
@@ -105,55 +109,73 @@ function newSidebar {
     $statusBox.BorderThickness = '2'
     $statusBox.TextWrapping = 'Wrap'
     $statusBox.AcceptsReturn = $true
+
+    # Pass statusBox outside
+    $statusBoxRef.Value = $statusBox
+
     [System.Windows.Controls.Grid]::SetRow($statusBox, 0)
     $sidebarGrid.Children.Add($statusBox)
 
-    # Create a StackPanel for buttons
+    # StackPanel for buttons
     $buttonPanel = New-Object -TypeName System.Windows.Controls.StackPanel
     $buttonPanel.Orientation = 'Vertical'
     $buttonPanel.HorizontalAlignment = 'Right'
     $buttonPanel.VerticalAlignment = 'Center'
     $buttonPanel.Margin = '5, 5, 5, 5'
 
-    # Create and configure buttons (Check Installed, Uninstall, Install)
+    # Check Installed button
     $checkAppsButton = New-Object -TypeName System.Windows.Controls.Button
     $checkAppsButton.Content = "Check Installed"
     $checkAppsButton.Margin = '5'
     $checkAppsButton.Height = 30
     $checkAppsButton.Style = $buttonStyle
     $checkAppsButton.Add_Click({
-        # Logic for checking installed apps
+        Get-InstalledApps | Out-Null
     })
 
+    # Uninstall button (example hardcoded - update to dynamic later)
     $uninstallButton = New-Object -TypeName System.Windows.Controls.Button
     $uninstallButton.Content = "Uninstall"
     $uninstallButton.Margin = '5'
     $uninstallButton.Height = 30
     $uninstallButton.Style = $buttonStyle
     $uninstallButton.Add_Click({
-        # Logic for uninstalling apps
+        Uninstall-Software -app_id "Microsoft.Edge" -app_name "Microsoft Edge"
     })
 
+    # Install button (example hardcoded - update to dynamic later)
     $installButton = New-Object -TypeName System.Windows.Controls.Button
     $installButton.Content = "Install"
     $installButton.Margin = '5'
     $installButton.Height = 30
     $installButton.Style = $buttonStyle
     $installButton.Add_Click({
-        # Logic for installing apps
+        Install-Software -app_id "Mozilla.Firefox" -app_name "Mozilla Firefox"
     })
 
-    # Add buttons to the button panel
+    # Add buttons to panel
     $buttonPanel.Children.Add($checkAppsButton)
     $buttonPanel.Children.Add($uninstallButton)
     $buttonPanel.Children.Add($installButton)
 
-    # Add button panel to sidebar grid
+    # Add panel to sidebar grid
     [System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
     $sidebarGrid.Children.Add($buttonPanel)
 
     return $sidebarGrid
 }
 
-# Alias for backward compatibility
+# Alias
 Set-Alias -Name Create-Sidebar -Value newSidebar
+
+# Example usage
+$checkboxControls = @{}
+$software_categories = @{}
+$whitebrush = [System.Windows.Media.Brushes]::White
+$brushbackground = [System.Windows.Media.Brushes]::DarkSlateGray
+$buttonStyle = $null # or your custom style if needed
+
+$statusBoxRef = [ref]$null
+$sidebar = newSidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories -statusBoxRef $statusBoxRef
+
+$statusBox = $statusBoxRef.Value

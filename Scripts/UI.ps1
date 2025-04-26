@@ -181,7 +181,7 @@ $scrollViewer.Content = $uniformGrid
 
 # Add ScrollViewer to categoriesGrid
 $categoriesGrid.Children.Add($scrollViewer)
-[System.Windows.Controls.Grid]::SetRow($scrollViewer, 0)  # Set to first row
+[System.Windows.Controls.Grid]::SetRow($scrollViewer, 0)
 
 # Create a StackPanel for the Check All checkbox and place it in the second row
 $checkAllPanel = New-Object -TypeName System.Windows.Controls.StackPanel
@@ -210,10 +210,13 @@ $checkAllBox.Add_Unchecked({
 # Add the Check All checkbox to the panel
 $checkAllPanel.Children.Add($checkAllBox)
 
-# Add the Check All panel to categoriesGrid (second row)
+# Add CheckAllPanel to categoriesGrid
 $categoriesGrid.Children.Add($checkAllPanel)
-[System.Windows.Controls.Grid]::SetRow($checkAllPanel, 1)  # Place in the second row
-[System.Windows.Controls.Grid]::SetRowSpan($checkAllPanel, 1)  # Ensure it only takes up necessary space
+[System.Windows.Controls.Grid]::SetRow($checkAllPanel, 1)
+
+# ADD the categoriesGrid to mainGrid (left side)
+$mainGrid.Children.Add($categoriesGrid)
+[System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
 
 # Create the sidebar using the function
 $newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
