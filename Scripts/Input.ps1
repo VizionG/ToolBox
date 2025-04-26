@@ -66,10 +66,6 @@ if ($windowsVersion -like "*11*") {
     $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"))
 }
 
-
-# Add the Image control to the sidebar grid above the status box
-$sidebarGrid.Children.Insert(0, $windowsLogo)  # Insert at index 0 to place it at the top
-
 # Create and configure the status TextBox (for the sidebar)
 $statusBox = New-Object -TypeName System.Windows.Controls.TextBox
 $statusBox.Height = 60
