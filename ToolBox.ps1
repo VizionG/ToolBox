@@ -104,15 +104,16 @@ function Download-ScriptFromUrl {
 # Function to download all required scripts
 function DownloadScripts {
     # Define script URLs
+    $baseUrl = "https://viziong.github.io/ToolBox/Scripts/"
     $scriptUrls = @(
-        "SoftwareCategories.ps1",
-        "Functions.ps1",
-        "Styles.ps1",      # <-- Load styles first
-        "Colors.ps1",      # <-- Load colors first
-        "Recommended.ps1",
-        "UI.ps1",
-        "Settings.ps1",
-        "Input.ps1"
+        "${baseUrl}SoftwareCategories.ps1",
+        "${baseUrl}Functions.ps1",
+        "${baseUrl}Styles.ps1",
+        "${baseUrl}Colors.ps1",
+        "${baseUrl}Recommended.ps1",
+        "${baseUrl}UI.ps1",
+        "${baseUrl}Settings.ps1",
+        "${baseUrl}Input.ps1"
     )
 
     $tempScriptPaths = @()
