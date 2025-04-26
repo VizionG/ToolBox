@@ -5,7 +5,7 @@ $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
 # Create a new TabItem for the Settings tab
 $inputTab = New-Object -TypeName System.Windows.Controls.TabItem
-$inputTab.Header = "Update"
+$inputTab.Header = "Input"
 $inputTab.Style = $tabStyle
 
 # Create a StackPanel for the Settings tab content
@@ -31,7 +31,7 @@ $inputPanel.Children.Add($updateText)
 
 # Ensure this block is before the Add_Click method
 $spotxButton = New-Object -TypeName System.Windows.Controls.Button
-$spotxButton.Content = "Microsoft Visual C++"
+$spotxButton.Content = "SpotX"
 $spotxButton.Style = $buttonStyle  # Apply the button style if needed
 $spotxButton.Margin = '5'           # Add margin for spacing
 $spotxButton.Width = 200             # Set a fixed width for the button
