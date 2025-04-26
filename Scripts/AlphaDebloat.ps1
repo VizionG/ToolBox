@@ -1,8 +1,8 @@
 # Function to remove the 3D folder
 function Remove-3DFolder {
     $keysToRemove = @(
-        "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}",
-        "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
+        "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}",
+        "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
     )
     
     foreach ($key in $keysToRemove) {
@@ -16,7 +16,7 @@ function Remove-3DFolder {
 }
 
 function Set-FileExplorerToThisPC {
-    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $registryPath = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $registryValueName = "LaunchFolderValue"
     
     # Set the value to '1' for opening in 'This PC'
@@ -26,7 +26,7 @@ function Set-FileExplorerToThisPC {
 }
 
 function Disable-QuickAccess {
-    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $registryPath = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
 
     # Disable Recently Used Files in Quick Access
     Set-ItemProperty -Path $registryPath -Name "ShowRecent" -Value 0
