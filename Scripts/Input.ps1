@@ -36,12 +36,10 @@ $logoPanel.HorizontalAlignment = 'Center'
 $logoPanel.VerticalAlignment = 'Top'
 $logoPanel.Margin = '5'
 
-# Create Vizion logo
+# Create a logo image
 $vizionLogo = New-Object System.Windows.Controls.Image
-$vizionLogo.HorizontalAlignment = 'Center'
-$vizionLogo.VerticalAlignment = 'Top'
-$vizionLogo.Margin = '5'
-$vizionLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.png"))
+$vizionLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://..."))
+
 
 # Create Windows logo
 $windowsLogo = New-Object System.Windows.Controls.Image
