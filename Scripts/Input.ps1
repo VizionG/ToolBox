@@ -65,11 +65,7 @@ $sidebarGrid = Create-Sidebar -checkboxControls $null -whitebrush $whitebrush -b
 
 # Add the sidebar to the utilities grid
 $utilitiesGrid.Children.Add($sidebarGrid)
-[System.Windows.Controls.Grid]::SetColumn($sidebarGrid, 1)
-
-# Add the input panel with buttons to the left side
 $utilitiesGrid.Children.Add($inputPanel)
-[System.Windows.Controls.Grid]::SetColumn($inputPanel, 0)
 
 # Assign the utilities grid as the content of the input tab
 $inputTab.Content = $utilitiesGrid
