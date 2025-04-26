@@ -44,10 +44,6 @@ $spotxButton.Add_Click({
 $inputPanel.Children.Add($updateText)
 $inputPanel.Children.Add($spotxButton)
 
-# Assign settings panel to the settings tab content
-$inputTab.Content = $inputPanel
-
-# Add the Settings tab to the TabControl
 $inputTab.Content = $inputPanel
 $tabControl.Items.Add($inputTab)
 
