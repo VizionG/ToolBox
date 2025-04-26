@@ -1,28 +1,10 @@
-# Initialize the hashtable to store checkbox controls
-$checkboxControls = @{}
-
-# Ensure all necessary styles are loaded before use
-$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
-$buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
-$tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
-
-# Create and configure TabControl and TabItem styles
-$tabControlStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.TabControl])
-$tabControlStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabControl]::BorderThicknessProperty, [System.Windows.Thickness]::new(0))))
-$tabControlStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabControl]::BackgroundProperty, $brushbackground)))
-
-$tabItemStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.TabItem])
-$tabItemStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabItem]::BorderThicknessProperty, [System.Windows.Thickness]::new(0))))
-
-# Create TabControl and TabItem
-$tabControl = New-Object System.Windows.Controls.TabControl
-$tabControl.HorizontalAlignment = 'Stretch'
-$tabControl.VerticalAlignment = 'Stretch'
-$tabControl.Style = $tabControlStyle
+# UI.ps1
+# Do NOT create a new $tabControl here!
+# Use the existing $tabControl from ToolBox.ps1
 
 $mainTab = New-Object System.Windows.Controls.TabItem
 $mainTab.Header = "Software"
-$mainTab.Style = $tabItemStyle  # Apply the style
+$mainTab.Style = $tabItemStyle
 
 # Create Grid for the main layout (Categories on the left, Sidebar on the right)
 $mainGrid = New-Object System.Windows.Controls.Grid
