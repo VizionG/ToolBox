@@ -60,6 +60,8 @@ function Remove-Bloatware {
     "Microsoft.YourPhone",
     "Microsoft.ZuneMusic",
     "Microsoft.ZuneVideo",
+    "Microsoft.Clipchamp",
+    "Microsoft.todolist",
     "Microsoft.Copilot"
 )
 
@@ -138,46 +140,21 @@ function Remove-MailAndTaskView {
     Write-Host "Task View removed from Taskbar."
 }
 
-function Clear-StartMenuPins {
-    param (
-        [string]$LayoutPath = "$env:TEMP\BlankStartLayout.xml"
-    )
-
-    Write-Host "Creating blank Start Menu layout XML..."
-    @"
-<LayoutModificationTemplate xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification" Version="1">
-  <LayoutOptions StartTileGroupCellWidth="6" />
-  <DefaultLayoutOverride>
-    <StartLayoutCollection>
-      <defaultlayout:StartLayout GroupCellWidth="6" xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" />
-    </StartLayoutCollection>
-  </DefaultLayoutOverride>
-</LayoutModificationTemplate>
-"@ | Set-Content -Path $LayoutPath -Encoding UTF8
-
-    Write-Host "Importing layout for new users..."
-    try {
-        Import-StartLayout -LayoutPath $LayoutPath -MountPath $env:SystemDrive\
-        Write-Host "Blank layout applied for new users."
-    }
-    catch {
-        Write-Warning "Failed to import layout for new users: $_"
-    }
-
-    Write-Host "Resetting Start Menu for current user..."
-    try {
-        Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
-
-        Remove-Item "$env:LocalAppData\Microsoft\Windows\Shell\LayoutModification.xml" -ErrorAction SilentlyContinue
-        Remove-Item "$env:LocalAppData\Microsoft\Windows\Shell\DefaultLayouts.xml" -ErrorAction SilentlyContinue
-        Remove-Item "$env:LocalAppData\Microsoft\Windows\Shell\CloudStore" -Recurse -Force -ErrorAction SilentlyContinue
-
-        Write-Host "Start Menu layout reset. Please sign out and sign back in to apply changes."
-    }
-    catch {
-        Write-Warning "Error resetting Start Menu: $_"
+function Remove-AllApps {
+    $apps = (New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items()
+    
+    if($apps){
+        foreach ($app in $apps){
+            $appaction = $app.Verbs() | ?{$_.Name.replace('&','') -match 'Unpin from Start'}
+            if ($appaction){
+                $appaction | %{$_.DoIt(); write-host "App '$($app.Name)' unpinned from Start"}
+            }
+        }
+    }else{
+        write-error "No apps found to unpin."
     }
 }
+
 
 
 
@@ -187,6 +164,6 @@ Set-DarkTheme
 Remove-Bloatware
 Remove-Cortana
 Remove-MailAndTaskView
-Clear-StartMenuPins
+Remove-AllApps
 
 Write-Host "Script execution completed successfully."
