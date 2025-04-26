@@ -3,31 +3,30 @@ $checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-# Create a new TabItem for the Settings tab
-$inputTab = New-Object -TypeName System.Windows.Controls.TabItem
-$inputTab.Header = "Input"
-$inputTab.Style = $tabStyle
+# Create a new TabItem for the Utilities tab
+$utilitiesTab = New-Object -TypeName System.Windows.Controls.TabItem
+$utilitiesTab.Header = "Utilities"
+$utilitiesTab.Style = $tabStyle
 
-# Create a StackPanel for the Settings tab content
-$inputPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-$inputPanel.Orientation = 'Vertical'
-$inputPanel.Margin = '5'
-$inputPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
+# Create a StackPanel for the Utilities tab content
+$utilitiesPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+$utilitiesPanel.Orientation = 'Vertical'
+$utilitiesPanel.Margin = '5'
+$utilitiesPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-# Function to download and run the latest Visual C++ Redistributable installer
+# Example: Add a TextBlock for the Utilities tab
+$utilitiesText = New-Object -TypeName System.Windows.Controls.TextBlock
+$utilitiesText.Text = "Utilities:"
+$utilitiesText.FontSize = 16
+$utilitiesText.Margin = '5'
+$utilitiesText.Foreground = [System.Windows.Media.Brushes]::White
+
+# Add the text to the utilities panel
+$utilitiesPanel.Children.Add($utilitiesText)
+
 function Install-SpotX {
     Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing -UseB 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
 }
-
-
-# Add a simple text label to the Settings page
-$inputText = New-Object -TypeName System.Windows.Controls.TextBlock
-$inputText.Text = "Input:"
-$inputText.FontSize = 16
-$inputText.Margin = '5'
-$inputText.Foreground = [System.Windows.Media.Brushes]::White
-
-$inputPanel.Children.Add($inputText)
 
 # Ensure this block is before the Add_Click method
 $spotxButton = New-Object -TypeName System.Windows.Controls.Button
@@ -45,87 +44,14 @@ $spotxButton.Add_Click({
 # Add the button to the settings panel
 $inputPanel.Children.Add($spotxButton)
 
-# Add a button for installing DirectX
-$installDirectXButton = New-Object -TypeName System.Windows.Controls.Button
-$installDirectXButton.Content = "Install DirectX"
-$installDirectXButton.Style = $buttonStyle  # Apply the button style if needed
-$installDirectXButton.Margin = '5'           # Add margin for spacing
-$installDirectXButton.Width = 200             # Set a fixed width for the button
-$installDirectXButton.HorizontalAlignment = 'Left'  # Center horizontally
-$installDirectXButton.VerticalAlignment = 'Center'        # Align to the top vertically
+# Add the button to the Utilities panel
+$utilitiesPanel.Children.Add($exampleButton)
 
-# Set the button click event
-$installDirectXButton.Add_Click({
-    try {
-        # Command to install DirectX
-        $command = 'winget install -e --id Microsoft.DirectX'
-        # Start the process to execute the command
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
-        Write-Host "DirectX installation initiated."
-    }
-    catch {
-        Write-Error "Failed to install DirectX. Error: $_"
-    }
-})
+# Assign the panel to the tab
+$utilitiesTab.Content = $utilitiesPanel
 
-# Add the install DirectX button to the settings panel
-$inputPanel.Children.Add($installDirectXButton)
+# Finally, add the Utilities tab to the TabControl
+$tabControl.Items.Add($utilitiesTab)
 
-# Add Alpha Debloat
-$alphaDebloatButton = New-Object -TypeName System.Windows.Controls.Button
-$alphaDebloatButton.Content = "Alpha Debloat"
-$alphaDebloatButton.Style = $buttonStyle  # Apply the button style if needed
-$alphaDebloatButton.Margin = '5'           # Add margin for spacing
-$alphaDebloatButton.Width = 200             # Set a fixed width for the button
-$alphaDebloatButton.HorizontalAlignment = 'Left'  # Center horizontally
-$alphaDebloatButton.VerticalAlignment = 'Center'        # Align to the top vertically
-
-# Set the click event for the Alpha Debloat button
-$alphaDebloatButton.Add_Click({
-    try {
-        $url = "https://viziong.github.io/ToolBox/Scripts/AlphaDebloat.ps1"
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"iwr -useb '$url' | iex`"" -Wait -NoNewWindow
-        Write-Host "Alpha Debloat script executed from GitHub."
-    }
-    catch {
-        Write-Error "Failed to run Alpha Debloat script from GitHub. Error: $_"
-    }
-})
-
-# Add the Alpha Debloat button to the settings panel
-$inputPanel.Children.Add($alphaDebloatButton)
-
-# Add a button for installing .NET Framework
-$installDotNetButton = New-Object -TypeName System.Windows.Controls.Button
-$installDotNetButton.Content = ".NET Framework"
-$installDotNetButton.Style = $buttonStyle  # Apply the button style if needed
-$installDotNetButton.Margin = '5'           # Add margin for spacing
-$installDotNetButton.Width = 200             # Set a fixed width for the button
-$installDotNetButton.HorizontalAlignment = 'Left'  # Center horizontally
-$installDotNetButton.VerticalAlignment = 'Center'        # Align to the top vertically
-
-# Set the button click event
-$installDotNetButton.Add_Click({
-    try {
-        # Command to install .NET Framework
-        $command = 'winget install -e --id Microsoft.DotNet.Framework.DeveloperPack_4'
-        # Start the process to execute the command
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -Command $command" -Wait -NoNewWindow
-        Write-Host ".NET Framework installation initiated."
-    }
-    catch {
-        Write-Error "Failed to install .NET Framework. Error: $_"
-    }
-})
-
-# Add the install .NET Framework button to the settings panel
-$inputPanel.Children.Add($installDotNetButton)
-
-
-# Assign settings panel to the settings tab content
-$inputTab.Content = $inputPanel
-
-# Add the Settings tab to the TabControl
-$tabControl.Items.Add($inputTab)
 
 
