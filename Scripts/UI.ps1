@@ -10,10 +10,16 @@ $checkBoxStyle.Triggers.Add($checkBoxTrigger)
 
 # Create Grid for the main layout (Categories on the left, Sidebar on the right)
 $mainGrid = New-Object System.Windows.Controls.Grid
-$mainGrid.HorizontalAlignment = 'Stretch'
-$mainGrid.VerticalAlignment = 'Stretch'
-$mainGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='*'}))  # Categories column
-$mainGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='180'}))  # Sidebar column
+$mainGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='*'}))
+$mainGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='180'}))
+
+$categoriesGrid = New-Object System.Windows.Controls.Grid
+$mainGrid.Children.Add($categoriesGrid)
+[System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
+
+$newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
+$mainGrid.Children.Add($newSidebar)
+[System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
 
 # Create categories grid with scrollable content
 $categoriesGrid = New-Object System.Windows.Controls.Grid
