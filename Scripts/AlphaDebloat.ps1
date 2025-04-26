@@ -1,14 +1,20 @@
 # Function to remove the 3D folder
 function Remove-3DFolder {
-    $folderPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\3D Objects"
-    if (Test-Path -Path $folderPath) {
-        Write-Host "Removing 3D Objects folder..."
-        Remove-Item -Path $folderPath -Recurse -Force
-        Write-Host "3D Objects folder removed."
-    } else {
-        Write-Host "3D Objects folder not found."
+    $keysToRemove = @(
+        "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}",
+        "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
+    )
+    
+    foreach ($key in $keysToRemove) {
+        if (Test-Path $key) {
+            Remove-Item -Path $key -Recurse -Force
+            Write-Host "Successfully removed registry key: $key"
+        } else {
+            Write-Host "Registry key not found: $key"
+        }
     }
 }
+
 
 # Function to set Dark theme
 function Set-DarkTheme {
