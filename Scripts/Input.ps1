@@ -1,3 +1,8 @@
+# Parse the Style from XAML
+$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
+$buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
+$tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
+
 # Create the TabControl
 $tabControl = New-Object System.Windows.Controls.TabControl
 
