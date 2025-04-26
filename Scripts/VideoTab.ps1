@@ -53,11 +53,19 @@ foreach ($channel in $channels) {
     $sidebarPanel.Children.Add($btn)
 }
 
-# Add Play/Pause controls under the player
+# Create a Grid for the player area
+$playerGrid = New-Object System.Windows.Controls.Grid
+
+# Add the MediaElement
+$playerGrid.Children.Add($mediaElement)
+
+# Create a controls panel (overlay)
 $controlsPanel = New-Object System.Windows.Controls.StackPanel
 $controlsPanel.Orientation = 'Horizontal'
-$controlsPanel.HorizontalAlignment = 'Left'
-$controlsPanel.Margin = '10,0,0,0'
+$controlsPanel.HorizontalAlignment = 'Center'
+$controlsPanel.VerticalAlignment = 'Bottom'
+$controlsPanel.Margin = '0,0,0,20'
+$controlsPanel.Background = [System.Windows.Media.Brushes]::Transparent
 
 $playButton = New-Object System.Windows.Controls.Button
 $playButton.Content = "Play"
@@ -74,14 +82,12 @@ $pauseButton.Add_Click({ $mediaElement.Pause() })
 $controlsPanel.Children.Add($playButton)
 $controlsPanel.Children.Add($pauseButton)
 
-# Layout: Player and controls in a vertical stack
-$playerPanel = New-Object System.Windows.Controls.StackPanel
-$playerPanel.Orientation = 'Vertical'
-$playerPanel.Children.Add($mediaElement)
-$playerPanel.Children.Add($controlsPanel)
+# Add controls panel as overlay
+$playerGrid.Children.Add($controlsPanel)
 
-$videoGrid.Children.Add($playerPanel)
-[System.Windows.Controls.Grid]::SetColumn($playerPanel, 0)
+# Add the playerGrid to the left column of your main videoGrid
+$videoGrid.Children.Add($playerGrid)
+[System.Windows.Controls.Grid]::SetColumn($playerGrid, 0)
 
 $videoGrid.Children.Add($sidebarPanel)
 [System.Windows.Controls.Grid]::SetColumn($sidebarPanel, 1)
