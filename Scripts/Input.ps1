@@ -29,33 +29,42 @@ $sidebarGrid.VerticalAlignment = 'Stretch'
 $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Status row
 $sidebarGrid.RowDefinitions.Add((New-Object System.Windows.Controls.RowDefinition))  # Buttons row
 
-$vizionLogo = New-Object -TypeName System.Windows.Controls.Image
+# Create a small StackPanel for the logos
+$logoPanel = New-Object System.Windows.Controls.StackPanel
+$logoPanel.Orientation = 'Vertical'
+$logoPanel.HorizontalAlignment = 'Center'
+$logoPanel.VerticalAlignment = 'Top'
+$logoPanel.Margin = '5'
+
+# Create Vizion logo
+$vizionLogo = New-Object System.Windows.Controls.Image
 $vizionLogo.HorizontalAlignment = 'Center'
 $vizionLogo.VerticalAlignment = 'Top'
-$vizionLogo.Margin = '5, 5, 5, 5'
-# Set the source for the logo image
-$imageSource = "https://viziong.github.io/ToolBox/Resources/images/v_logo.png"  # Replace with the actual path to your image
-$vizionLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($imageSource))
+$vizionLogo.Margin = '5'
+$vizionLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.png"))
 
-$sidebarGrid.Children.Insert(0, $vizionLogo)
+# Create Windows logo
+$windowsLogo = New-Object System.Windows.Controls.Image
+$windowsLogo.HorizontalAlignment = 'Center'
+$windowsLogo.VerticalAlignment = 'Top'
+$windowsLogo.Margin = '5, 10, 5, 5'
 
-# Create an Image control
-$windowsLogo = New-Object -TypeName System.Windows.Controls.Image
-$windowsLogo.HorizontalAlignment = 'Center'  # Center the image
-$windowsLogo.VerticalAlignment = 'Top'  # Align to the top
-$windowsLogo.Margin = '5, 150, 5, 5'  # Margin for some spacing
+# Add logos into the panel
+$logoPanel.Children.Add($vizionLogo)
+$logoPanel.Children.Add($windowsLogo)
 
-# Set the image source based on Windows version
+# Finally add the logo panel into the sidebar grid
+$sidebarGrid.Children.Insert(0, $logoPanel)
+
+# Now set Windows logo based on version
 $windowsVersion = Get-WindowsVersion
 
-# Set image source based on Windows version
 if ($windowsVersion -like "*11*") {
-    $imageSource = "https://viziong.github.io/ToolBox/Resources/images/Windows_11_logo.png"  # Replace with the actual path to your Windows 11 image
-    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($imageSource))
+    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_11_logo.png"))
 } elseif ($windowsVersion -like "*10*") {
-    $imageSource = "https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"  # Replace with the actual path to your Windows 10 image
-    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($imageSource))
+    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"))
 }
+
 
 # Add the Image control to the sidebar grid above the status box
 $sidebarGrid.Children.Insert(0, $windowsLogo)  # Insert at index 0 to place it at the top
