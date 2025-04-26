@@ -20,7 +20,20 @@ $updateText.FontSize = 16
 $updateText.Margin = '5'
 $updateText.Foreground = [System.Windows.Media.Brushes]::White
 
-# Create a Grid for the sidebar section (on the right)
+# Create a Grid to organize the InputPanel and SidebarGrid
+$utilitiesGrid = New-Object -TypeName System.Windows.Controls.Grid
+$utilitiesGrid.HorizontalAlignment = 'Stretch'
+$utilitiesGrid.VerticalAlignment = 'Stretch'
+
+# Define two columns
+$col1 = New-Object System.Windows.Controls.ColumnDefinition
+$col1.Width = '1*'   # Left side (for input/buttons)
+$col2 = New-Object System.Windows.Controls.ColumnDefinition
+$col2.Width = 'Auto' # Right side (for sidebar)
+$utilitiesGrid.ColumnDefinitions.Add($col1)
+$utilitiesGrid.ColumnDefinitions.Add($col2)
+
+# Create and configure the sidebar section (on the right)
 $sidebarGrid = New-Object -TypeName System.Windows.Controls.Grid
 $sidebarGrid.HorizontalAlignment = 'Stretch'
 $sidebarGrid.VerticalAlignment = 'Stretch'
@@ -42,7 +55,6 @@ $vizionLogo1.HorizontalAlignment = 'Center'
 $vizionLogo1.VerticalAlignment = 'Top'
 $vizionLogo1.Margin = '5'
 $vizionLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.png"))
-
 
 # Create Windows logo
 $windowsLogo = New-Object System.Windows.Controls.Image
@@ -75,8 +87,8 @@ $statusBox.IsReadOnly = $true
 $statusBox.Text = "Waiting for actions..."
 $statusBox.FontWeight = '600'
 $statusBox.TextAlignment = 'Center'
-$statusBox.Foreground = $whitebrush
-$statusBox.Background = $brushbackground
+$statusBox.Foreground = [System.Windows.Media.Brushes]::White
+$statusBox.Background = [System.Windows.Media.Brushes]::Black
 $statusBox.Padding = '10,10,10,10'
 $statusBox.BorderThickness = '2'
 $statusBox.TextWrapping = 'Wrap'  # Allow text to wrap when it hits the border
@@ -84,8 +96,7 @@ $statusBox.AcceptsReturn = $true  # Enable multiline text input/display
 [System.Windows.Controls.Grid]::SetRow($statusBox, 0)  # Place in the first row
 $sidebarGrid.Children.Add($statusBox)
 
-# Get Windows version and update the status box text
-$windowsVersion = Get-WindowsVersion
+# Set the status text based on Windows version
 $statusBox.Text = "Detect: $windowsVersion"
 
 # Create a StackPanel for buttons (second row)
@@ -95,23 +106,15 @@ $buttonPanel.HorizontalAlignment = 'Right'
 $buttonPanel.VerticalAlignment = 'Center'
 $buttonPanel.Margin = '5, 60, 26, 5'
 
-
 # Add button panel to sidebar grid (second row)
 [System.Windows.Controls.Grid]::SetRow($buttonPanel, 1)
 $sidebarGrid.Children.Add($buttonPanel)
 
-# Add both grids to the main Grid
-$mainGrid.Children.Add($categoriesGrid)
-$mainGrid.Children.Add($sidebarGrid)
-[System.Windows.Controls.Grid]::SetColumn($sidebarGrid, 1)  # Set sidebarGrid to second column
+# Add sidebar to utilities grid (column 1)
+$utilitiesGrid.Children.Add($sidebarGrid)
+[System.Windows.Controls.Grid]::SetColumn($sidebarGrid, 1)
 
-# Install-SpotX function
-function Install-SpotX {
-    Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
-}
-
-
-# SpotX Button
+# Create and configure the SpotX Button
 $spotxButton = New-Object -TypeName System.Windows.Controls.Button
 $spotxButton.Content = "SpotX"
 $spotxButton.Style = $buttonStyle
@@ -120,16 +123,25 @@ $spotxButton.Width = 200
 $spotxButton.HorizontalAlignment = 'Left'
 $spotxButton.VerticalAlignment = 'Center'
 
+# Add Click event for SpotX button
 $spotxButton.Add_Click({
     Install-SpotX
 })
 
+# Add SpotX button to the input panel (left side)
 $inputPanel.Children.Add($spotxButton)
 
-# Assign settings panel to the settings tab content
-$inputTab.Content = $inputPanel
+# Add the input panel to the utilities grid (column 0)
+$utilitiesGrid.Children.Add($inputPanel)
+[System.Windows.Controls.Grid]::SetColumn($inputPanel, 0)
+
+# Assign the utilities grid as the content of the input tab
+$inputTab.Content = $utilitiesGrid
 
 # Add the Settings tab to the TabControl
 $tabControl.Items.Add($inputTab)
 
-
+# Install-SpotX function
+function Install-SpotX {
+    Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
+}
