@@ -6,11 +6,6 @@ $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 # Create the TabControl
 $tabControl = New-Object System.Windows.Controls.TabControl
 
-# Parse the Styles
-$checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
-$buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
-$tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
-
 # Create Utilities Tab
 $utilitiesTab = New-Object -TypeName System.Windows.Controls.TabItem
 $utilitiesTab.Header = "Utilities"
