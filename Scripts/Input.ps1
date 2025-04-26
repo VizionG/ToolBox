@@ -20,12 +20,6 @@ $inputPanel.Orientation = 'Vertical'
 $inputPanel.Margin = '5'
 $inputPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-$updateText = New-Object -TypeName System.Windows.Controls.TextBlock
-$updateText.Text = "Update:"
-$updateText.FontSize = 16
-$updateText.Margin = '5'
-$updateText.Foreground = [System.Windows.Media.Brushes]::White
-
 function Install-SpotX {
     Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
 }
