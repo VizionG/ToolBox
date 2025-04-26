@@ -14,14 +14,38 @@ $sidebarTabGrid.VerticalAlignment = 'Stretch'
 $sidebarTabGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='*'}))    # Content column
 $sidebarTabGrid.ColumnDefinitions.Add((New-Object System.Windows.Controls.ColumnDefinition -Property @{Width='180'}))  # Sidebar column
 
-# --- Content for the left side ---
-$leftContent = New-Object System.Windows.Controls.TextBlock
-$leftContent.Text = "This is the content area (left side)."
-$leftContent.Margin = 20
-$leftContent.VerticalAlignment = 'Center'
-$leftContent.HorizontalAlignment = 'Center'
-$sidebarTabGrid.Children.Add($leftContent)
-[System.Windows.Controls.Grid]::SetColumn($leftContent, 0)
+# --- Content for the left side (SpotX button and label) ---
+$leftPanel = New-Object System.Windows.Controls.StackPanel
+$leftPanel.Orientation = 'Vertical'
+$leftPanel.Margin = 20
+
+$updateText = New-Object -TypeName System.Windows.Controls.TextBlock
+$updateText.Text = "Update:"
+$updateText.FontSize = 16
+$updateText.Margin = '5'
+$updateText.Foreground = [System.Windows.Media.Brushes]::White
+
+function Install-SpotX {
+    Invoke-Expression "& { $(Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/SpotX-Official/spotx-official.github.io/main/run.ps1') } -new_theme"
+}
+
+$spotxButton = New-Object -TypeName System.Windows.Controls.Button
+$spotxButton.Content = "SpotX"
+$spotxButton.Style = $buttonStyle
+$spotxButton.Margin = '5'
+$spotxButton.Width = 200
+$spotxButton.HorizontalAlignment = 'Left'
+$spotxButton.VerticalAlignment = 'Center'
+
+$spotxButton.Add_Click({
+    Install-SpotX
+})
+
+$leftPanel.Children.Add($updateText)
+$leftPanel.Children.Add($spotxButton)
+
+$sidebarTabGrid.Children.Add($leftPanel)
+[System.Windows.Controls.Grid]::SetColumn($leftPanel, 0)
 
 # --- Sidebar for the right side (copied from UI.ps1) ---
 $sidebarGrid = New-Object -TypeName System.Windows.Controls.Grid
