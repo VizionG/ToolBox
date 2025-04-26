@@ -44,9 +44,6 @@ $spotxButton.Add_Click({
 # Add the button to the settings panel
 $inputPanel.Children.Add($spotxButton)
 
-# Add the button to the Utilities panel
-$utilitiesPanel.Children.Add($exampleButton)
-
 # Assign the panel to the tab
 $utilitiesTab.Content = $utilitiesPanel
 
