@@ -83,3 +83,9 @@ function InstallApp {
     Write-Host "App installation started..."
     # Add your installation logic here
 }
+
+# Assign the utilities grid as the content of the input tab
+$inputTab.Content = $utilitiesGrid
+
+# Add the Settings tab to the TabControl
+$tabControl.Items.Add($inputTab)
