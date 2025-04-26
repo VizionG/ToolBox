@@ -4,7 +4,7 @@
 
 # Create a new TabItem for the sidebar/content demo
 $sidebarTab = New-Object System.Windows.Controls.TabItem
-$sidebarTab.Header = "Sidebar Demo"
+$sidebarTab.Header = "Utilities"
 $sidebarTab.Style = $tabItemStyle
 
 # Create a new grid for the tab layout
