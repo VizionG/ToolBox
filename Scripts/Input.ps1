@@ -3,28 +3,23 @@ $checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-# Create the TabControl
-$tabControl = New-Object System.Windows.Controls.TabControl
+# Create a new TabItem for the Settings tab
+$inputTab = New-Object -TypeName System.Windows.Controls.TabItem
+$inputTab.Header = "Update"
+$inputTab.Style = $tabStyle
 
-# Create Utilities tab
-$utilitiesTab = New-Object System.Windows.Controls.TabItem
-$utilitiesTab.Header = "Utilities"
-$utilitiesTab.Style = $tabStyle
-$utilitiesTab.Content = $utilitiesPanel  # You need to create $utilitiesPanel first
+# Create a StackPanel for the Settings tab content
+$inputPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+$inputPanel.Orientation = 'Vertical'
+$inputPanel.Margin = '5'
+$inputPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
-# Create Utilities Panel
-$utilitiesPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-$utilitiesPanel.Orientation = 'Vertical'
-$utilitiesPanel.Margin = '5'
-$utilitiesPanel.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
-
-# Add "Utilities:" TextBlock
-$utilitiesText = New-Object -TypeName System.Windows.Controls.TextBlock
-$utilitiesText.Text = "Utilities:"
-$utilitiesText.FontSize = 16
-$utilitiesText.Margin = '5'
-$utilitiesText.Foreground = [System.Windows.Media.Brushes]::White
-$utilitiesPanel.Children.Add($utilitiesText)
+# Add a simple text label to the Settings page
+$updateText = New-Object -TypeName System.Windows.Controls.TextBlock
+$updateText.Text = "Update:"
+$updateText.FontSize = 16
+$updateText.Margin = '5'
+$updateText.Foreground = [System.Windows.Media.Brushes]::White
 
 # Install-SpotX function
 function Install-SpotX {
@@ -46,9 +41,12 @@ $spotxButton.Add_Click({
 
 $utilitiesPanel.Children.Add($spotxButton)
 
-# Add Utilities Panel to Tab
-$utilitiesTab.Content = $utilitiesPanel
+$inputPanel.Children.Add($updateText)
 
-# Add Tab to TabControl
-$tabControl.Items.Add($utilitiesTab)
+# Assign settings panel to the settings tab content
+$inputTab.Content = $inputPanel
+
+# Add the Settings tab to the TabControl
+$tabControl.Items.Add($inputTab)
+
 
