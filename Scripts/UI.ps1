@@ -215,19 +215,9 @@ $categoriesGrid.Children.Add($checkAllPanel)
 [System.Windows.Controls.Grid]::SetRow($checkAllPanel, 1)  # Place in the second row
 [System.Windows.Controls.Grid]::SetRowSpan($checkAllPanel, 1)  # Ensure it only takes up necessary space
 
+# Create the sidebar using the function
+$newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
 
 # Add the sidebar to the main grid
-$mainGrid.Children.Add($New-Sidebar)
-[System.Windows.Controls.Grid]::SetColumn($New-Sidebar, 1)
-
-# Add both grids to the main Grid
-$mainGrid.Children.Add($categoriesGrid)
-
-# Set the content of the Main tab
-$mainTab.Content = $mainGrid
-
-# Add the main Tab to the TabControl
-$tabControl.Items.Add($mainTab)
-
-# Add the TabControl to the DockPanel
-$dockPanel.Children.Add($tabControl)
+$mainGrid.Children.Add($newSidebar)
+[System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)

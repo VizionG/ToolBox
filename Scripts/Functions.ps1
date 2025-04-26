@@ -72,7 +72,7 @@ function Get-WindowsVersion {
     }
 }
 
-function New-Sidebar {
+function newSidebar {
     param (
         [System.Collections.Hashtable]$checkboxControls,
         [System.Windows.Media.Brush]$whitebrush,
@@ -156,4 +156,4 @@ function New-Sidebar {
 }
 
 # Alias for backward compatibility
-Set-Alias -Name Create-Sidebar -Value New-Sidebar
+Set-Alias -Name Create-Sidebar -Value newSidebar
