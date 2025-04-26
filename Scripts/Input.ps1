@@ -57,14 +57,14 @@ $vizionLogo1.Margin = '5'
 $vizionLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.png"))
 
 # Create Windows logo
-$windowsLogo = New-Object System.Windows.Controls.Image
-$windowsLogo.HorizontalAlignment = 'Center'
-$windowsLogo.VerticalAlignment = 'Top'
-$windowsLogo.Margin = '5, 10, 5, 5'
+$windowsLogo1 = New-Object System.Windows.Controls.Image
+$windowsLogo1.HorizontalAlignment = 'Center'
+$windowsLogo1.VerticalAlignment = 'Top'
+$windowsLogo1.Margin = '5, 10, 5, 5'
 
 # Add logos into the panel
 $logoPanel.Children.Add($vizionLogo1)
-$logoPanel.Children.Add($windowsLogo)
+$logoPanel.Children.Add($windowsLogo1)
 
 # Finally add the logo panel into the sidebar grid
 $sidebarGrid.Children.Insert(0, $logoPanel)
@@ -73,9 +73,9 @@ $sidebarGrid.Children.Insert(0, $logoPanel)
 $windowsVersion = Get-WindowsVersion
 
 if ($windowsVersion -like "*11*") {
-    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_11_logo.png"))
+    $windowsLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_11_logo.png"))
 } elseif ($windowsVersion -like "*10*") {
-    $windowsLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"))
+    $windowsLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/Windows_10_logo.png"))
 }
 
 # Create and configure the status TextBox (for the sidebar)

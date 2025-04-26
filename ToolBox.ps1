@@ -166,7 +166,7 @@ $mainWindow.Content = $dockPanel
 # Register the event handler for the Closing event
 $mainWindow.Add_Closing({
     try {
-        $toolBoxFolder = $tempDir
+        $toolBoxFolder = Join-Path -Path $env:TEMP -ChildPath "ToolBox"
         if (Test-Path $toolBoxFolder) {
             Write-Host "Deleting temporary ToolBox folder: $toolBoxFolder"
             Remove-Item -Path $toolBoxFolder -Recurse -Force
