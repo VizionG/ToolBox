@@ -105,14 +105,14 @@ function Download-ScriptFromUrl {
 function DownloadScripts {
     # Define script URLs
     $scriptUrls = @(
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/SoftwareCategories.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Functions.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Styles.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Colors.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Recommended.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/UI.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Settings.ps1",
-        "https://raw.githubusercontent.com/VizionG/ToolBox/main/Scripts/Input.ps1"
+        "SoftwareCategories.ps1",
+        "Functions.ps1",
+        "Styles.ps1",      # <-- Load styles first
+        "Colors.ps1",      # <-- Load colors first
+        "Recommended.ps1",
+        "UI.ps1",
+        "Settings.ps1",
+        "Input.ps1"
     )
 
     $tempScriptPaths = @()
@@ -132,38 +132,34 @@ function DownloadScripts {
     return $tempScriptPaths
 }
 
-# Download all scripts
-$tempScriptPaths = DownloadScripts
-
-# Load the downloaded scripts into the current session
-foreach ($scriptPath in $tempScriptPaths) {
-    try {
-        Write-Host "Loading script: $scriptPath"
-        . $scriptPath > $null 2>&1
-
-    }
-    catch {
-        Write-Error ("Failed to load script " + $scriptPath + ": " + $_)
-    }
-}
-
-# Create the main window
+# Create the main window and UI containers FIRST
 $mainWindow = New-Object -TypeName System.Windows.Window
 $mainWindow.Title = "ToolBox"
 $mainWindow.Width = 1100  
 $mainWindow.Height = 625  
 $mainWindow.ResizeMode = 'CanResize'
 $mainWindow.WindowStartupLocation = 'CenterScreen'
-$iconPath = "https://viziong.github.io/ToolBox/Resources/images/v_logo.ico"  # Replace with the actual path to your icon file
+$iconPath = "https://viziong.github.io/ToolBox/Resources/images/v_logo.ico"
 $mainWindow.Icon = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new($iconPath))
-
-# Set the background color of the window
 $mainWindow.Background = New-Object -TypeName System.Windows.Media.SolidColorBrush -ArgumentList ([System.Windows.Media.Color]::FromArgb(255, 38, 37, 38))
 
 $dockPanel = New-Object System.Windows.Controls.DockPanel
 $tabControl = New-Object System.Windows.Controls.TabControl
 $dockPanel.Children.Add($tabControl)
 $mainWindow.Content = $dockPanel
+
+# Now download and load scripts
+$tempScriptPaths = DownloadScripts
+
+foreach ($scriptPath in $tempScriptPaths) {
+    try {
+        Write-Host "Loading script: $scriptPath"
+        . $scriptPath > $null 2>&1
+    }
+    catch {
+        Write-Error ("Failed to load script " + $scriptPath + ": " + $_)
+    }
+}
 
 # Register the event handler for the Closing event
 $mainWindow.Add_Closing({
@@ -179,7 +175,6 @@ $mainWindow.Add_Closing({
         Write-Error "Failed to delete ToolBox folder. Error: $_"
     }
 })
-
 
 # Show the main window
 $mainWindow.ShowDialog()
