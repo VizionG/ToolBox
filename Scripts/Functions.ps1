@@ -75,14 +75,14 @@ function Get-WindowsVersion {
     }
 }
 
-function newSidebar {
+function New-Sidebar {
     param (
         [System.Collections.Hashtable]$checkboxControls,
         [System.Windows.Media.Brush]$whitebrush,
         [System.Windows.Media.Brush]$brushbackground,
         [System.Windows.Style]$buttonStyle,
-        [System.Collections.Hashtable]$software_categories,
-        [ref]$statusBoxRef
+        [System.Collections.Hashtable]$software_categories
+        # Remove [ref]$statusBoxRef if not used
     )
 
     # Create a Grid for the sidebar section
@@ -109,9 +109,6 @@ function newSidebar {
     $statusBox.BorderThickness = '2'
     $statusBox.TextWrapping = 'Wrap'
     $statusBox.AcceptsReturn = $true
-
-    # Pass statusBox outside
-    $statusBoxRef.Value = $statusBox
 
     [System.Windows.Controls.Grid]::SetRow($statusBox, 0)
     $sidebarGrid.Children.Add($statusBox)
@@ -166,7 +163,7 @@ function newSidebar {
 }
 
 # Alias
-Set-Alias -Name Create-Sidebar -Value newSidebar
+Set-Alias -Name Create-Sidebar -Value New-Sidebar
 
 # Example usage
 $checkboxControls = @{}
@@ -176,6 +173,6 @@ $brushbackground = [System.Windows.Media.Brushes]::DarkSlateGray
 $buttonStyle = $null # or your custom style if needed
 
 $statusBoxRef = [ref]$null
-$sidebar = newSidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories -statusBoxRef $statusBoxRef
+$sidebar = New-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories -statusBoxRef $statusBoxRef
 
 $statusBox = $statusBoxRef.Value
