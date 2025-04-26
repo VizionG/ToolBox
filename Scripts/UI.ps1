@@ -1,6 +1,4 @@
-# UI.ps1
-# Do NOT create a new $tabControl here!
-# Use the existing $tabControl from ToolBox.ps1
+. "$PSScriptRoot\Functions.ps1"
 
 # Create Grid for the main layout (Categories on the left, Sidebar on the right)
 $mainGrid = New-Object System.Windows.Controls.Grid
@@ -139,12 +137,20 @@ $checkAllPanel.Children.Add($checkAllBox)
 $categoriesGrid.Children.Add($checkAllPanel)
 [System.Windows.Controls.Grid]::SetRow($checkAllPanel, 1)
 
-if ($mainGrid -and $categoriesGrid) {
-    $mainGrid.Children.Add($categoriesGrid)
-    [System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
+# Add categoriesGrid to the mainGrid (left side)
+$mainGrid.Children.Add($categoriesGrid)
+[System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
 
-    $newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
-    $mainGrid.Children.Add($newSidebar)
-    [System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
-}
+# Sidebar setup
+$newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
+$mainGrid.Children.Add($newSidebar)
+[System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
+
+# Now create the TabItem and assign the grid as content
+$mainTab = New-Object System.Windows.Controls.TabItem
+$mainTab.Header = "Software"
+$mainTab.Style = $tabItemStyle
+$mainTab.Content = $mainGrid
+
+$tabControl.Items.Add($mainTab)
 
