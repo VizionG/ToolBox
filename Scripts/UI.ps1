@@ -1,17 +1,16 @@
 # Initialize the hashtable to store checkbox controls
 $checkboxControls = @{}
 
-# Parse the styles from XAML
+# Ensure all necessary styles are loaded before use
 $checkBoxStyle = [System.Windows.Markup.XamlReader]::Parse($checkBoxStyleXml)
 $buttonStyle = [System.Windows.Markup.XamlReader]::Parse($buttonStyleXml)
 $tabStyle = [System.Windows.Markup.XamlReader]::Parse($tabStyleXml)
 
-# Create TabControl Style
+# Create and configure TabControl and TabItem styles
 $tabControlStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.TabControl])
 $tabControlStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabControl]::BorderThicknessProperty, [System.Windows.Thickness]::new(0))))
 $tabControlStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabControl]::BackgroundProperty, $brushbackground)))
 
-# Create TabItem Style
 $tabItemStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.TabItem])
 $tabItemStyle.Setters.Add((New-Object System.Windows.Setter -ArgumentList ([System.Windows.Controls.TabItem]::BorderThicknessProperty, [System.Windows.Thickness]::new(0))))
 
@@ -21,11 +20,9 @@ $tabControl.HorizontalAlignment = 'Stretch'
 $tabControl.VerticalAlignment = 'Stretch'
 $tabControl.Style = $tabControlStyle
 
-# Main Tab
 $mainTab = New-Object System.Windows.Controls.TabItem
 $mainTab.Header = "Software"
 $mainTab.Style = $tabItemStyle  # Apply the style
-$mainTab.Style = $tabStyle
 
 # Create Grid for the main layout (Categories on the left, Sidebar on the right)
 $mainGrid = New-Object System.Windows.Controls.Grid
@@ -92,9 +89,6 @@ foreach ($category in $sorted_software_categories) {
     $checkboxStackPanel = New-Object System.Windows.Controls.StackPanel
     $checkboxStackPanel.Orientation = 'Vertical'
     $checkboxStackPanel.Margin = '5 , 10, 5, 5'
-
-    # Define highlight color for checked state
-    $highlightBrush = $titleBrush
 
     # Style for CheckBox with triggers
     $checkBoxStyle = New-Object System.Windows.Style -ArgumentList ([System.Windows.Controls.CheckBox])
@@ -170,9 +164,11 @@ $categoriesGrid.Children.Add($checkAllPanel)
 # Add categoriesGrid to the mainGrid (left side)
 $mainGrid.Children.Add($categoriesGrid)
 [System.Windows.Controls.Grid]::SetColumn($categoriesGrid, 0)
+
+# Sidebar setup
 $newSidebar = Create-Sidebar -checkboxControls $checkboxControls -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $software_categories
 $mainGrid.Children.Add($newSidebar)
 [System.Windows.Controls.Grid]::SetColumn($newSidebar, 1)
 
-# At the end, add mainGrid to the existing dockPanel
+# Add mainGrid to the existing dockPanel
 $dockPanel.Children.Add($mainGrid)
