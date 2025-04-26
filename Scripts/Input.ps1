@@ -18,7 +18,7 @@ $spotxButton = New-Object -TypeName System.Windows.Controls.Button
 $spotxButton.Content = "SpotX"
 $spotxButton.Style = $buttonStyle
 $spotxButton.Margin = '5'
-$spotxButton.Width = 200
+$potxButton.Width = 200
 $spotxButton.HorizontalAlignment = 'Left'
 $spotxButton.VerticalAlignment = 'Center'
 
@@ -60,10 +60,10 @@ $col2.Width = 'Auto'  # Right side (for sidebar)
 $utilitiesGrid.ColumnDefinitions.Add($col1)
 $utilitiesGrid.ColumnDefinitions.Add($col2)
 
-# Create the sidebar grid (empty in this case, you can add content later)
-$sidebarGrid = New-Object -TypeName System.Windows.Controls.Grid
-$sidebarGrid.HorizontalAlignment = 'Stretch'
-$sidebarGrid.VerticalAlignment = 'Stretch'
+# Create the sidebar using the function
+$sidebarGrid = Create-Sidebar -checkboxControls $null -whitebrush $whitebrush -brushbackground $brushbackground -buttonStyle $buttonStyle -software_categories $null
+
+# Add the sidebar to the utilities grid
 $utilitiesGrid.Children.Add($sidebarGrid)
 [System.Windows.Controls.Grid]::SetColumn($sidebarGrid, 1)
 
