@@ -53,9 +53,6 @@ foreach ($channel in $channels) {
     $sidebarPanel.Children.Add($btn)
 }
 
-# Set the default channel
-$mediaElement.Source = [Uri]::new($channels[0].Url)
-
 # Add Play/Pause controls under the player
 $controlsPanel = New-Object System.Windows.Controls.StackPanel
 $controlsPanel.Orientation = 'Horizontal'
