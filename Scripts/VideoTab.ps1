@@ -34,7 +34,7 @@ $sidebarPanel.Children.Add($sidebarLabel)
 # Define your channels (Name and Stream URL)
 $channels = @(
     @{ Name = "Big Buck Bunny"; Url = "https://www.w3schools.com/html/mov_bbb.mp4" }
-    @{ Name = "NASA TV"; Url = "https://www.nasa.gov/multimedia/nasatv/NTV-Public-IPS.m3u8" }
+    @{ Name = "RTP"; Url = "http://streaming-live-app.rtp.pt/liverepeater/rtp1HD.smil/playlist.m3u8" }
     @{ Name = "Sample Channel"; Url = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" }
 )
 
