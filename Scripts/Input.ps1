@@ -36,9 +36,12 @@ $logoPanel.HorizontalAlignment = 'Center'
 $logoPanel.VerticalAlignment = 'Top'
 $logoPanel.Margin = '5'
 
-# Create a logo image
-$vizionLogo = New-Object System.Windows.Controls.Image
-$vizionLogo.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://..."))
+# Create a new vizionLogo Image
+$vizionLogo1 = New-Object -TypeName System.Windows.Controls.Image
+$vizionLogo1.HorizontalAlignment = 'Center'
+$vizionLogo1.VerticalAlignment = 'Top'
+$vizionLogo1.Margin = '5'
+$vizionLogo1.Source = [System.Windows.Media.Imaging.BitmapImage]::new([System.Uri]::new("https://viziong.github.io/ToolBox/Resources/images/v_logo.png"))
 
 
 # Create Windows logo
@@ -48,7 +51,7 @@ $windowsLogo.VerticalAlignment = 'Top'
 $windowsLogo.Margin = '5, 10, 5, 5'
 
 # Add logos into the panel
-$logoPanel.Children.Add($vizionLogo)
+$logoPanel.Children.Add($vizionLogo1)
 $logoPanel.Children.Add($windowsLogo)
 
 # Finally add the logo panel into the sidebar grid
