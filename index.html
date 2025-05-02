@@ -5,135 +5,109 @@
     <title>Vizion</title>
     <style>
         html {
-    font-size: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: visible;
-}
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: visible;
+        }
 
-body {
-    font-family: "Open Sans", sans-serif;
-    line-height: 1.55;
-    color: #333A51;
-}
+        body {
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.55;
+            color: #333A51;
+        }
 
-#toolbox_main {
-    width: 900px;
-    height: auto;
-    border-radius: 5px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #5933cb8e;
-}
+        #toolbox_main {
+            width: 900px;
+            border-radius: 5px;
+            border: 2px solid #5933cb8e;
+        }
 
-#link {
-    margin-top: 10px;
-    width: 430px;
-    height: 32px;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 10px;
-    align-content: center;
-    resize: none;
-    pointer-events: auto;
-    user-select: none;
-    cursor: default;
-    background-color: #7a7a7a;
-    border-color: #ffffff;
-    border-width: 2px;
-}
+        #link {
+            margin-top: 10px;
+            width: 430px;
+            height: 32px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #7a7a7a;
+            border: 2px solid #ffffff;
+            pointer-events: none; /* Prevent interaction */
+        }
 
-#copyButton {
-    text-align: center;
-    width: auto;
-    height: auto;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove default border */
-}
+        #copyButton {
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
 
-#title_toolbox{
-    font-size: 32px;
-    font-weight: 800;
-    color: #5A33CB;
-}
-#title_center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -80px;
-    margin-bottom: -50px;
-}
+        #title_toolbox {
+            font-size: 32px;
+            font-weight: 800;
+            color: #5A33CB;
+        }
 
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.932), rgba(0, 0, 0, 0.822));
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-    z-index: -2;
-}
+        #title_center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: -80px 0 -50px;
+        }
 
-#v_logo {
-    width: 120px;
-    top: -50px;
-    opacity: 0.85; /* Adjusted opacity value */
-}
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.932), rgba(0, 0, 0, 0.822));
+            z-index: -2;
+        }
 
-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        #v_logo {
+            width: 120px;
+            opacity: 0.85;
+        }
 
-ul {
-    list-style-type: none;
-    display: flex;
-    margin: 0;
-    align-items: flex-start;
-}
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-li {
-    margin: 0 15px;
-}
+        ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+            align-items: flex-start;
+        }
 
-.home-btn,
-.download-btn {
-    color: #5A33CB;
-    text-decoration: none;
-    font-weight: 600;
-    margin-top: 10px;
-    padding: 2px 2px;
-    border-radius: 10px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #08DC67;
-}
+        li {
+            margin: 0 15px;
+        }
 
-.desktop-menu ul li a:hover {
-    color: #ff0000;
-}
+        .home-btn,
+        .download-btn {
+            color: #5A33CB;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 2px;
+            border-radius: 10px;
+            border: 1px solid #08DC67;
+        }
 
-ul li a {
-    display: block;
-    padding: 20px 0px;
-}
+        ul li a:hover {
+            color: #ff0000;
+        }
 
-
-.center {
-    text-align: center;
-    margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
-}
+        .center {
+            text-align: center;
+            margin: 40px auto 0;
+        }
     </style>
 </head>
 <body>
@@ -141,21 +115,15 @@ ul li a {
         <nav class="desktop-menu">
             <ul id="ul_head">
                 <li><a href="index.html" class="home-btn">Home</a></li>
-                <img src="https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Resources/images/v_logo.png" alt="Logo" class="vlogo" id="v_logo">
+                <img src="https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Resources/images/v_logo.png" alt="Logo" id="v_logo">
                 <li><a href="channel.html" class="download-btn">Channel</a></li>
             </ul>
         </nav>
     </header>
-    <br>
     <div class="center">
-        <ul id="title_center">
-            <p id="title_toolbox">ToolBox</p>
-        </ul>
-        <br>
+        <p id="title_toolbox">ToolBox</p>
         <img src="https://raw.githubusercontent.com/VizionG/ToolBox/refs/heads/main/Resources/images/toolbox.png" id="toolbox_main">
-        <br>
-        <textarea name="link" id="link" readonly>iwr -useb justanothertoolbox.ddns.net/toolbox | iex</textarea>
-        <br>
+        <textarea id="link" readonly>iwr -useb justanothertoolbox.ddns.net/toolbox | iex</textarea>
         <button id="copyButton">Copy</button>
     </div>
     <div id="overlay"></div>
@@ -168,24 +136,20 @@ ul li a {
         textarea.value = originalText;
 
         // Handle copy button click
-        copyButton.addEventListener('click', function() {
-            // Check if the Clipboard API is supported
+        copyButton.addEventListener('click', () => {
             if (navigator.clipboard) {
-                // Use Clipboard API to copy the text
-                navigator.clipboard.writeText(originalText).then(function() {
-                }).catch(function(error) {
-                    console.error('Failed to copy text: ', error);
-                    alert('Failed to copy text. Please try again.');
-                });
+                navigator.clipboard.writeText(originalText)
+                    .then(() => console.log('Copied to clipboard!'))
+                    .catch(error => {
+                        console.error('Failed to copy text: ', error);
+                        alert('Failed to copy text. Please try again.');
+                    });
             } else {
-                // Fallback method for copying text
-                textarea.select(); // Select the text
-                textarea.setSelectionRange(0, 99999); // For mobile devices
-
+                textarea.select();
+                textarea.setSelectionRange(0, 99999);
                 try {
-                    const successful = document.execCommand('copy'); // Execute the copy command
-                    const msg = successful ? 'Copied!' : 'Failed to copy.';
-                    console.log(msg);
+                    document.execCommand('copy');
+                    console.log('Copied!');
                 } catch (err) {
                     console.error('Fallback: Oops, unable to copy', err);
                     alert('Fallback: Oops, unable to copy');
@@ -194,5 +158,4 @@ ul li a {
         });
     </script>
 </body>
-
 </html>
